@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+enum TransactionType {
+  PURCHASE
+  SALE
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum Currency {
+  USD
+  EUR
+  GHS
+  NGN
+  GBP
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  email        String        @unique
+  password     String
+  firstName    String
+  lastName     String
+  country      String
+  role         Role          @default(USER)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  identity     Identity?
+  transactions Transaction[]
+  payments     Payment[]
+  holdings     Holding[]
+  Portfolio    Portfolio?
+  wallet       Wallet?
+}
+
+model Wallet {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+  balance   Float    @default(0)
+  currency  Currency @default(USD)
+  updatedAt DateTime @updatedAt
+}
+
+model Portfolio {
+  id               Int      @id @default(autoincrement())
+  userId           Int      @unique
+  user             User     @relation(fields: [userId], references: [id])
+  totalGrams       Float    @default(0)
+  totalInvested    Float    @default(0)
+  currentValue     Float    @default(0)
+  unrealizedGain   Float    @default(0)
+  lastCalculatedAt DateTime @default(now())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Identity {
+  id             Int       @id @default(autoincrement())
+  userId         Int       @unique
+  user           User      @relation(fields: [userId], references: [id])
+  documentType   String
+  documentNumber String    @unique
+  verified       Boolean   @default(false)
+  verifiedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model GoldPrice {
+  id           Int      @id @default(autoincrement())
+  pricePerGram Float
+  currency     Currency @default(USD)
+  source       String?
+  recordedAt   DateTime @default(now())
+  isActive     Boolean  @default(true)
+}
+
+model GoldUnitMetadata {
+  id           Int      @id @default(autoincrement())
+  unitName     String // e.g., gram, ounce
+  gramsPerUnit Float // e.g., 1 for gram, 31.1035 for ounce
+  symbol       String // g, oz
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Transaction {
+  id              Int               @id @default(autoincrement())
+  referenceNumber String            @unique
+  userId          Int
+  user            User              @relation(fields: [userId], references: [id])
+  type            TransactionType
+  status          TransactionStatus @default(PENDING)
+  gramsPurchased  Float
+  pricePerGram    Float
+  totalCost       Float
+  fee             Float? // New: Optional transaction fee
+  currency        Currency          @default(USD)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  payment   Payment? @relation(fields: [paymentId], references: [id])
+  paymentId Int?     @unique
+
+  holdings Holding[]
+}
+
+model Payment {
+  id          Int          @id @default(autoincrement())
+  userId      Int
+  user        User         @relation(fields: [userId], references: [id])
+  method      String // e.g., Credit Card, Bank Transfer
+  reference   String? // Gateway reference
+  amount      Float
+  currency    Currency     @default(USD)
+  status      String       @default("PENDING")
+  processedAt DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  transaction Transaction?
+}
+
+model Holding {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  transactionId Int
+  amount        Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user        User        @relation(fields: [userId], references: [id])
+  transaction Transaction @relation(fields: [transactionId], references: [id])
+}
