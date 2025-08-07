@@ -89,7 +89,7 @@ export default function DashboardSidebar() {
       <SidebarHeader className="flex items-center px-6 py-5 border-b border-sidebar-border/20">
         <SidebarMenuButton className="flex items-center gap-3 text-sidebar-foreground">
           <Briefcase className="h-7 w-7 text-sidebar-primary" />
-          <span className="text-xl font-bold">GoldVault</span>
+          <span className="text-xl font-bold">Fortune Lock Depo</span>
         </SidebarMenuButton>
       </SidebarHeader>
 
@@ -130,7 +130,7 @@ export default function DashboardSidebar() {
         <SidebarMenuButton className="flex items-center gap-3 text-sidebar-foreground">
           <Briefcase className="h-6 w-6" />
           <div className="text-[12px] text-sidebar-foreground/70">
-            GoldVault System
+            Fortune Lock Depository
           </div>
         </SidebarMenuButton>
       </SidebarFooter>

@@ -34,7 +34,7 @@ enum Currency {
   USD
   EUR
   GBP
-  KWD // Added KWD as it's in the API response
+  KWD
 }
 
 model User {
