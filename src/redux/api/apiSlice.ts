@@ -1,10 +1,16 @@
-// src/redux/api/apiSlice.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: "/api/" }),
-  tagTypes: ["User", "GoldPrice"],
+  tagTypes: [
+    "User",
+    "GoldPrice",
+    "Payment",
+    "Wallet",
+    "Portfolio",
+    "Transaction",
+  ],
   endpoints: (builder) => ({
     authUser: builder.query({
       query: () => `auth`,
@@ -27,8 +33,8 @@ export const apiSlice = createApi({
       invalidatesTags: ["User"],
     }),
     getGoldPrices: builder.query({
-      query: ({ currency, type, days }) => ({
-        url: `gold/price?currency=${currency}&type=${type}&days=${days}`,
+      query: (currency = "USD") => ({
+        url: `gold/price?currency=${currency}`,
       }),
       providesTags: ["GoldPrice"],
     }),
@@ -39,6 +45,42 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["GoldPrice"],
     }),
+    initializeDeposit: builder.mutation({
+      query: ({ amount, currency, callbackUrl }) => ({
+        url: "wallet/deposit",
+        method: "POST",
+        body: { amount, currency, callbackUrl },
+      }),
+      invalidatesTags: ["Payment", "Wallet"],
+    }),
+    verifyDeposit: builder.mutation({
+      query: ({ reference }) => ({
+        url: "wallet/deposit",
+        method: "PUT",
+        body: { reference },
+      }),
+      invalidatesTags: ["Payment", "Wallet"],
+    }),
+    getWalletBalance: builder.query({
+      query: () => "wallet/deposit",
+      providesTags: ["Wallet"],
+    }),
+    buyGold: builder.mutation({
+      query: ({ grams, currency }) => ({
+        url: "gold/buy",
+        method: "POST",
+        body: { grams, currency },
+      }),
+      invalidatesTags: ["Wallet", "Portfolio", "Transaction"],
+    }),
+    getPortfolio: builder.query({
+      query: () => "portfolio",
+      providesTags: ["Portfolio", "Wallet", "Transaction"],
+    }),
+    getDashboard: builder.query({
+      query: () => "dashboard",
+      providesTags: ["User", "Portfolio", "Wallet", "Transaction", "GoldPrice"],
+    }),
   }),
 });
 
@@ -48,4 +90,10 @@ export const {
   useSignupUserMutation,
   useGetGoldPricesQuery,
   useUpdateGoldPricesMutation,
+  useInitializeDepositMutation,
+  useVerifyDepositMutation,
+  useGetWalletBalanceQuery,
+  useBuyGoldMutation,
+  useGetPortfolioQuery,
+  useGetDashboardQuery,
 } = apiSlice;

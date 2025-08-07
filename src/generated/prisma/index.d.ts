@@ -91,9 +91,8 @@ export type Role = (typeof Role)[keyof typeof Role]
 export const Currency: {
   USD: 'USD',
   EUR: 'EUR',
-  GHS: 'GHS',
-  NGN: 'NGN',
-  GBP: 'GBP'
+  GBP: 'GBP',
+  KWD: 'KWD'
 };
 
 export type Currency = (typeof Currency)[keyof typeof Currency]
@@ -6441,18 +6440,72 @@ export namespace Prisma {
   export type GoldPriceAvgAggregateOutputType = {
     id: number | null
     pricePerGram: number | null
+    openPrice: number | null
+    highPrice: number | null
+    lowPrice: number | null
+    prevPrice: number | null
+    askPrice: number | null
+    bidPrice: number | null
+    priceChange: number | null
+    priceChangePercent: number | null
+    price24k: number | null
+    price22k: number | null
+    price21k: number | null
+    price20k: number | null
+    price18k: number | null
+    price16k: number | null
+    price14k: number | null
+    price10k: number | null
+    apiTimestamp: number | null
   }
 
   export type GoldPriceSumAggregateOutputType = {
     id: number | null
     pricePerGram: number | null
+    openPrice: number | null
+    highPrice: number | null
+    lowPrice: number | null
+    prevPrice: number | null
+    askPrice: number | null
+    bidPrice: number | null
+    priceChange: number | null
+    priceChangePercent: number | null
+    price24k: number | null
+    price22k: number | null
+    price21k: number | null
+    price20k: number | null
+    price18k: number | null
+    price16k: number | null
+    price14k: number | null
+    price10k: number | null
+    apiTimestamp: bigint | null
   }
 
   export type GoldPriceMinAggregateOutputType = {
     id: number | null
     pricePerGram: number | null
     currency: $Enums.Currency | null
+    openPrice: number | null
+    highPrice: number | null
+    lowPrice: number | null
+    prevPrice: number | null
+    askPrice: number | null
+    bidPrice: number | null
+    priceChange: number | null
+    priceChangePercent: number | null
+    price24k: number | null
+    price22k: number | null
+    price21k: number | null
+    price20k: number | null
+    price18k: number | null
+    price16k: number | null
+    price14k: number | null
+    price10k: number | null
+    baseCurrency: string | null
+    weightUnit: string | null
+    weightName: string | null
     source: string | null
+    apiTimestamp: bigint | null
     recordedAt: Date | null
     isActive: boolean | null
   }
@@ -6461,7 +6514,27 @@ export namespace Prisma {
     id: number | null
     pricePerGram: number | null
     currency: $Enums.Currency | null
+    openPrice: number | null
+    highPrice: number | null
+    lowPrice: number | null
+    prevPrice: number | null
+    askPrice: number | null
+    bidPrice: number | null
+    priceChange: number | null
+    priceChangePercent: number | null
+    price24k: number | null
+    price22k: number | null
+    price21k: number | null
+    price20k: number | null
+    price18k: number | null
+    price16k: number | null
+    price14k: number | null
+    price10k: number | null
+    baseCurrency: string | null
+    weightUnit: string | null
+    weightName: string | null
     source: string | null
+    apiTimestamp: bigint | null
     recordedAt: Date | null
     isActive: boolean | null
   }
@@ -6470,7 +6543,27 @@ export namespace Prisma {
     id: number
     pricePerGram: number
     currency: number
+    openPrice: number
+    highPrice: number
+    lowPrice: number
+    prevPrice: number
+    askPrice: number
+    bidPrice: number
+    priceChange: number
+    priceChangePercent: number
+    price24k: number
+    price22k: number
+    price21k: number
+    price20k: number
+    price18k: number
+    price16k: number
+    price14k: number
+    price10k: number
+    baseCurrency: number
+    weightUnit: number
+    weightName: number
     source: number
+    apiTimestamp: number
     recordedAt: number
     isActive: number
     _all: number
@@ -6480,18 +6573,72 @@ export namespace Prisma {
   export type GoldPriceAvgAggregateInputType = {
     id?: true
     pricePerGram?: true
+    openPrice?: true
+    highPrice?: true
+    lowPrice?: true
+    prevPrice?: true
+    askPrice?: true
+    bidPrice?: true
+    priceChange?: true
+    priceChangePercent?: true
+    price24k?: true
+    price22k?: true
+    price21k?: true
+    price20k?: true
+    price18k?: true
+    price16k?: true
+    price14k?: true
+    price10k?: true
+    apiTimestamp?: true
   }
 
   export type GoldPriceSumAggregateInputType = {
     id?: true
     pricePerGram?: true
+    openPrice?: true
+    highPrice?: true
+    lowPrice?: true
+    prevPrice?: true
+    askPrice?: true
+    bidPrice?: true
+    priceChange?: true
+    priceChangePercent?: true
+    price24k?: true
+    price22k?: true
+    price21k?: true
+    price20k?: true
+    price18k?: true
+    price16k?: true
+    price14k?: true
+    price10k?: true
+    apiTimestamp?: true
   }
 
   export type GoldPriceMinAggregateInputType = {
     id?: true
     pricePerGram?: true
     currency?: true
+    openPrice?: true
+    highPrice?: true
+    lowPrice?: true
+    prevPrice?: true
+    askPrice?: true
+    bidPrice?: true
+    priceChange?: true
+    priceChangePercent?: true
+    price24k?: true
+    price22k?: true
+    price21k?: true
+    price20k?: true
+    price18k?: true
+    price16k?: true
+    price14k?: true
+    price10k?: true
+    baseCurrency?: true
+    weightUnit?: true
+    weightName?: true
     source?: true
+    apiTimestamp?: true
     recordedAt?: true
     isActive?: true
   }
@@ -6500,7 +6647,27 @@ export namespace Prisma {
     id?: true
     pricePerGram?: true
     currency?: true
+    openPrice?: true
+    highPrice?: true
+    lowPrice?: true
+    prevPrice?: true
+    askPrice?: true
+    bidPrice?: true
+    priceChange?: true
+    priceChangePercent?: true
+    price24k?: true
+    price22k?: true
+    price21k?: true
+    price20k?: true
+    price18k?: true
+    price16k?: true
+    price14k?: true
+    price10k?: true
+    baseCurrency?: true
+    weightUnit?: true
+    weightName?: true
     source?: true
+    apiTimestamp?: true
     recordedAt?: true
     isActive?: true
   }
@@ -6509,7 +6676,27 @@ export namespace Prisma {
     id?: true
     pricePerGram?: true
     currency?: true
+    openPrice?: true
+    highPrice?: true
+    lowPrice?: true
+    prevPrice?: true
+    askPrice?: true
+    bidPrice?: true
+    priceChange?: true
+    priceChangePercent?: true
+    price24k?: true
+    price22k?: true
+    price21k?: true
+    price20k?: true
+    price18k?: true
+    price16k?: true
+    price14k?: true
+    price10k?: true
+    baseCurrency?: true
+    weightUnit?: true
+    weightName?: true
     source?: true
+    apiTimestamp?: true
     recordedAt?: true
     isActive?: true
     _all?: true
@@ -6605,7 +6792,27 @@ export namespace Prisma {
     id: number
     pricePerGram: number
     currency: $Enums.Currency
+    openPrice: number | null
+    highPrice: number | null
+    lowPrice: number | null
+    prevPrice: number | null
+    askPrice: number | null
+    bidPrice: number | null
+    priceChange: number | null
+    priceChangePercent: number | null
+    price24k: number | null
+    price22k: number | null
+    price21k: number | null
+    price20k: number | null
+    price18k: number | null
+    price16k: number | null
+    price14k: number | null
+    price10k: number | null
+    baseCurrency: string | null
+    weightUnit: string | null
+    weightName: string | null
     source: string | null
+    apiTimestamp: bigint | null
     recordedAt: Date
     isActive: boolean
     _count: GoldPriceCountAggregateOutputType | null
@@ -6633,7 +6840,27 @@ export namespace Prisma {
     id?: boolean
     pricePerGram?: boolean
     currency?: boolean
+    openPrice?: boolean
+    highPrice?: boolean
+    lowPrice?: boolean
+    prevPrice?: boolean
+    askPrice?: boolean
+    bidPrice?: boolean
+    priceChange?: boolean
+    priceChangePercent?: boolean
+    price24k?: boolean
+    price22k?: boolean
+    price21k?: boolean
+    price20k?: boolean
+    price18k?: boolean
+    price16k?: boolean
+    price14k?: boolean
+    price10k?: boolean
+    baseCurrency?: boolean
+    weightUnit?: boolean
+    weightName?: boolean
     source?: boolean
+    apiTimestamp?: boolean
     recordedAt?: boolean
     isActive?: boolean
   }, ExtArgs["result"]["goldPrice"]>
@@ -6642,7 +6869,27 @@ export namespace Prisma {
     id?: boolean
     pricePerGram?: boolean
     currency?: boolean
+    openPrice?: boolean
+    highPrice?: boolean
+    lowPrice?: boolean
+    prevPrice?: boolean
+    askPrice?: boolean
+    bidPrice?: boolean
+    priceChange?: boolean
+    priceChangePercent?: boolean
+    price24k?: boolean
+    price22k?: boolean
+    price21k?: boolean
+    price20k?: boolean
+    price18k?: boolean
+    price16k?: boolean
+    price14k?: boolean
+    price10k?: boolean
+    baseCurrency?: boolean
+    weightUnit?: boolean
+    weightName?: boolean
     source?: boolean
+    apiTimestamp?: boolean
     recordedAt?: boolean
     isActive?: boolean
   }, ExtArgs["result"]["goldPrice"]>
@@ -6651,7 +6898,27 @@ export namespace Prisma {
     id?: boolean
     pricePerGram?: boolean
     currency?: boolean
+    openPrice?: boolean
+    highPrice?: boolean
+    lowPrice?: boolean
+    prevPrice?: boolean
+    askPrice?: boolean
+    bidPrice?: boolean
+    priceChange?: boolean
+    priceChangePercent?: boolean
+    price24k?: boolean
+    price22k?: boolean
+    price21k?: boolean
+    price20k?: boolean
+    price18k?: boolean
+    price16k?: boolean
+    price14k?: boolean
+    price10k?: boolean
+    baseCurrency?: boolean
+    weightUnit?: boolean
+    weightName?: boolean
     source?: boolean
+    apiTimestamp?: boolean
     recordedAt?: boolean
     isActive?: boolean
   }, ExtArgs["result"]["goldPrice"]>
@@ -6660,12 +6927,32 @@ export namespace Prisma {
     id?: boolean
     pricePerGram?: boolean
     currency?: boolean
+    openPrice?: boolean
+    highPrice?: boolean
+    lowPrice?: boolean
+    prevPrice?: boolean
+    askPrice?: boolean
+    bidPrice?: boolean
+    priceChange?: boolean
+    priceChangePercent?: boolean
+    price24k?: boolean
+    price22k?: boolean
+    price21k?: boolean
+    price20k?: boolean
+    price18k?: boolean
+    price16k?: boolean
+    price14k?: boolean
+    price10k?: boolean
+    baseCurrency?: boolean
+    weightUnit?: boolean
+    weightName?: boolean
     source?: boolean
+    apiTimestamp?: boolean
     recordedAt?: boolean
     isActive?: boolean
   }
 
-  export type GoldPriceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pricePerGram" | "currency" | "source" | "recordedAt" | "isActive", ExtArgs["result"]["goldPrice"]>
+  export type GoldPriceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pricePerGram" | "currency" | "openPrice" | "highPrice" | "lowPrice" | "prevPrice" | "askPrice" | "bidPrice" | "priceChange" | "priceChangePercent" | "price24k" | "price22k" | "price21k" | "price20k" | "price18k" | "price16k" | "price14k" | "price10k" | "baseCurrency" | "weightUnit" | "weightName" | "source" | "apiTimestamp" | "recordedAt" | "isActive", ExtArgs["result"]["goldPrice"]>
 
   export type $GoldPricePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "GoldPrice"
@@ -6674,7 +6961,27 @@ export namespace Prisma {
       id: number
       pricePerGram: number
       currency: $Enums.Currency
+      openPrice: number | null
+      highPrice: number | null
+      lowPrice: number | null
+      prevPrice: number | null
+      askPrice: number | null
+      bidPrice: number | null
+      priceChange: number | null
+      priceChangePercent: number | null
+      price24k: number | null
+      price22k: number | null
+      price21k: number | null
+      price20k: number | null
+      price18k: number | null
+      price16k: number | null
+      price14k: number | null
+      price10k: number | null
+      baseCurrency: string | null
+      weightUnit: string | null
+      weightName: string | null
       source: string | null
+      apiTimestamp: bigint | null
       recordedAt: Date
       isActive: boolean
     }, ExtArgs["result"]["goldPrice"]>
@@ -7103,7 +7410,27 @@ export namespace Prisma {
     readonly id: FieldRef<"GoldPrice", 'Int'>
     readonly pricePerGram: FieldRef<"GoldPrice", 'Float'>
     readonly currency: FieldRef<"GoldPrice", 'Currency'>
+    readonly openPrice: FieldRef<"GoldPrice", 'Float'>
+    readonly highPrice: FieldRef<"GoldPrice", 'Float'>
+    readonly lowPrice: FieldRef<"GoldPrice", 'Float'>
+    readonly prevPrice: FieldRef<"GoldPrice", 'Float'>
+    readonly askPrice: FieldRef<"GoldPrice", 'Float'>
+    readonly bidPrice: FieldRef<"GoldPrice", 'Float'>
+    readonly priceChange: FieldRef<"GoldPrice", 'Float'>
+    readonly priceChangePercent: FieldRef<"GoldPrice", 'Float'>
+    readonly price24k: FieldRef<"GoldPrice", 'Float'>
+    readonly price22k: FieldRef<"GoldPrice", 'Float'>
+    readonly price21k: FieldRef<"GoldPrice", 'Float'>
+    readonly price20k: FieldRef<"GoldPrice", 'Float'>
+    readonly price18k: FieldRef<"GoldPrice", 'Float'>
+    readonly price16k: FieldRef<"GoldPrice", 'Float'>
+    readonly price14k: FieldRef<"GoldPrice", 'Float'>
+    readonly price10k: FieldRef<"GoldPrice", 'Float'>
+    readonly baseCurrency: FieldRef<"GoldPrice", 'String'>
+    readonly weightUnit: FieldRef<"GoldPrice", 'String'>
+    readonly weightName: FieldRef<"GoldPrice", 'String'>
     readonly source: FieldRef<"GoldPrice", 'String'>
+    readonly apiTimestamp: FieldRef<"GoldPrice", 'BigInt'>
     readonly recordedAt: FieldRef<"GoldPrice", 'DateTime'>
     readonly isActive: FieldRef<"GoldPrice", 'Boolean'>
   }
@@ -12181,7 +12508,27 @@ export namespace Prisma {
     id: 'id',
     pricePerGram: 'pricePerGram',
     currency: 'currency',
+    openPrice: 'openPrice',
+    highPrice: 'highPrice',
+    lowPrice: 'lowPrice',
+    prevPrice: 'prevPrice',
+    askPrice: 'askPrice',
+    bidPrice: 'bidPrice',
+    priceChange: 'priceChange',
+    priceChangePercent: 'priceChangePercent',
+    price24k: 'price24k',
+    price22k: 'price22k',
+    price21k: 'price21k',
+    price20k: 'price20k',
+    price18k: 'price18k',
+    price16k: 'price16k',
+    price14k: 'price14k',
+    price10k: 'price10k',
+    baseCurrency: 'baseCurrency',
+    weightUnit: 'weightUnit',
+    weightName: 'weightName',
     source: 'source',
+    apiTimestamp: 'apiTimestamp',
     recordedAt: 'recordedAt',
     isActive: 'isActive'
   };
@@ -12365,6 +12712,20 @@ export namespace Prisma {
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'BigInt'
+   */
+  export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+  /**
+   * Reference to a field of type 'BigInt[]'
+   */
+  export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
     
 
 
@@ -12704,7 +13065,27 @@ export namespace Prisma {
     id?: IntFilter<"GoldPrice"> | number
     pricePerGram?: FloatFilter<"GoldPrice"> | number
     currency?: EnumCurrencyFilter<"GoldPrice"> | $Enums.Currency
+    openPrice?: FloatNullableFilter<"GoldPrice"> | number | null
+    highPrice?: FloatNullableFilter<"GoldPrice"> | number | null
+    lowPrice?: FloatNullableFilter<"GoldPrice"> | number | null
+    prevPrice?: FloatNullableFilter<"GoldPrice"> | number | null
+    askPrice?: FloatNullableFilter<"GoldPrice"> | number | null
+    bidPrice?: FloatNullableFilter<"GoldPrice"> | number | null
+    priceChange?: FloatNullableFilter<"GoldPrice"> | number | null
+    priceChangePercent?: FloatNullableFilter<"GoldPrice"> | number | null
+    price24k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price22k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price21k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price20k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price18k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price16k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price14k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price10k?: FloatNullableFilter<"GoldPrice"> | number | null
+    baseCurrency?: StringNullableFilter<"GoldPrice"> | string | null
+    weightUnit?: StringNullableFilter<"GoldPrice"> | string | null
+    weightName?: StringNullableFilter<"GoldPrice"> | string | null
     source?: StringNullableFilter<"GoldPrice"> | string | null
+    apiTimestamp?: BigIntNullableFilter<"GoldPrice"> | bigint | number | null
     recordedAt?: DateTimeFilter<"GoldPrice"> | Date | string
     isActive?: BoolFilter<"GoldPrice"> | boolean
   }
@@ -12713,7 +13094,27 @@ export namespace Prisma {
     id?: SortOrder
     pricePerGram?: SortOrder
     currency?: SortOrder
+    openPrice?: SortOrderInput | SortOrder
+    highPrice?: SortOrderInput | SortOrder
+    lowPrice?: SortOrderInput | SortOrder
+    prevPrice?: SortOrderInput | SortOrder
+    askPrice?: SortOrderInput | SortOrder
+    bidPrice?: SortOrderInput | SortOrder
+    priceChange?: SortOrderInput | SortOrder
+    priceChangePercent?: SortOrderInput | SortOrder
+    price24k?: SortOrderInput | SortOrder
+    price22k?: SortOrderInput | SortOrder
+    price21k?: SortOrderInput | SortOrder
+    price20k?: SortOrderInput | SortOrder
+    price18k?: SortOrderInput | SortOrder
+    price16k?: SortOrderInput | SortOrder
+    price14k?: SortOrderInput | SortOrder
+    price10k?: SortOrderInput | SortOrder
+    baseCurrency?: SortOrderInput | SortOrder
+    weightUnit?: SortOrderInput | SortOrder
+    weightName?: SortOrderInput | SortOrder
     source?: SortOrderInput | SortOrder
+    apiTimestamp?: SortOrderInput | SortOrder
     recordedAt?: SortOrder
     isActive?: SortOrder
   }
@@ -12725,7 +13126,27 @@ export namespace Prisma {
     NOT?: GoldPriceWhereInput | GoldPriceWhereInput[]
     pricePerGram?: FloatFilter<"GoldPrice"> | number
     currency?: EnumCurrencyFilter<"GoldPrice"> | $Enums.Currency
+    openPrice?: FloatNullableFilter<"GoldPrice"> | number | null
+    highPrice?: FloatNullableFilter<"GoldPrice"> | number | null
+    lowPrice?: FloatNullableFilter<"GoldPrice"> | number | null
+    prevPrice?: FloatNullableFilter<"GoldPrice"> | number | null
+    askPrice?: FloatNullableFilter<"GoldPrice"> | number | null
+    bidPrice?: FloatNullableFilter<"GoldPrice"> | number | null
+    priceChange?: FloatNullableFilter<"GoldPrice"> | number | null
+    priceChangePercent?: FloatNullableFilter<"GoldPrice"> | number | null
+    price24k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price22k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price21k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price20k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price18k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price16k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price14k?: FloatNullableFilter<"GoldPrice"> | number | null
+    price10k?: FloatNullableFilter<"GoldPrice"> | number | null
+    baseCurrency?: StringNullableFilter<"GoldPrice"> | string | null
+    weightUnit?: StringNullableFilter<"GoldPrice"> | string | null
+    weightName?: StringNullableFilter<"GoldPrice"> | string | null
     source?: StringNullableFilter<"GoldPrice"> | string | null
+    apiTimestamp?: BigIntNullableFilter<"GoldPrice"> | bigint | number | null
     recordedAt?: DateTimeFilter<"GoldPrice"> | Date | string
     isActive?: BoolFilter<"GoldPrice"> | boolean
   }, "id">
@@ -12734,7 +13155,27 @@ export namespace Prisma {
     id?: SortOrder
     pricePerGram?: SortOrder
     currency?: SortOrder
+    openPrice?: SortOrderInput | SortOrder
+    highPrice?: SortOrderInput | SortOrder
+    lowPrice?: SortOrderInput | SortOrder
+    prevPrice?: SortOrderInput | SortOrder
+    askPrice?: SortOrderInput | SortOrder
+    bidPrice?: SortOrderInput | SortOrder
+    priceChange?: SortOrderInput | SortOrder
+    priceChangePercent?: SortOrderInput | SortOrder
+    price24k?: SortOrderInput | SortOrder
+    price22k?: SortOrderInput | SortOrder
+    price21k?: SortOrderInput | SortOrder
+    price20k?: SortOrderInput | SortOrder
+    price18k?: SortOrderInput | SortOrder
+    price16k?: SortOrderInput | SortOrder
+    price14k?: SortOrderInput | SortOrder
+    price10k?: SortOrderInput | SortOrder
+    baseCurrency?: SortOrderInput | SortOrder
+    weightUnit?: SortOrderInput | SortOrder
+    weightName?: SortOrderInput | SortOrder
     source?: SortOrderInput | SortOrder
+    apiTimestamp?: SortOrderInput | SortOrder
     recordedAt?: SortOrder
     isActive?: SortOrder
     _count?: GoldPriceCountOrderByAggregateInput
@@ -12751,7 +13192,27 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"GoldPrice"> | number
     pricePerGram?: FloatWithAggregatesFilter<"GoldPrice"> | number
     currency?: EnumCurrencyWithAggregatesFilter<"GoldPrice"> | $Enums.Currency
+    openPrice?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    highPrice?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    lowPrice?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    prevPrice?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    askPrice?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    bidPrice?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    priceChange?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    priceChangePercent?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    price24k?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    price22k?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    price21k?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    price20k?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    price18k?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    price16k?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    price14k?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    price10k?: FloatNullableWithAggregatesFilter<"GoldPrice"> | number | null
+    baseCurrency?: StringNullableWithAggregatesFilter<"GoldPrice"> | string | null
+    weightUnit?: StringNullableWithAggregatesFilter<"GoldPrice"> | string | null
+    weightName?: StringNullableWithAggregatesFilter<"GoldPrice"> | string | null
     source?: StringNullableWithAggregatesFilter<"GoldPrice"> | string | null
+    apiTimestamp?: BigIntNullableWithAggregatesFilter<"GoldPrice"> | bigint | number | null
     recordedAt?: DateTimeWithAggregatesFilter<"GoldPrice"> | Date | string
     isActive?: BoolWithAggregatesFilter<"GoldPrice"> | boolean
   }
@@ -13381,7 +13842,27 @@ export namespace Prisma {
   export type GoldPriceCreateInput = {
     pricePerGram: number
     currency?: $Enums.Currency
+    openPrice?: number | null
+    highPrice?: number | null
+    lowPrice?: number | null
+    prevPrice?: number | null
+    askPrice?: number | null
+    bidPrice?: number | null
+    priceChange?: number | null
+    priceChangePercent?: number | null
+    price24k?: number | null
+    price22k?: number | null
+    price21k?: number | null
+    price20k?: number | null
+    price18k?: number | null
+    price16k?: number | null
+    price14k?: number | null
+    price10k?: number | null
+    baseCurrency?: string | null
+    weightUnit?: string | null
+    weightName?: string | null
     source?: string | null
+    apiTimestamp?: bigint | number | null
     recordedAt?: Date | string
     isActive?: boolean
   }
@@ -13390,7 +13871,27 @@ export namespace Prisma {
     id?: number
     pricePerGram: number
     currency?: $Enums.Currency
+    openPrice?: number | null
+    highPrice?: number | null
+    lowPrice?: number | null
+    prevPrice?: number | null
+    askPrice?: number | null
+    bidPrice?: number | null
+    priceChange?: number | null
+    priceChangePercent?: number | null
+    price24k?: number | null
+    price22k?: number | null
+    price21k?: number | null
+    price20k?: number | null
+    price18k?: number | null
+    price16k?: number | null
+    price14k?: number | null
+    price10k?: number | null
+    baseCurrency?: string | null
+    weightUnit?: string | null
+    weightName?: string | null
     source?: string | null
+    apiTimestamp?: bigint | number | null
     recordedAt?: Date | string
     isActive?: boolean
   }
@@ -13398,7 +13899,27 @@ export namespace Prisma {
   export type GoldPriceUpdateInput = {
     pricePerGram?: FloatFieldUpdateOperationsInput | number
     currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    openPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    highPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    lowPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    prevPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    askPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    bidPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceChange?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceChangePercent?: NullableFloatFieldUpdateOperationsInput | number | null
+    price24k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price22k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price21k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price20k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price18k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price16k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price14k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price10k?: NullableFloatFieldUpdateOperationsInput | number | null
+    baseCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    weightName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
+    apiTimestamp?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     recordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -13407,7 +13928,27 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     pricePerGram?: FloatFieldUpdateOperationsInput | number
     currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    openPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    highPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    lowPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    prevPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    askPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    bidPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceChange?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceChangePercent?: NullableFloatFieldUpdateOperationsInput | number | null
+    price24k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price22k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price21k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price20k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price18k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price16k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price14k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price10k?: NullableFloatFieldUpdateOperationsInput | number | null
+    baseCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    weightName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
+    apiTimestamp?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     recordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -13416,7 +13957,27 @@ export namespace Prisma {
     id?: number
     pricePerGram: number
     currency?: $Enums.Currency
+    openPrice?: number | null
+    highPrice?: number | null
+    lowPrice?: number | null
+    prevPrice?: number | null
+    askPrice?: number | null
+    bidPrice?: number | null
+    priceChange?: number | null
+    priceChangePercent?: number | null
+    price24k?: number | null
+    price22k?: number | null
+    price21k?: number | null
+    price20k?: number | null
+    price18k?: number | null
+    price16k?: number | null
+    price14k?: number | null
+    price10k?: number | null
+    baseCurrency?: string | null
+    weightUnit?: string | null
+    weightName?: string | null
     source?: string | null
+    apiTimestamp?: bigint | number | null
     recordedAt?: Date | string
     isActive?: boolean
   }
@@ -13424,7 +13985,27 @@ export namespace Prisma {
   export type GoldPriceUpdateManyMutationInput = {
     pricePerGram?: FloatFieldUpdateOperationsInput | number
     currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    openPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    highPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    lowPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    prevPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    askPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    bidPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceChange?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceChangePercent?: NullableFloatFieldUpdateOperationsInput | number | null
+    price24k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price22k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price21k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price20k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price18k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price16k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price14k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price10k?: NullableFloatFieldUpdateOperationsInput | number | null
+    baseCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    weightName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
+    apiTimestamp?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     recordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -13433,7 +14014,27 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     pricePerGram?: FloatFieldUpdateOperationsInput | number
     currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    openPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    highPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    lowPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    prevPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    askPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    bidPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceChange?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceChangePercent?: NullableFloatFieldUpdateOperationsInput | number | null
+    price24k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price22k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price21k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price20k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price18k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price16k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price14k?: NullableFloatFieldUpdateOperationsInput | number | null
+    price10k?: NullableFloatFieldUpdateOperationsInput | number | null
+    baseCurrency?: NullableStringFieldUpdateOperationsInput | string | null
+    weightUnit?: NullableStringFieldUpdateOperationsInput | string | null
+    weightName?: NullableStringFieldUpdateOperationsInput | string | null
     source?: NullableStringFieldUpdateOperationsInput | string | null
+    apiTimestamp?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     recordedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -14174,6 +14775,17 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -14189,11 +14801,42 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type BigIntNullableFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
+  }
+
   export type GoldPriceCountOrderByAggregateInput = {
     id?: SortOrder
     pricePerGram?: SortOrder
     currency?: SortOrder
+    openPrice?: SortOrder
+    highPrice?: SortOrder
+    lowPrice?: SortOrder
+    prevPrice?: SortOrder
+    askPrice?: SortOrder
+    bidPrice?: SortOrder
+    priceChange?: SortOrder
+    priceChangePercent?: SortOrder
+    price24k?: SortOrder
+    price22k?: SortOrder
+    price21k?: SortOrder
+    price20k?: SortOrder
+    price18k?: SortOrder
+    price16k?: SortOrder
+    price14k?: SortOrder
+    price10k?: SortOrder
+    baseCurrency?: SortOrder
+    weightUnit?: SortOrder
+    weightName?: SortOrder
     source?: SortOrder
+    apiTimestamp?: SortOrder
     recordedAt?: SortOrder
     isActive?: SortOrder
   }
@@ -14201,13 +14844,50 @@ export namespace Prisma {
   export type GoldPriceAvgOrderByAggregateInput = {
     id?: SortOrder
     pricePerGram?: SortOrder
+    openPrice?: SortOrder
+    highPrice?: SortOrder
+    lowPrice?: SortOrder
+    prevPrice?: SortOrder
+    askPrice?: SortOrder
+    bidPrice?: SortOrder
+    priceChange?: SortOrder
+    priceChangePercent?: SortOrder
+    price24k?: SortOrder
+    price22k?: SortOrder
+    price21k?: SortOrder
+    price20k?: SortOrder
+    price18k?: SortOrder
+    price16k?: SortOrder
+    price14k?: SortOrder
+    price10k?: SortOrder
+    apiTimestamp?: SortOrder
   }
 
   export type GoldPriceMaxOrderByAggregateInput = {
     id?: SortOrder
     pricePerGram?: SortOrder
     currency?: SortOrder
+    openPrice?: SortOrder
+    highPrice?: SortOrder
+    lowPrice?: SortOrder
+    prevPrice?: SortOrder
+    askPrice?: SortOrder
+    bidPrice?: SortOrder
+    priceChange?: SortOrder
+    priceChangePercent?: SortOrder
+    price24k?: SortOrder
+    price22k?: SortOrder
+    price21k?: SortOrder
+    price20k?: SortOrder
+    price18k?: SortOrder
+    price16k?: SortOrder
+    price14k?: SortOrder
+    price10k?: SortOrder
+    baseCurrency?: SortOrder
+    weightUnit?: SortOrder
+    weightName?: SortOrder
     source?: SortOrder
+    apiTimestamp?: SortOrder
     recordedAt?: SortOrder
     isActive?: SortOrder
   }
@@ -14216,7 +14896,27 @@ export namespace Prisma {
     id?: SortOrder
     pricePerGram?: SortOrder
     currency?: SortOrder
+    openPrice?: SortOrder
+    highPrice?: SortOrder
+    lowPrice?: SortOrder
+    prevPrice?: SortOrder
+    askPrice?: SortOrder
+    bidPrice?: SortOrder
+    priceChange?: SortOrder
+    priceChangePercent?: SortOrder
+    price24k?: SortOrder
+    price22k?: SortOrder
+    price21k?: SortOrder
+    price20k?: SortOrder
+    price18k?: SortOrder
+    price16k?: SortOrder
+    price14k?: SortOrder
+    price10k?: SortOrder
+    baseCurrency?: SortOrder
+    weightUnit?: SortOrder
+    weightName?: SortOrder
     source?: SortOrder
+    apiTimestamp?: SortOrder
     recordedAt?: SortOrder
     isActive?: SortOrder
   }
@@ -14224,6 +14924,39 @@ export namespace Prisma {
   export type GoldPriceSumOrderByAggregateInput = {
     id?: SortOrder
     pricePerGram?: SortOrder
+    openPrice?: SortOrder
+    highPrice?: SortOrder
+    lowPrice?: SortOrder
+    prevPrice?: SortOrder
+    askPrice?: SortOrder
+    bidPrice?: SortOrder
+    priceChange?: SortOrder
+    priceChangePercent?: SortOrder
+    price24k?: SortOrder
+    price22k?: SortOrder
+    price21k?: SortOrder
+    price20k?: SortOrder
+    price18k?: SortOrder
+    price16k?: SortOrder
+    price14k?: SortOrder
+    price10k?: SortOrder
+    apiTimestamp?: SortOrder
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -14242,6 +14975,22 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type BigIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntNullableWithAggregatesFilter<$PrismaModel> | bigint | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedBigIntNullableFilter<$PrismaModel>
+    _min?: NestedBigIntNullableFilter<$PrismaModel>
+    _max?: NestedBigIntNullableFilter<$PrismaModel>
   }
 
   export type GoldUnitMetadataCountOrderByAggregateInput = {
@@ -14293,17 +15042,6 @@ export namespace Prisma {
     in?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumTransactionStatusFilter<$PrismaModel> | $Enums.TransactionStatus
-  }
-
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -14408,22 +15146,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumTransactionStatusFilter<$PrismaModel>
     _max?: NestedEnumTransactionStatusFilter<$PrismaModel>
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -14848,8 +15570,24 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutIdentityInput, UserUpdateWithoutIdentityInput>, UserUncheckedUpdateWithoutIdentityInput>
   }
 
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type NullableBigIntFieldUpdateOperationsInput = {
+    set?: bigint | number | null
+    increment?: bigint | number
+    decrement?: bigint | number
+    multiply?: bigint | number
+    divide?: bigint | number
   }
 
   export type UserCreateNestedOneWithoutTransactionsInput = {
@@ -14884,14 +15622,6 @@ export namespace Prisma {
 
   export type EnumTransactionStatusFieldUpdateOperationsInput = {
     set?: $Enums.TransactionStatus
-  }
-
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type UserUpdateOneRequiredWithoutTransactionsNestedInput = {
@@ -15215,6 +15945,17 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -15227,6 +15968,33 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedBigIntNullableFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -15246,6 +16014,22 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type NestedBigIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntNullableWithAggregatesFilter<$PrismaModel> | bigint | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedBigIntNullableFilter<$PrismaModel>
+    _min?: NestedBigIntNullableFilter<$PrismaModel>
+    _max?: NestedBigIntNullableFilter<$PrismaModel>
+  }
+
   export type NestedEnumTransactionTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.TransactionType | EnumTransactionTypeFieldRefInput<$PrismaModel>
     in?: $Enums.TransactionType[] | ListEnumTransactionTypeFieldRefInput<$PrismaModel>
@@ -15258,17 +16042,6 @@ export namespace Prisma {
     in?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumTransactionStatusFilter<$PrismaModel> | $Enums.TransactionStatus
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedEnumTransactionTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -15289,22 +16062,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumTransactionStatusFilter<$PrismaModel>
     _max?: NestedEnumTransactionStatusFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {

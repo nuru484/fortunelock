@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "public"."GoldPrice" ADD COLUMN     "askPrice" DOUBLE PRECISION,
+ADD COLUMN     "bidPrice" DOUBLE PRECISION,
+ADD COLUMN     "highPrice" DOUBLE PRECISION,
+ADD COLUMN     "lowPrice" DOUBLE PRECISION,
+ADD COLUMN     "openPrice" DOUBLE PRECISION,
+ADD COLUMN     "priceChange" DOUBLE PRECISION,
+ADD COLUMN     "priceChangePercent" DOUBLE PRECISION;

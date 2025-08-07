@@ -33,9 +33,8 @@ enum Role {
 enum Currency {
   USD
   EUR
-  GHS
-  NGN
   GBP
+  KWD // Added KWD as it's in the API response
 }
 
 model User {
@@ -91,12 +90,44 @@ model Identity {
 }
 
 model GoldPrice {
-  id           Int      @id @default(autoincrement())
-  pricePerGram Float
+  id Int @id @default(autoincrement())
+
+  // Basic price information
+  pricePerGram Float // Main price (24k)
   currency     Currency @default(USD)
-  source       String?
-  recordedAt   DateTime @default(now())
-  isActive     Boolean  @default(true)
+
+  // Extended price data from API
+  openPrice          Float?
+  highPrice          Float?
+  lowPrice           Float?
+  prevPrice          Float? // Previous price
+  askPrice           Float?
+  bidPrice           Float?
+  priceChange        Float? // Absolute change
+  priceChangePercent Float? // Percentage change
+
+  // Different karat prices
+  price24k Float?
+  price22k Float?
+  price21k Float?
+  price20k Float?
+  price18k Float?
+  price16k Float?
+  price14k Float?
+  price10k Float?
+
+  // Metadata
+  baseCurrency String? // The base currency used for this price record
+  weightUnit   String? // gram, ounce, etc.
+  weightName   String? // "Gram (g)", "Ounce (oz)", etc.
+  source       String? // API source identifier
+  apiTimestamp BigInt? // Original API timestamp
+
+  recordedAt DateTime @default(now())
+  isActive   Boolean  @default(true)
+
+  @@index([currency, recordedAt])
+  @@index([isActive, recordedAt])
 }
 
 model GoldUnitMetadata {
@@ -122,11 +153,9 @@ model Transaction {
   currency        Currency          @default(USD)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
-
-  payment   Payment? @relation(fields: [paymentId], references: [id])
-  paymentId Int?     @unique
-
-  holdings Holding[]
+  payment         Payment?          @relation(fields: [paymentId], references: [id])
+  paymentId       Int?              @unique
+  holdings        Holding[]
 }
 
 model Payment {
@@ -145,13 +174,12 @@ model Payment {
 }
 
 model Holding {
-  id            Int      @id @default(autoincrement())
+  id            Int         @id @default(autoincrement())
   userId        Int
   transactionId Int
   amount        Float
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  user        User        @relation(fields: [userId], references: [id])
-  transaction Transaction @relation(fields: [transactionId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  user          User        @relation(fields: [userId], references: [id])
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
 }

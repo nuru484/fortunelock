@@ -31,8 +31,6 @@ export async function getUser() {
       return null;
     }
 
-    console.log("User Session: ", session);
-
     const user = await prisma.user.findUnique({
       where: {
         id: session.userId,

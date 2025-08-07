@@ -79,8 +79,6 @@ export default function DashboardSidebar() {
   const { data } = useAuthUserQuery(undefined);
   const isAdmin = ["SUPER_ADMIN", "ADMIN"].includes(data?.user?.role);
 
-  console.log(data);
-
   const navigationItems = isAdmin ? adminNavigationItems : userNavigationItems;
 
   return (

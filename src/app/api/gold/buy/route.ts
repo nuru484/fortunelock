@@ -3,113 +3,196 @@ import { NextResponse } from "next/server";
 import prisma from "@/config/prismaClient";
 import { verifySession, getUser } from "@/lib/dataAccessLayer";
 import { v4 as uuidv4 } from "uuid";
-import { fetchGoldPrice } from "@/utils/goldPriceApi";
+import { Currency } from "@/generated/prisma";
 
-// Types based on Prisma schema
 interface PurchaseRequest {
   grams: number;
-  currency: "USD" | "EUR" | "GHS" | "NGN" | "GBP";
+  currency: Currency;
 }
 
-interface Wallet {
+interface WalletData {
   id: number;
   userId: number;
   balance: number;
-  currency: string;
+  currency: Currency;
+  updatedAt: Date;
 }
 
-interface User {
+interface UserData {
   id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
 }
 
-interface Transaction {
-  id: number;
-  referenceNumber: string;
-  userId: number;
-  type: "PURCHASE" | "SALE";
-  status: "PENDING" | "SUCCESS" | "FAILED";
-  gramsPurchased: number;
-  pricePerGram: number;
-  totalCost: number;
-  fee: number | null;
-  currency: string;
-}
-
-interface Portfolio {
+interface PortfolioData {
   id: number;
   userId: number;
   totalGrams: number;
   totalInvested: number;
   currentValue: number;
+  unrealizedGain: number;
 }
 
-// POST /api/gold/purchase - Purchase gold
+interface GoldPriceData {
+  pricePerGram: number;
+}
+
+interface TransactionBreakdown {
+  goldCost: number;
+  platformFee: number;
+  totalAmount: number;
+}
+
+interface TransactionResult {
+  id: number;
+  referenceNumber: string;
+  userId: number;
+  type: string;
+  status: string;
+  gramsPurchased: number;
+  pricePerGram: number;
+  totalCost: number;
+  fee: number | null;
+  currency: Currency;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface PurchaseResponse {
+  message: string;
+  success: boolean;
+  transaction: TransactionResult;
+  breakdown: TransactionBreakdown;
+  portfolio: {
+    totalGrams: number;
+    totalInvested: number;
+    currentValue: number;
+  };
+  wallet: {
+    newBalance: number;
+    currency: Currency;
+  };
+}
+
+interface ErrorResponse {
+  error: string;
+  success: false;
+  required?: number;
+  available?: number;
+}
+
 export async function POST(req: Request): Promise<NextResponse> {
   try {
+    // Verify authentication
     const session = await verifySession();
     if (!session) {
-      return NextResponse.json(
-        { error: "Unauthenticated: Please log in." },
-        { status: 401 }
-      );
+      const errorResponse: ErrorResponse = {
+        error: "Unauthenticated: Please log in.",
+        success: false,
+      };
+      return NextResponse.json(errorResponse, { status: 401 });
     }
 
-    const { grams, currency }: PurchaseRequest = await req.json();
+    // Parse and validate request body
+    const body: PurchaseRequest = await req.json();
+    const { grams, currency } = body;
 
-    // Validation
-    if (!grams || grams <= 0 || typeof grams !== "number") {
-      return NextResponse.json(
-        { error: "Invalid grams amount." },
-        { status: 400 }
-      );
+    // Validate grams
+    if (!grams || grams <= 0 || typeof grams !== "number" || grams < 0.01) {
+      const errorResponse: ErrorResponse = {
+        error: "Invalid grams amount. Minimum purchase is 0.01 grams.",
+        success: false,
+      };
+      return NextResponse.json(errorResponse, { status: 400 });
     }
 
-    const validCurrencies: string[] = ["USD", "EUR", "GHS", "NGN", "GBP"];
+    // Validate currency
+    const validCurrencies: Currency[] = ["USD", "EUR", "GBP", "KWD"];
     if (!currency || !validCurrencies.includes(currency)) {
-      return NextResponse.json({ error: "Invalid currency." }, { status: 400 });
+      const errorResponse: ErrorResponse = {
+        error: `Invalid currency: ${currency}. Supported currencies: ${validCurrencies.join(
+          ", "
+        )}`,
+        success: false,
+      };
+      return NextResponse.json(errorResponse, { status: 400 });
     }
 
-    const user: User | null = await getUser();
+    // Get user
+    const user: UserData | null = await getUser();
     if (!user) {
-      return NextResponse.json({ error: "User not found." }, { status: 404 });
+      const errorResponse: ErrorResponse = {
+        error: "User not found.",
+        success: false,
+      };
+      return NextResponse.json(errorResponse, { status: 404 });
     }
 
-    const wallet: Wallet | null = await prisma.wallet.findUnique({
+    // Get wallet
+    const wallet: WalletData | null = await prisma.wallet.findUnique({
       where: { userId: user.id },
     });
+
     if (!wallet) {
-      return NextResponse.json({ error: "Wallet not found." }, { status: 404 });
+      const errorResponse: ErrorResponse = {
+        error: "Wallet not found. Please contact support.",
+        success: false,
+      };
+      return NextResponse.json(errorResponse, { status: 404 });
     }
 
-    // Fetch gold price
-    const pricePerGram = await fetchGoldPrice(currency);
-    if (!pricePerGram) {
-      return NextResponse.json(
-        { error: "Failed to fetch current gold price." },
-        { status: 500 }
-      );
+    // Check wallet currency matches requested currency
+    if (wallet.currency !== currency) {
+      const errorResponse: ErrorResponse = {
+        error: `Wallet currency (${wallet.currency}) does not match requested currency (${currency}). Please use ${wallet.currency} or switch wallet currency.`,
+        success: false,
+      };
+      return NextResponse.json(errorResponse, { status: 400 });
     }
 
-    const totalCost: number = grams * pricePerGram;
-    const transactionFee: number = totalCost * 0.01; // 1% platform fee
-    const totalAmount: number = totalCost + transactionFee;
+    // Fetch current gold price
+    const goldPriceRecord: GoldPriceData | null =
+      await prisma.goldPrice.findFirst({
+        where: {
+          currency,
+          isActive: true,
+        },
+        orderBy: { recordedAt: "desc" },
+        select: { pricePerGram: true },
+      });
+
+    if (!goldPriceRecord?.pricePerGram || goldPriceRecord.pricePerGram <= 0) {
+      const errorResponse: ErrorResponse = {
+        error: "Failed to fetch current gold price. Please try again later.",
+        success: false,
+      };
+      return NextResponse.json(errorResponse, { status: 503 });
+    }
+
+    const pricePerGram = goldPriceRecord.pricePerGram;
+    const goldCost = parseFloat((grams * pricePerGram).toFixed(4));
+    const platformFee = parseFloat((goldCost * 0.01).toFixed(4)); // 1% platform fee
+    const totalAmount = parseFloat((goldCost + platformFee).toFixed(4));
 
     // Check wallet balance
     if (wallet.balance < totalAmount) {
-      return NextResponse.json(
-        {
-          error: "Insufficient wallet balance.",
-          required: totalAmount,
-          available: wallet.balance,
-        },
-        { status: 400 }
-      );
+      const shortfall = parseFloat((totalAmount - wallet.balance).toFixed(4));
+      const errorResponse: ErrorResponse = {
+        error: `Insufficient wallet balance. You need ${shortfall.toFixed(
+          4
+        )} ${currency} more.`,
+        success: false,
+        required: totalAmount,
+        available: wallet.balance,
+      };
+      return NextResponse.json(errorResponse, { status: 400 });
     }
 
-    // Complete Transaction
-    const result: Transaction = await prisma.$transaction(async (tx) => {
+    // Execute transaction
+    const result = await prisma.$transaction(async (tx) => {
       // Create transaction record
-      const transaction = await tx.transaction.create({
+      const transaction: TransactionResult = await tx.transaction.create({
         data: {
           referenceNumber: `TXN-${uuidv4()}`,
           userId: user.id,
@@ -117,13 +200,13 @@ export async function POST(req: Request): Promise<NextResponse> {
           status: "SUCCESS",
           gramsPurchased: grams,
           pricePerGram,
-          totalCost: totalCost,
-          fee: transactionFee,
+          totalCost: goldCost,
+          fee: platformFee,
           currency,
         },
       });
 
-      // Create holding
+      // Create holding record
       await tx.holding.create({
         data: {
           userId: user.id,
@@ -133,63 +216,122 @@ export async function POST(req: Request): Promise<NextResponse> {
       });
 
       // Update or create portfolio
-      const portfolio: Portfolio | null = await tx.portfolio.findUnique({
-        where: { userId: user.id },
-      });
-      if (portfolio) {
-        await tx.portfolio.update({
-          where: { id: portfolio.id },
+      const existingPortfolio: PortfolioData | null =
+        await tx.portfolio.findUnique({
+          where: { userId: user.id },
+        });
+
+      let updatedPortfolio: PortfolioData;
+
+      if (existingPortfolio) {
+        const newTotalGrams = parseFloat(
+          (existingPortfolio.totalGrams + grams).toFixed(6)
+        );
+        const newTotalInvested = parseFloat(
+          (existingPortfolio.totalInvested + goldCost).toFixed(4)
+        );
+        const newCurrentValue = parseFloat(
+          (existingPortfolio.currentValue + goldCost).toFixed(4)
+        );
+
+        updatedPortfolio = await tx.portfolio.update({
+          where: { id: existingPortfolio.id },
           data: {
-            totalGrams: portfolio.totalGrams + grams,
-            totalInvested: portfolio.totalInvested + totalCost,
-            currentValue: portfolio.currentValue + totalCost,
+            totalGrams: newTotalGrams,
+            totalInvested: newTotalInvested,
+            currentValue: newCurrentValue,
+            unrealizedGain: parseFloat(
+              (newCurrentValue - newTotalInvested).toFixed(4)
+            ),
             lastCalculatedAt: new Date(),
           },
         });
       } else {
-        await tx.portfolio.create({
+        updatedPortfolio = await tx.portfolio.create({
           data: {
             userId: user.id,
             totalGrams: grams,
-            totalInvested: totalCost,
-            currentValue: totalCost,
+            totalInvested: goldCost,
+            currentValue: goldCost,
             unrealizedGain: 0,
+            lastCalculatedAt: new Date(),
           },
         });
       }
 
-      // Deduct from wallet
+      // Deduct from wallet balance
+      const newWalletBalance = parseFloat(
+        (wallet.balance - totalAmount).toFixed(4)
+      );
       await tx.wallet.update({
         where: { id: wallet.id },
-        data: { balance: wallet.balance - totalAmount },
+        data: {
+          balance: newWalletBalance,
+          updatedAt: new Date(),
+        },
       });
 
-      return transaction;
+      return {
+        transaction,
+        portfolio: updatedPortfolio,
+        newWalletBalance,
+      };
     });
 
-    return NextResponse.json(
-      {
-        message: `Successfully purchased ${grams} grams of gold.`,
-        transaction: result,
-        payment: {
-          method: "WALLET",
-          totalAmount,
-          breakdown: {
-            goldCost: totalCost,
-            platformFee: transactionFee,
-            processingFee: 0,
-          },
-        },
+    // Prepare successful response
+    const successResponse: PurchaseResponse = {
+      message: `Successfully purchased ${grams} grams of gold.`,
+      success: true,
+      transaction: result.transaction,
+      breakdown: {
+        goldCost,
+        platformFee,
+        totalAmount,
       },
-      { status: 201 }
-    );
+      portfolio: {
+        totalGrams: result.portfolio.totalGrams,
+        totalInvested: result.portfolio.totalInvested,
+        currentValue: result.portfolio.currentValue,
+      },
+      wallet: {
+        newBalance: result.newWalletBalance,
+        currency: wallet.currency,
+      },
+    };
+
+    return NextResponse.json(successResponse, { status: 201 });
   } catch (error: unknown) {
     console.error("Error purchasing gold:", error);
+
+    // Handle specific database errors
+    if (error && typeof error === "object" && "code" in error) {
+      const dbError = error as { code: string; message: string };
+
+      if (dbError.code === "P2002") {
+        const errorResponse: ErrorResponse = {
+          error: "Transaction reference conflict. Please try again.",
+          success: false,
+        };
+        return NextResponse.json(errorResponse, { status: 409 });
+      }
+
+      if (dbError.code === "P2025") {
+        const errorResponse: ErrorResponse = {
+          error: "Required record not found. Please refresh and try again.",
+          success: false,
+        };
+        return NextResponse.json(errorResponse, { status: 404 });
+      }
+    }
+
+    // Generic error handling
     const errorMessage =
-      error instanceof Error ? error.message : "Unknown error";
-    return NextResponse.json(
-      { error: `An unexpected error occurred: ${errorMessage}` },
-      { status: 500 }
-    );
+      error instanceof Error ? error.message : "Unknown error occurred";
+    const errorResponse: ErrorResponse = {
+      error: `Transaction failed: ${errorMessage}. Please try again or contact support.`,
+      success: false,
+    };
+
+    return NextResponse.json(errorResponse, { status: 500 });
   }
 }

@@ -167,7 +167,27 @@ exports.Prisma.GoldPriceScalarFieldEnum = {
   id: 'id',
   pricePerGram: 'pricePerGram',
   currency: 'currency',
+  openPrice: 'openPrice',
+  highPrice: 'highPrice',
+  lowPrice: 'lowPrice',
+  prevPrice: 'prevPrice',
+  askPrice: 'askPrice',
+  bidPrice: 'bidPrice',
+  priceChange: 'priceChange',
+  priceChangePercent: 'priceChangePercent',
+  price24k: 'price24k',
+  price22k: 'price22k',
+  price21k: 'price21k',
+  price20k: 'price20k',
+  price18k: 'price18k',
+  price16k: 'price16k',
+  price14k: 'price14k',
+  price10k: 'price10k',
+  baseCurrency: 'baseCurrency',
+  weightUnit: 'weightUnit',
+  weightName: 'weightName',
   source: 'source',
+  apiTimestamp: 'apiTimestamp',
   recordedAt: 'recordedAt',
   isActive: 'isActive'
 };
@@ -241,9 +261,8 @@ exports.Role = exports.$Enums.Role = {
 exports.Currency = exports.$Enums.Currency = {
   USD: 'USD',
   EUR: 'EUR',
-  GHS: 'GHS',
-  NGN: 'NGN',
-  GBP: 'GBP'
+  GBP: 'GBP',
+  KWD: 'KWD'
 };
 
 exports.TransactionType = exports.$Enums.TransactionType = {

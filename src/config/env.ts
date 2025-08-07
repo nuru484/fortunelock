@@ -19,6 +19,11 @@ const ENV = {
   FROG_API_KEY: process.env.FROG_API_KEY,
   FROG_SENDER_ID: process.env.FROG_SENDER_ID,
   FROG_USERNAME: process.env.FROG_USERNAME,
+
+  GOLD_API_KEY: process.env.GOLD_API_KEY,
+  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
 };
 
 export default ENV;
