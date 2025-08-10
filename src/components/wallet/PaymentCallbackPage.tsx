@@ -341,29 +341,6 @@ const PaymentCallbackPage: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white mt-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <CreditCard className="w-5 h-5 text-blue-400" />
-              <span className="text-gray-300">
-                Secure payment processing powered by Stripe
-              </span>
-            </div>
-            <p className="text-sm text-gray-400 mb-2">
-              For support and inquiries, contact our team
-            </p>
-            <a
-              href="mailto:support@fortunelockdepository.com"
-              className="text-blue-400 hover:text-blue-300 transition-colors duration-200"
-            >
-              support@fortunelockdepository.com
-            </a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

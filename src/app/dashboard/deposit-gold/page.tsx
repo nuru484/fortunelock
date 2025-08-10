@@ -1,7 +1,7 @@
 // src/app/admin/deposit-gold/page.tsx
 "use client";
 import React from "react";
-import { ArrowLeft, Shield, Package, AlertTriangle } from "lucide-react";
+import { Shield, AlertTriangle } from "lucide-react";
 import PhysicalGoldDepositForm from "@/components/admin/PhysicalGoldDepositForm";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,23 +11,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Toaster } from "react-hot-toast";
 import { useUser } from "@/components/providers/UserProvider";
 
 const AdminDepositGoldPage: React.FC = () => {
   const { user } = useUser();
-
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-          <div className="text-gray-600 text-lg font-medium">Loading...</div>
-        </div>
-      </div>
-    );
-  }
 
   // Check if user is authenticated and is admin
   if (!user || user.role !== "ADMIN") {
@@ -62,86 +49,6 @@ const AdminDepositGoldPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          duration: 5000,
-          style: {
-            background: "#fff",
-            color: "#333",
-            boxShadow:
-              "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-            border: "1px solid #e5e7eb",
-            borderRadius: "12px",
-          },
-          success: {
-            iconTheme: {
-              primary: "#10b981",
-              secondary: "#fff",
-            },
-          },
-          error: {
-            iconTheme: {
-              primary: "#ef4444",
-              secondary: "#fff",
-            },
-          },
-        }}
-      />
-
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center gap-6">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => window.history.back()}
-                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-              >
-                <ArrowLeft className="w-5 h-5" />
-                <span className="hidden sm:inline">Back</span>
-              </Button>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl flex items-center justify-center">
-                  <Package className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900">
-                    Physical Gold Deposits
-                  </h1>
-                  <p className="text-gray-600">
-                    Record and manage physical gold deposits for users
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <Badge
-                variant="secondary"
-                className="bg-blue-100 text-blue-800 font-medium"
-              >
-                <Shield className="w-3 h-3 mr-1" />
-                Admin Access
-              </Badge>
-              <div className="hidden md:flex items-center gap-4">
-                <div className="text-right">
-                  <p className="text-sm text-gray-500">Logged in as</p>
-                  <p className="font-semibold text-gray-900">
-                    {user.firstName} {user.lastName}
-                  </p>
-                </div>
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
-                  {user.firstName?.charAt(0)}
-                  {user.lastName?.charAt(0)}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -304,26 +211,6 @@ const AdminDepositGoldPage: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Shield className="w-5 h-5 text-blue-400" />
-              <span className="text-gray-300">
-                Administrative functions are logged and monitored for security
-              </span>
-            </div>
-            <p className="text-sm text-gray-400 mb-2">
-              Fortune Lock Depository - Admin Panel
-            </p>
-            <p className="text-xs text-gray-500">
-              For urgent issues, contact emergency support line
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

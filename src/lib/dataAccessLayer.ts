@@ -46,9 +46,11 @@ export async function verifySessionWithUser() {
         id: true,
         email: true,
         firstName: true,
+        middleName: true,
         lastName: true,
         role: true,
         country: true,
+        profilePicture: true,
       },
     });
 

@@ -6,9 +6,11 @@ interface User {
   id: number;
   email: string;
   firstName: string;
+  middleName?: string | null;
   lastName: string;
   role: string;
   country: string;
+  profilePicture?: string | null;
 }
 
 interface UserContextType {

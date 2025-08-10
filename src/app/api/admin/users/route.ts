@@ -7,10 +7,18 @@ import { Role } from "@/generated/prisma";
 interface UserListItem {
   id: number;
   firstName: string;
+  middleName: string | null;
   lastName: string;
   email: string;
+  gender: string | null;
   role: Role;
+  phoneNumber: string | null;
+  profilePicture: string | null;
+  nationality: string | null;
+  country: string;
   createdAt: Date;
+  updatedAt: Date;
+  dateOfBirth: Date | null;
 }
 
 interface UsersResponse {
@@ -31,7 +39,7 @@ interface ErrorResponse {
 
 export async function GET(req: Request): Promise<NextResponse> {
   try {
-    // Verify authentication and admin role
+    // Verify authentication and user
     const sessionResult = await verifySessionWithUser();
 
     if (!sessionResult?.session) {
@@ -48,14 +56,6 @@ export async function GET(req: Request): Promise<NextResponse> {
       );
     }
 
-    // Check if user is admin
-    if (sessionResult.user.role !== Role.ADMIN) {
-      return NextResponse.json(
-        { error: "Access denied: Admin privileges required.", success: false },
-        { status: 403 }
-      );
-    }
-
     // Parse query parameters
     const url = new URL(req.url);
     const page = parseInt(url.searchParams.get("page") || "1");
@@ -64,6 +64,36 @@ export async function GET(req: Request): Promise<NextResponse> {
       100
     );
     const search = url.searchParams.get("search") || "";
+    const userId = parseInt(url.searchParams.get("userId") || "0");
+
+    if (
+      userId &&
+      userId !== sessionResult.user.id &&
+      sessionResult.user.role !== Role.ADMIN
+    ) {
+      return NextResponse.json(
+        {
+          error:
+            "Access denied: Admin privileges required to view other users' details.",
+          success: false,
+        },
+        { status: 403 }
+      );
+    }
+
+    // Build search conditions
+    const whereClause = {
+      ...(search
+        ? {
+            OR: [
+              { firstName: { contains: search, mode: "insensitive" as const } },
+              { lastName: { contains: search, mode: "insensitive" as const } },
+              { email: { contains: search, mode: "insensitive" as const } },
+            ],
+          }
+        : {}),
+      ...(userId ? { id: userId } : {}),
+    };
 
     // Validate pagination parameters
     if (page < 1) {
@@ -82,17 +112,6 @@ export async function GET(req: Request): Promise<NextResponse> {
       return NextResponse.json(errorResponse, { status: 400 });
     }
 
-    // Build search conditions
-    const whereClause = search
-      ? {
-          OR: [
-            { firstName: { contains: search, mode: "insensitive" as const } },
-            { lastName: { contains: search, mode: "insensitive" as const } },
-            { email: { contains: search, mode: "insensitive" as const } },
-          ],
-        }
-      : {};
-
     // Get total count for pagination
     const totalUsers = await prisma.user.count({
       where: whereClause,
@@ -107,11 +126,19 @@ export async function GET(req: Request): Promise<NextResponse> {
       where: whereClause,
       select: {
         id: true,
-        firstName: true,
-        lastName: true,
         email: true,
+        firstName: true,
+        middleName: true,
+        lastName: true,
+        dateOfBirth: true,
+        gender: true,
+        phoneNumber: true,
+        nationality: true,
+        profilePicture: true,
+        country: true,
         role: true,
         createdAt: true,
+        updatedAt: true,
       },
       orderBy: [
         { createdAt: "desc" },
@@ -127,10 +154,18 @@ export async function GET(req: Request): Promise<NextResponse> {
       users: users.map((user) => ({
         id: user.id,
         firstName: user.firstName,
+        middleName: user.middleName,
         lastName: user.lastName,
         email: user.email,
         role: user.role,
+        country: user.country,
+        dateOfBirth: user.dateOfBirth,
+        nationality: user.nationality,
+        profilePicture: user.profilePicture,
+        gender: user.gender,
+        phoneNumber: user.phoneNumber,
         createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       })),
       pagination: {
         page,

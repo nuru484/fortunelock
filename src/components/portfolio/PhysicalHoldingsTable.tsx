@@ -95,6 +95,11 @@ const PhysicalHoldingsTable: React.FC<PhysicalHoldingsTableProps> = ({
     }
   };
 
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + "...";
+  };
+
   return (
     <Card className="bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200 shadow-lg">
       <CardHeader className="pb-4">
@@ -174,175 +179,196 @@ const PhysicalHoldingsTable: React.FC<PhysicalHoldingsTableProps> = ({
           </div>
         ) : (
           <div className="bg-white/60 rounded-lg border border-purple-200 overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-purple-100/50">
-                  <TableHead className="text-purple-800">
-                    Item Details
-                  </TableHead>
-                  <TableHead className="text-purple-800">
-                    Specifications
-                  </TableHead>
-                  <TableHead className="text-purple-800">Weight</TableHead>
-                  <TableHead className="text-purple-800">
-                    Deposit Value
-                  </TableHead>
-                  <TableHead className="text-purple-800">
-                    Current Value
-                  </TableHead>
-                  <TableHead className="text-purple-800">Storage</TableHead>
-                  <TableHead className="text-purple-800">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {physicalHoldings.goldItems.map((item) => {
-                  const currentValue = calculateCurrentValue(item.weightGrams);
-                  const gainLoss = calculateGainLoss(
-                    item.weightGrams,
-                    item.transaction.pricePerGram
-                  );
-                  const isPositive = gainLoss >= 0;
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-purple-100/50">
+                    <TableHead className="text-purple-800 min-w-[200px]">
+                      Item Details
+                    </TableHead>
+                    <TableHead className="text-purple-800 min-w-[120px]">
+                      Specifications
+                    </TableHead>
+                    <TableHead className="text-purple-800 min-w-[80px]">
+                      Weight
+                    </TableHead>
+                    <TableHead className="text-purple-800 min-w-[120px]">
+                      Deposit Value
+                    </TableHead>
+                    <TableHead className="text-purple-800 min-w-[120px]">
+                      Current Value
+                    </TableHead>
+                    <TableHead className="text-purple-800 min-w-[100px]">
+                      Storage
+                    </TableHead>
+                    <TableHead className="text-purple-800 min-w-[100px]">
+                      Status
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {physicalHoldings.goldItems.map((item) => {
+                    const currentValue = calculateCurrentValue(
+                      item.weightGrams
+                    );
+                    const gainLoss = calculateGainLoss(
+                      item.weightGrams,
+                      item.transaction.pricePerGram
+                    );
+                    const isPositive = gainLoss >= 0;
 
-                  return (
-                    <TableRow key={item.id} className="hover:bg-purple-50/50">
-                      <TableCell>
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2">
-                            <Badge
-                              variant="outline"
-                              className={getTypeColor(item.type)}
-                            >
-                              {getTypeIcon(item.type)}
-                              <span className="ml-1 capitalize">
-                                {item.type}
-                              </span>
-                            </Badge>
-                          </div>
-                          {item.description && (
-                            <p className="text-sm font-medium text-purple-900">
-                              {item.description}
-                            </p>
-                          )}
-                          {item.serialNumber && (
-                            <p className="text-xs text-purple-600">
-                              S/N: {item.serialNumber}
-                            </p>
-                          )}
-                          <p className="text-xs text-purple-500">
-                            Ref: {item.transaction.referenceNumber}
-                          </p>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="space-y-1 text-sm text-purple-800">
-                          {item.karat && (
-                            <div className="flex justify-between">
-                              <span>Karat:</span>
-                              <span className="font-medium">{item.karat}K</span>
+                    return (
+                      <TableRow key={item.id} className="hover:bg-purple-50/50">
+                        <TableCell className="max-w-[200px]">
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                              <Badge
+                                variant="outline"
+                                className={getTypeColor(item.type)}
+                              >
+                                {getTypeIcon(item.type)}
+                                <span className="ml-1 capitalize">
+                                  {item.type}
+                                </span>
+                              </Badge>
                             </div>
-                          )}
-                          {item.purity && (
-                            <div className="flex justify-between">
-                              <span>Purity:</span>
-                              <span className="font-medium">
-                                {(item.purity * 100).toFixed(2)}%
-                              </span>
-                            </div>
-                          )}
-                          {item.origin && (
-                            <div className="flex justify-between">
-                              <span>Origin:</span>
-                              <span className="font-medium">{item.origin}</span>
-                            </div>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell className="font-semibold text-purple-900">
-                        {item.weightGrams.toFixed(4)}g
-                      </TableCell>
-                      <TableCell className="text-purple-800">
-                        <div className="space-y-1">
-                          <div>
-                            {formatCurrency(
-                              item.transaction.totalCost,
-                              item.transaction.currency
+                            {item.description && (
+                              <p
+                                className="text-sm font-medium text-purple-900 break-words leading-relaxed"
+                                title={item.description}
+                              >
+                                {truncateText(item.description, 30)}
+                              </p>
                             )}
-                          </div>
-                          <div className="text-xs text-purple-600">
-                            @
-                            {formatCurrency(
-                              item.transaction.pricePerGram,
-                              item.transaction.currency
+                            {item.serialNumber && (
+                              <p className="text-xs text-purple-600 break-all">
+                                S/N: {truncateText(item.serialNumber, 20)}
+                              </p>
                             )}
-                            /g
+                            <p className="text-xs text-purple-500 break-all">
+                              Ref:{" "}
+                              {truncateText(
+                                item.transaction.referenceNumber,
+                                20
+                              )}
+                            </p>
                           </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="space-y-1">
-                          <div className="font-semibold text-purple-900">
-                            {formatCurrency(currentValue, currency)}
-                          </div>
-                          <div
-                            className={`text-xs font-medium ${
-                              isPositive ? "text-emerald-600" : "text-red-600"
-                            }`}
-                          >
-                            {isPositive ? "+" : ""}
-                            {formatCurrency(gainLoss, currency)}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-purple-800">
-                        <div className="space-y-1">
-                          {item.storageLocation ? (
-                            <>
-                              <div className="flex items-center gap-1">
-                                <Vault className="w-3 h-3 text-purple-600" />
-                                <span className="text-xs font-medium">
-                                  {item.storageLocation}
+                        </TableCell>
+                        <TableCell className="min-w-[120px]">
+                          <div className="space-y-1 text-sm text-purple-800">
+                            {item.karat && (
+                              <div className="flex justify-between">
+                                <span>Karat:</span>
+                                <span className="font-medium">
+                                  {item.karat}K
                                 </span>
                               </div>
-                              <p className="text-xs text-purple-600">
-                                Secured Vault
-                              </p>
-                            </>
-                          ) : (
-                            <span className="text-xs text-purple-500">
-                              Location TBA
-                            </span>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="space-y-2">
-                          {item.verified ? (
-                            <Badge
-                              variant="outline"
-                              className="bg-green-100 text-green-800 border-green-300"
+                            )}
+                            {item.purity && (
+                              <div className="flex justify-between">
+                                <span>Purity:</span>
+                                <span className="font-medium">
+                                  {(item.purity * 100).toFixed(2)}%
+                                </span>
+                              </div>
+                            )}
+                            {item.origin && (
+                              <div className="flex justify-between">
+                                <span>Origin:</span>
+                                <span className="font-medium break-words">
+                                  {truncateText(item.origin, 15)}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell className="font-semibold text-purple-900 min-w-[80px]">
+                          {item.weightGrams.toFixed(4)}g
+                        </TableCell>
+                        <TableCell className="text-purple-800 min-w-[120px]">
+                          <div className="space-y-1">
+                            <div className="break-words">
+                              {formatCurrency(
+                                item.transaction.totalCost,
+                                item.transaction.currency
+                              )}
+                            </div>
+                            <div className="text-xs text-purple-600 break-words">
+                              @
+                              {formatCurrency(
+                                item.transaction.pricePerGram,
+                                item.transaction.currency
+                              )}
+                              /g
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="min-w-[120px]">
+                          <div className="space-y-1">
+                            <div className="font-semibold text-purple-900 break-words">
+                              {formatCurrency(currentValue, currency)}
+                            </div>
+                            <div
+                              className={`text-xs font-medium break-words ${
+                                isPositive ? "text-emerald-600" : "text-red-600"
+                              }`}
                             >
-                              <CheckCircle className="w-3 h-3 mr-1" />
-                              Verified
-                            </Badge>
-                          ) : (
-                            <Badge
-                              variant="outline"
-                              className="bg-orange-100 text-orange-800 border-orange-300"
-                            >
-                              <AlertCircle className="w-3 h-3 mr-1" />
-                              Pending
-                            </Badge>
-                          )}
-                          <p className="text-xs text-purple-600">
-                            {new Date(item.createdAt).toLocaleDateString()}
-                          </p>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+                              {isPositive ? "+" : ""}
+                              {formatCurrency(gainLoss, currency)}
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-purple-800 min-w-[100px]">
+                          <div className="space-y-1">
+                            {item.storageLocation ? (
+                              <>
+                                <div className="flex items-center gap-1">
+                                  <Vault className="w-3 h-3 text-purple-600 flex-shrink-0" />
+                                  <span className="text-xs font-medium break-words">
+                                    {truncateText(item.storageLocation, 15)}
+                                  </span>
+                                </div>
+                                <p className="text-xs text-purple-600">
+                                  Secured Vault
+                                </p>
+                              </>
+                            ) : (
+                              <span className="text-xs text-purple-500">
+                                Location TBA
+                              </span>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell className="min-w-[100px]">
+                          <div className="space-y-2">
+                            {item.verified ? (
+                              <Badge
+                                variant="outline"
+                                className="bg-green-100 text-green-800 border-green-300"
+                              >
+                                <CheckCircle className="w-3 h-3 mr-1" />
+                                Verified
+                              </Badge>
+                            ) : (
+                              <Badge
+                                variant="outline"
+                                className="bg-orange-100 text-orange-800 border-orange-300"
+                              >
+                                <AlertCircle className="w-3 h-3 mr-1" />
+                                Pending
+                              </Badge>
+                            )}
+                            <p className="text-xs text-purple-600">
+                              {new Date(item.createdAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
           </div>
         )}
       </CardContent>

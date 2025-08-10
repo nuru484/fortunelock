@@ -1,233 +1,128 @@
 // src/app/dashboard/wallet/deposit/page.tsx
 "use client";
 import React from "react";
-import { ArrowLeft, Shield, CreditCard, Clock } from "lucide-react";
+import { CreditCard, Clock, Shield, Info } from "lucide-react";
 import PaymentHandler from "@/components/wallet/PaymentHandler";
 import WalletBalance from "@/components/wallet/WalletBalance";
-import { useAuthUserQuery } from "@/redux/api/apiSlice";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Toaster } from "react-hot-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const DepositPage: React.FC = () => {
-  const { data: user, isLoading: userLoading } = useAuthUserQuery(undefined);
-
-  if (userLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-          <div className="text-gray-600 text-lg font-medium">Loading...</div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <Card className="w-full max-w-md shadow-lg">
-          <CardHeader className="text-center">
-            <Shield className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-            <CardTitle className="text-2xl">Authentication Required</CardTitle>
-            <CardDescription className="text-gray-600">
-              Please log in to access your wallet
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button
-              className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold"
-              onClick={() => (window.location.href = "/login")}
-            >
-              Sign In to Continue
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: "#fff",
-            color: "#333",
-            boxShadow:
-              "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-            border: "1px solid #e5e7eb",
-            borderRadius: "12px",
-          },
-          success: {
-            iconTheme: {
-              primary: "#10b981",
-              secondary: "#fff",
-            },
-          },
-          error: {
-            iconTheme: {
-              primary: "#ef4444",
-              secondary: "#fff",
-            },
-          },
-        }}
-      />
-
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-amber-50/20">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <div className="flex items-center gap-6">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => window.history.back()}
-                className="flex items-center gap-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-              >
-                <ArrowLeft className="w-5 h-5" />
-                <span className="hidden sm:inline">Back</span>
-              </Button>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
-                  <CreditCard className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900">
-                    Deposit Funds
-                  </h1>
-                  <p className="text-gray-600">
-                    Add money to your wallet instantly
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="hidden md:flex items-center gap-4">
-              <div className="text-right">
-                <p className="text-sm text-gray-500">Welcome back,</p>
-                <p className="font-semibold text-gray-900">
-                  {user.firstName} {user.lastName}
-                </p>
-              </div>
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
-                {user.firstName?.charAt(0)}
-                {user.lastName?.charAt(0)}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           {/* Information Sidebar - Left */}
           <div className="lg:col-span-2 space-y-6">
             <WalletBalance />
 
-            {/* Security Notice */}
-            <Card className="bg-green-50 border-green-200">
+            {/* Processing Times */}
+            <Card className="bg-white border border-gray-200 shadow-sm">
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-3">
-                  <Shield className="w-5 h-5 text-green-600" />
-                  <CardTitle className="text-green-900 text-lg">
-                    Secure & Protected
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3 text-sm text-green-800">
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-green-600 rounded-full"></div>
-                    <span>256-bit SSL encryption</span>
+                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Clock className="w-4 h-4 text-blue-600" />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-green-600 rounded-full"></div>
-                    <span>Powered by Stripe</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-green-600 rounded-full"></div>
-                    <span>PCI DSS compliant</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-green-600 rounded-full"></div>
-                    <span>Instant processing</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Processing Time */}
-            <Card className="bg-blue-50 border-blue-200">
-              <CardHeader className="pb-4">
-                <div className="flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-blue-600" />
-                  <CardTitle className="text-blue-900 text-lg">
+                  <CardTitle className="text-gray-800 text-lg font-semibold">
                     Processing Times
                   </CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3 text-sm text-blue-800">
-                  <div className="flex justify-between items-center">
-                    <span>Credit/Debit Cards</span>
-                    <span className="font-semibold">Instant</span>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">💳</span>
+                      <span className="text-sm text-gray-700">
+                        Credit/Debit Cards
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-medium text-gray-900">
+                        Instant
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span>Apple Pay</span>
-                    <span className="font-semibold">Instant</span>
+                  <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">🍎</span>
+                      <span className="text-sm text-gray-700">Apple Pay</span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-medium text-gray-900">
+                        Instant
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span>Google Pay</span>
-                    <span className="font-semibold">Instant</span>
+                  <div className="flex justify-between items-center py-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">📱</span>
+                      <span className="text-sm text-gray-700">Google Pay</span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-medium text-gray-900">
+                        Instant
+                      </div>
+                    </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Payment Methods */}
-            <Card className="bg-purple-50 border-purple-200">
+            {/* Accepted Cards */}
+            <Card className="bg-white border border-gray-200 shadow-sm">
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-3">
-                  <CreditCard className="w-5 h-5 text-purple-600" />
-                  <CardTitle className="text-purple-900 text-lg">
-                    Accepted Methods
+                  <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <CreditCard className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <CardTitle className="text-gray-800 text-lg font-semibold">
+                    Accepted Cards
                   </CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-white rounded-lg p-3 text-center border border-purple-100">
-                    <div className="text-sm font-medium text-purple-900">
+                  <div className="bg-gray-50 rounded-lg p-3 text-center border border-gray-200">
+                    <div className="text-sm font-medium text-gray-700">
                       💳 Visa
                     </div>
                   </div>
-                  <div className="bg-white rounded-lg p-3 text-center border border-purple-100">
-                    <div className="text-sm font-medium text-purple-900">
+                  <div className="bg-gray-50 rounded-lg p-3 text-center border border-gray-200">
+                    <div className="text-sm font-medium text-gray-700">
                       💳 Mastercard
                     </div>
                   </div>
-                  <div className="bg-white rounded-lg p-3 text-center border border-purple-100">
-                    <div className="text-sm font-medium text-purple-900">
+                  <div className="bg-gray-50 rounded-lg p-3 text-center border border-gray-200">
+                    <div className="text-sm font-medium text-gray-700">
                       🏧 Amex
                     </div>
                   </div>
-                  <div className="bg-white rounded-lg p-3 text-center border border-purple-100">
-                    <div className="text-sm font-medium text-purple-900">
+                  <div className="bg-gray-50 rounded-lg p-3 text-center border border-gray-200">
+                    <div className="text-sm font-medium text-gray-700">
                       💰 Discover
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
+
+            {/* Security Notice */}
+            <div className="bg-green-50 border border-green-200 rounded-2xl p-4 shadow-sm">
+              <div className="flex gap-3">
+                <Shield className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="text-sm font-medium text-green-800 mb-1">
+                    Secure Deposit
+                  </h4>
+                  <p className="text-xs text-green-700">
+                    All transactions are encrypted and protected by 256-bit SSL
+                    security. Your funds are held in FDIC-insured accounts.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Payment Form - Main Content */}
@@ -235,30 +130,20 @@ const DepositPage: React.FC = () => {
             <PaymentHandler />
           </div>
         </div>
-      </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white mt-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Shield className="w-5 h-5 text-blue-400" />
-              <span className="text-gray-300">
-                Your deposits are protected by industry-leading security
-              </span>
+        {/* Bottom Notice */}
+        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex gap-3">
+            <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-blue-800">
+              <strong>Important:</strong> Deposited funds will be available
+              immediately for gold purchases. All precious metals are stored in
+              certified vaults with full insurance coverage. Minimum deposit is
+              $50.
             </div>
-            <p className="text-sm text-gray-400 mb-2">
-              For support and inquiries, contact our team
-            </p>
-            <a
-              href="mailto:support@fortunelockdepository.com"
-              className="text-blue-400 hover:text-blue-300 transition-colors duration-200"
-            >
-              support@fortunelockdepository.com
-            </a>
           </div>
         </div>
-      </footer>
+      </div>
     </div>
   );
 };

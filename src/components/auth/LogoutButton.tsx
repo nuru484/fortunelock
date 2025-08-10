@@ -9,8 +9,8 @@ export default function LogoutButton() {
     <form action={logout}>
       <Button
         type="submit"
-        variant="outline"
-        className="flex items-center gap-2 px-4 py-2 transition-all duration-200 hover:bg-muted"
+        variant="ghost"
+        className="w-full justify-start flex items-center gap-2 hover:cursor-pointer"
       >
         <LogOut className="h-4 w-4 text-muted-foreground" />
         <span>Logout</span>
