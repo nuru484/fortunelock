@@ -1,9 +1,13 @@
 // src/app/api/gold/buy/route.ts
 import { NextResponse } from "next/server";
 import prisma from "@/config/prismaClient";
-import { verifySession, getUser } from "@/lib/dataAccessLayer";
+import { verifySessionWithUser } from "@/lib/dataAccessLayer";
 import { v4 as uuidv4 } from "uuid";
-import { Currency } from "@/generated/prisma";
+import {
+  Currency,
+  TransactionSource,
+  TransactionType,
+} from "@/generated/prisma";
 
 interface PurchaseRequest {
   grams: number;
@@ -16,13 +20,6 @@ interface WalletData {
   balance: number;
   currency: Currency;
   updatedAt: Date;
-}
-
-interface UserData {
-  id: number;
-  email: string;
-  firstName: string;
-  lastName: string;
 }
 
 interface PortfolioData {
@@ -48,7 +45,8 @@ interface TransactionResult {
   id: number;
   referenceNumber: string;
   userId: number;
-  type: string;
+  type: TransactionType;
+  source: TransactionSource;
   status: string;
   gramsPurchased: number;
   pricePerGram: number;
@@ -85,14 +83,23 @@ interface ErrorResponse {
 export async function POST(req: Request): Promise<NextResponse> {
   try {
     // Verify authentication
-    const session = await verifySession();
-    if (!session) {
-      const errorResponse: ErrorResponse = {
-        error: "Unauthenticated: Please log in.",
-        success: false,
-      };
-      return NextResponse.json(errorResponse, { status: 401 });
+    const sessionResult = await verifySessionWithUser();
+
+    if (!sessionResult?.session) {
+      return NextResponse.json(
+        { error: "Unauthenticated: Please log in.", success: false },
+        { status: 401 }
+      );
     }
+
+    if (!sessionResult.user) {
+      return NextResponse.json(
+        { error: "Authenticated user not found", success: false },
+        { status: 404 }
+      );
+    }
+
+    const userId = sessionResult.user.id;
 
     // Parse and validate request body
     const body: PurchaseRequest = await req.json();
@@ -119,19 +126,9 @@ export async function POST(req: Request): Promise<NextResponse> {
       return NextResponse.json(errorResponse, { status: 400 });
     }
 
-    // Get user
-    const user: UserData | null = await getUser();
-    if (!user) {
-      const errorResponse: ErrorResponse = {
-        error: "User not found.",
-        success: false,
-      };
-      return NextResponse.json(errorResponse, { status: 404 });
-    }
-
     // Get wallet
     const wallet: WalletData | null = await prisma.wallet.findUnique({
-      where: { userId: user.id },
+      where: { userId },
     });
 
     if (!wallet) {
@@ -191,12 +188,13 @@ export async function POST(req: Request): Promise<NextResponse> {
 
     // Execute transaction
     const result = await prisma.$transaction(async (tx) => {
-      // Create transaction record
+      // Create transaction record with ONLINE source
       const transaction: TransactionResult = await tx.transaction.create({
         data: {
           referenceNumber: `TXN-${uuidv4()}`,
-          userId: user.id,
-          type: "PURCHASE",
+          userId,
+          type: TransactionType.PURCHASE,
+          source: TransactionSource.ONLINE,
           status: "SUCCESS",
           gramsPurchased: grams,
           pricePerGram,
@@ -206,10 +204,10 @@ export async function POST(req: Request): Promise<NextResponse> {
         },
       });
 
-      // Create holding record
+      // Create holding record for online purchase
       await tx.holding.create({
         data: {
-          userId: user.id,
+          userId,
           transactionId: transaction.id,
           amount: grams,
         },
@@ -218,7 +216,7 @@ export async function POST(req: Request): Promise<NextResponse> {
       // Update or create portfolio
       const existingPortfolio: PortfolioData | null =
         await tx.portfolio.findUnique({
-          where: { userId: user.id },
+          where: { userId },
         });
 
       let updatedPortfolio: PortfolioData;
@@ -231,7 +229,7 @@ export async function POST(req: Request): Promise<NextResponse> {
           (existingPortfolio.totalInvested + goldCost).toFixed(4)
         );
         const newCurrentValue = parseFloat(
-          (existingPortfolio.currentValue + goldCost).toFixed(4)
+          (newTotalGrams * pricePerGram).toFixed(4)
         );
 
         updatedPortfolio = await tx.portfolio.update({
@@ -249,10 +247,10 @@ export async function POST(req: Request): Promise<NextResponse> {
       } else {
         updatedPortfolio = await tx.portfolio.create({
           data: {
-            userId: user.id,
+            userId,
             totalGrams: grams,
             totalInvested: goldCost,
-            currentValue: goldCost,
+            currentValue: parseFloat((grams * pricePerGram).toFixed(4)),
             unrealizedGain: 0,
             lastCalculatedAt: new Date(),
           },
@@ -280,7 +278,7 @@ export async function POST(req: Request): Promise<NextResponse> {
 
     // Prepare successful response
     const successResponse: PurchaseResponse = {
-      message: `Successfully purchased ${grams} grams of gold.`,
+      message: `Successfully purchased ${grams} grams of gold online.`,
       success: true,
       transaction: result.transaction,
       breakdown: {

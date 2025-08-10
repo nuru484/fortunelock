@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model Address
+ * 
+ */
+export type Address = $Result.DefaultSelection<Prisma.$AddressPayload>
+/**
  * Model Wallet
  * 
  */
@@ -33,6 +38,11 @@ export type Portfolio = $Result.DefaultSelection<Prisma.$PortfolioPayload>
  * 
  */
 export type Identity = $Result.DefaultSelection<Prisma.$IdentityPayload>
+/**
+ * Model GoldItem
+ * 
+ */
+export type GoldItem = $Result.DefaultSelection<Prisma.$GoldItemPayload>
 /**
  * Model GoldPrice
  * 
@@ -97,6 +107,41 @@ export const Currency: {
 
 export type Currency = (typeof Currency)[keyof typeof Currency]
 
+
+export const AddressType: {
+  RESIDENTIAL: 'RESIDENTIAL',
+  MAILING: 'MAILING',
+  BUSINESS: 'BUSINESS'
+};
+
+export type AddressType = (typeof AddressType)[keyof typeof AddressType]
+
+
+export const GoldItemType: {
+  BAR: 'BAR',
+  COIN: 'COIN',
+  JEWELRY: 'JEWELRY',
+  OTHER: 'OTHER'
+};
+
+export type GoldItemType = (typeof GoldItemType)[keyof typeof GoldItemType]
+
+
+export const DepositMethod: {
+  PHYSICAL: 'PHYSICAL',
+  ONLINE_PURCHASE: 'ONLINE_PURCHASE'
+};
+
+export type DepositMethod = (typeof DepositMethod)[keyof typeof DepositMethod]
+
+
+export const TransactionSource: {
+  ONLINE: 'ONLINE',
+  PHYSICAL_DEPOSIT: 'PHYSICAL_DEPOSIT'
+};
+
+export type TransactionSource = (typeof TransactionSource)[keyof typeof TransactionSource]
+
 }
 
 export type TransactionStatus = $Enums.TransactionStatus
@@ -114,6 +159,22 @@ export const Role: typeof $Enums.Role
 export type Currency = $Enums.Currency
 
 export const Currency: typeof $Enums.Currency
+
+export type AddressType = $Enums.AddressType
+
+export const AddressType: typeof $Enums.AddressType
+
+export type GoldItemType = $Enums.GoldItemType
+
+export const GoldItemType: typeof $Enums.GoldItemType
+
+export type DepositMethod = $Enums.DepositMethod
+
+export const DepositMethod: typeof $Enums.DepositMethod
+
+export type TransactionSource = $Enums.TransactionSource
+
+export const TransactionSource: typeof $Enums.TransactionSource
 
 /**
  * ##  Prisma Client ʲˢ
@@ -251,6 +312,16 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.address`: Exposes CRUD operations for the **Address** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Addresses
+    * const addresses = await prisma.address.findMany()
+    * ```
+    */
+  get address(): Prisma.AddressDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.wallet`: Exposes CRUD operations for the **Wallet** model.
     * Example usage:
     * ```ts
@@ -279,6 +350,16 @@ export class PrismaClient<
     * ```
     */
   get identity(): Prisma.IdentityDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.goldItem`: Exposes CRUD operations for the **GoldItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GoldItems
+    * const goldItems = await prisma.goldItem.findMany()
+    * ```
+    */
+  get goldItem(): Prisma.GoldItemDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.goldPrice`: Exposes CRUD operations for the **GoldPrice** model.
@@ -770,9 +851,11 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    Address: 'Address',
     Wallet: 'Wallet',
     Portfolio: 'Portfolio',
     Identity: 'Identity',
+    GoldItem: 'GoldItem',
     GoldPrice: 'GoldPrice',
     GoldUnitMetadata: 'GoldUnitMetadata',
     Transaction: 'Transaction',
@@ -796,7 +879,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "wallet" | "portfolio" | "identity" | "goldPrice" | "goldUnitMetadata" | "transaction" | "payment" | "holding"
+      modelProps: "user" | "address" | "wallet" | "portfolio" | "identity" | "goldItem" | "goldPrice" | "goldUnitMetadata" | "transaction" | "payment" | "holding"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -871,6 +954,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Address: {
+        payload: Prisma.$AddressPayload<ExtArgs>
+        fields: Prisma.AddressFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AddressFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddressPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AddressFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddressPayload>
+          }
+          findFirst: {
+            args: Prisma.AddressFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddressPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AddressFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddressPayload>
+          }
+          findMany: {
+            args: Prisma.AddressFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddressPayload>[]
+          }
+          create: {
+            args: Prisma.AddressCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddressPayload>
+          }
+          createMany: {
+            args: Prisma.AddressCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AddressCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddressPayload>[]
+          }
+          delete: {
+            args: Prisma.AddressDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddressPayload>
+          }
+          update: {
+            args: Prisma.AddressUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddressPayload>
+          }
+          deleteMany: {
+            args: Prisma.AddressDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AddressUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AddressUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddressPayload>[]
+          }
+          upsert: {
+            args: Prisma.AddressUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AddressPayload>
+          }
+          aggregate: {
+            args: Prisma.AddressAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAddress>
+          }
+          groupBy: {
+            args: Prisma.AddressGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AddressGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AddressCountArgs<ExtArgs>
+            result: $Utils.Optional<AddressCountAggregateOutputType> | number
           }
         }
       }
@@ -1093,6 +1250,80 @@ export namespace Prisma {
           count: {
             args: Prisma.IdentityCountArgs<ExtArgs>
             result: $Utils.Optional<IdentityCountAggregateOutputType> | number
+          }
+        }
+      }
+      GoldItem: {
+        payload: Prisma.$GoldItemPayload<ExtArgs>
+        fields: Prisma.GoldItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GoldItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoldItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GoldItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoldItemPayload>
+          }
+          findFirst: {
+            args: Prisma.GoldItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoldItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GoldItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoldItemPayload>
+          }
+          findMany: {
+            args: Prisma.GoldItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoldItemPayload>[]
+          }
+          create: {
+            args: Prisma.GoldItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoldItemPayload>
+          }
+          createMany: {
+            args: Prisma.GoldItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GoldItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoldItemPayload>[]
+          }
+          delete: {
+            args: Prisma.GoldItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoldItemPayload>
+          }
+          update: {
+            args: Prisma.GoldItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoldItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.GoldItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GoldItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GoldItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoldItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.GoldItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoldItemPayload>
+          }
+          aggregate: {
+            args: Prisma.GoldItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGoldItem>
+          }
+          groupBy: {
+            args: Prisma.GoldItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GoldItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GoldItemCountArgs<ExtArgs>
+            result: $Utils.Optional<GoldItemCountAggregateOutputType> | number
           }
         }
       }
@@ -1559,9 +1790,11 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    address?: AddressOmit
     wallet?: WalletOmit
     portfolio?: PortfolioOmit
     identity?: IdentityOmit
+    goldItem?: GoldItemOmit
     goldPrice?: GoldPriceOmit
     goldUnitMetadata?: GoldUnitMetadataOmit
     transaction?: TransactionOmit
@@ -1666,15 +1899,19 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
+    addresses: number
     transactions: number
     payments: number
     holdings: number
+    goldItems: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    addresses?: boolean | UserCountOutputTypeCountAddressesArgs
     transactions?: boolean | UserCountOutputTypeCountTransactionsArgs
     payments?: boolean | UserCountOutputTypeCountPaymentsArgs
     holdings?: boolean | UserCountOutputTypeCountHoldingsArgs
+    goldItems?: boolean | UserCountOutputTypeCountGoldItemsArgs
   }
 
   // Custom InputTypes
@@ -1686,6 +1923,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the UserCountOutputType
      */
     select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAddressesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AddressWhereInput
   }
 
   /**
@@ -1709,6 +1953,13 @@ export namespace Prisma {
     where?: HoldingWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountGoldItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GoldItemWhereInput
+  }
+
 
   /**
    * Count Type TransactionCountOutputType
@@ -1716,10 +1967,12 @@ export namespace Prisma {
 
   export type TransactionCountOutputType = {
     holdings: number
+    goldItems: number
   }
 
   export type TransactionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     holdings?: boolean | TransactionCountOutputTypeCountHoldingsArgs
+    goldItems?: boolean | TransactionCountOutputTypeCountGoldItemsArgs
   }
 
   // Custom InputTypes
@@ -1738,6 +1991,13 @@ export namespace Prisma {
    */
   export type TransactionCountOutputTypeCountHoldingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: HoldingWhereInput
+  }
+
+  /**
+   * TransactionCountOutputType without action
+   */
+  export type TransactionCountOutputTypeCountGoldItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GoldItemWhereInput
   }
 
 
@@ -1770,7 +2030,12 @@ export namespace Prisma {
     email: string | null
     password: string | null
     firstName: string | null
+    middleName: string | null
     lastName: string | null
+    dateOfBirth: Date | null
+    gender: string | null
+    phoneNumber: string | null
+    nationality: string | null
     country: string | null
     role: $Enums.Role | null
     createdAt: Date | null
@@ -1782,7 +2047,12 @@ export namespace Prisma {
     email: string | null
     password: string | null
     firstName: string | null
+    middleName: string | null
     lastName: string | null
+    dateOfBirth: Date | null
+    gender: string | null
+    phoneNumber: string | null
+    nationality: string | null
     country: string | null
     role: $Enums.Role | null
     createdAt: Date | null
@@ -1794,7 +2064,12 @@ export namespace Prisma {
     email: number
     password: number
     firstName: number
+    middleName: number
     lastName: number
+    dateOfBirth: number
+    gender: number
+    phoneNumber: number
+    nationality: number
     country: number
     role: number
     createdAt: number
@@ -1816,7 +2091,12 @@ export namespace Prisma {
     email?: true
     password?: true
     firstName?: true
+    middleName?: true
     lastName?: true
+    dateOfBirth?: true
+    gender?: true
+    phoneNumber?: true
+    nationality?: true
     country?: true
     role?: true
     createdAt?: true
@@ -1828,7 +2108,12 @@ export namespace Prisma {
     email?: true
     password?: true
     firstName?: true
+    middleName?: true
     lastName?: true
+    dateOfBirth?: true
+    gender?: true
+    phoneNumber?: true
+    nationality?: true
     country?: true
     role?: true
     createdAt?: true
@@ -1840,7 +2125,12 @@ export namespace Prisma {
     email?: true
     password?: true
     firstName?: true
+    middleName?: true
     lastName?: true
+    dateOfBirth?: true
+    gender?: true
+    phoneNumber?: true
+    nationality?: true
     country?: true
     role?: true
     createdAt?: true
@@ -1939,7 +2229,12 @@ export namespace Prisma {
     email: string
     password: string
     firstName: string
+    middleName: string | null
     lastName: string
+    dateOfBirth: Date | null
+    gender: string | null
+    phoneNumber: string | null
+    nationality: string | null
     country: string
     role: $Enums.Role
     createdAt: Date
@@ -1970,15 +2265,22 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     firstName?: boolean
+    middleName?: boolean
     lastName?: boolean
+    dateOfBirth?: boolean
+    gender?: boolean
+    phoneNumber?: boolean
+    nationality?: boolean
     country?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     identity?: boolean | User$identityArgs<ExtArgs>
+    addresses?: boolean | User$addressesArgs<ExtArgs>
     transactions?: boolean | User$transactionsArgs<ExtArgs>
     payments?: boolean | User$paymentsArgs<ExtArgs>
     holdings?: boolean | User$holdingsArgs<ExtArgs>
+    goldItems?: boolean | User$goldItemsArgs<ExtArgs>
     Portfolio?: boolean | User$PortfolioArgs<ExtArgs>
     wallet?: boolean | User$walletArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1989,7 +2291,12 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     firstName?: boolean
+    middleName?: boolean
     lastName?: boolean
+    dateOfBirth?: boolean
+    gender?: boolean
+    phoneNumber?: boolean
+    nationality?: boolean
     country?: boolean
     role?: boolean
     createdAt?: boolean
@@ -2001,7 +2308,12 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     firstName?: boolean
+    middleName?: boolean
     lastName?: boolean
+    dateOfBirth?: boolean
+    gender?: boolean
+    phoneNumber?: boolean
+    nationality?: boolean
     country?: boolean
     role?: boolean
     createdAt?: boolean
@@ -2013,19 +2325,26 @@ export namespace Prisma {
     email?: boolean
     password?: boolean
     firstName?: boolean
+    middleName?: boolean
     lastName?: boolean
+    dateOfBirth?: boolean
+    gender?: boolean
+    phoneNumber?: boolean
+    nationality?: boolean
     country?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "firstName" | "lastName" | "country" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "firstName" | "middleName" | "lastName" | "dateOfBirth" | "gender" | "phoneNumber" | "nationality" | "country" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     identity?: boolean | User$identityArgs<ExtArgs>
+    addresses?: boolean | User$addressesArgs<ExtArgs>
     transactions?: boolean | User$transactionsArgs<ExtArgs>
     payments?: boolean | User$paymentsArgs<ExtArgs>
     holdings?: boolean | User$holdingsArgs<ExtArgs>
+    goldItems?: boolean | User$goldItemsArgs<ExtArgs>
     Portfolio?: boolean | User$PortfolioArgs<ExtArgs>
     wallet?: boolean | User$walletArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -2037,9 +2356,11 @@ export namespace Prisma {
     name: "User"
     objects: {
       identity: Prisma.$IdentityPayload<ExtArgs> | null
+      addresses: Prisma.$AddressPayload<ExtArgs>[]
       transactions: Prisma.$TransactionPayload<ExtArgs>[]
       payments: Prisma.$PaymentPayload<ExtArgs>[]
       holdings: Prisma.$HoldingPayload<ExtArgs>[]
+      goldItems: Prisma.$GoldItemPayload<ExtArgs>[]
       Portfolio: Prisma.$PortfolioPayload<ExtArgs> | null
       wallet: Prisma.$WalletPayload<ExtArgs> | null
     }
@@ -2048,7 +2369,12 @@ export namespace Prisma {
       email: string
       password: string
       firstName: string
+      middleName: string | null
       lastName: string
+      dateOfBirth: Date | null
+      gender: string | null
+      phoneNumber: string | null
+      nationality: string | null
       country: string
       role: $Enums.Role
       createdAt: Date
@@ -2448,9 +2774,11 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     identity<T extends User$identityArgs<ExtArgs> = {}>(args?: Subset<T, User$identityArgs<ExtArgs>>): Prisma__IdentityClient<$Result.GetResult<Prisma.$IdentityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    addresses<T extends User$addressesArgs<ExtArgs> = {}>(args?: Subset<T, User$addressesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transactions<T extends User$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payments<T extends User$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     holdings<T extends User$holdingsArgs<ExtArgs> = {}>(args?: Subset<T, User$holdingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HoldingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    goldItems<T extends User$goldItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$goldItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Portfolio<T extends User$PortfolioArgs<ExtArgs> = {}>(args?: Subset<T, User$PortfolioArgs<ExtArgs>>): Prisma__PortfolioClient<$Result.GetResult<Prisma.$PortfolioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     wallet<T extends User$walletArgs<ExtArgs> = {}>(args?: Subset<T, User$walletArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
@@ -2486,7 +2814,12 @@ export namespace Prisma {
     readonly email: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly firstName: FieldRef<"User", 'String'>
+    readonly middleName: FieldRef<"User", 'String'>
     readonly lastName: FieldRef<"User", 'String'>
+    readonly dateOfBirth: FieldRef<"User", 'DateTime'>
+    readonly gender: FieldRef<"User", 'String'>
+    readonly phoneNumber: FieldRef<"User", 'String'>
+    readonly nationality: FieldRef<"User", 'String'>
     readonly country: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'Role'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
@@ -2898,6 +3231,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.addresses
+   */
+  export type User$addressesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Address
+     */
+    select?: AddressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Address
+     */
+    omit?: AddressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddressInclude<ExtArgs> | null
+    where?: AddressWhereInput
+    orderBy?: AddressOrderByWithRelationInput | AddressOrderByWithRelationInput[]
+    cursor?: AddressWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AddressScalarFieldEnum | AddressScalarFieldEnum[]
+  }
+
+  /**
    * User.transactions
    */
   export type User$transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2970,6 +3327,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.goldItems
+   */
+  export type User$goldItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemInclude<ExtArgs> | null
+    where?: GoldItemWhereInput
+    orderBy?: GoldItemOrderByWithRelationInput | GoldItemOrderByWithRelationInput[]
+    cursor?: GoldItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GoldItemScalarFieldEnum | GoldItemScalarFieldEnum[]
+  }
+
+  /**
    * User.Portfolio
    */
   export type User$PortfolioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3023,6 +3404,1167 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Address
+   */
+
+  export type AggregateAddress = {
+    _count: AddressCountAggregateOutputType | null
+    _avg: AddressAvgAggregateOutputType | null
+    _sum: AddressSumAggregateOutputType | null
+    _min: AddressMinAggregateOutputType | null
+    _max: AddressMaxAggregateOutputType | null
+  }
+
+  export type AddressAvgAggregateOutputType = {
+    id: number | null
+    userId: number | null
+  }
+
+  export type AddressSumAggregateOutputType = {
+    id: number | null
+    userId: number | null
+  }
+
+  export type AddressMinAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    type: $Enums.AddressType | null
+    street: string | null
+    city: string | null
+    state: string | null
+    postalCode: string | null
+    country: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AddressMaxAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    type: $Enums.AddressType | null
+    street: string | null
+    city: string | null
+    state: string | null
+    postalCode: string | null
+    country: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AddressCountAggregateOutputType = {
+    id: number
+    userId: number
+    type: number
+    street: number
+    city: number
+    state: number
+    postalCode: number
+    country: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AddressAvgAggregateInputType = {
+    id?: true
+    userId?: true
+  }
+
+  export type AddressSumAggregateInputType = {
+    id?: true
+    userId?: true
+  }
+
+  export type AddressMinAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    street?: true
+    city?: true
+    state?: true
+    postalCode?: true
+    country?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AddressMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    street?: true
+    city?: true
+    state?: true
+    postalCode?: true
+    country?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AddressCountAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    street?: true
+    city?: true
+    state?: true
+    postalCode?: true
+    country?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AddressAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Address to aggregate.
+     */
+    where?: AddressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Addresses to fetch.
+     */
+    orderBy?: AddressOrderByWithRelationInput | AddressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AddressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Addresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Addresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Addresses
+    **/
+    _count?: true | AddressCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AddressAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AddressSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AddressMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AddressMaxAggregateInputType
+  }
+
+  export type GetAddressAggregateType<T extends AddressAggregateArgs> = {
+        [P in keyof T & keyof AggregateAddress]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAddress[P]>
+      : GetScalarType<T[P], AggregateAddress[P]>
+  }
+
+
+
+
+  export type AddressGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AddressWhereInput
+    orderBy?: AddressOrderByWithAggregationInput | AddressOrderByWithAggregationInput[]
+    by: AddressScalarFieldEnum[] | AddressScalarFieldEnum
+    having?: AddressScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AddressCountAggregateInputType | true
+    _avg?: AddressAvgAggregateInputType
+    _sum?: AddressSumAggregateInputType
+    _min?: AddressMinAggregateInputType
+    _max?: AddressMaxAggregateInputType
+  }
+
+  export type AddressGroupByOutputType = {
+    id: number
+    userId: number
+    type: $Enums.AddressType
+    street: string
+    city: string
+    state: string | null
+    postalCode: string
+    country: string
+    createdAt: Date
+    updatedAt: Date
+    _count: AddressCountAggregateOutputType | null
+    _avg: AddressAvgAggregateOutputType | null
+    _sum: AddressSumAggregateOutputType | null
+    _min: AddressMinAggregateOutputType | null
+    _max: AddressMaxAggregateOutputType | null
+  }
+
+  type GetAddressGroupByPayload<T extends AddressGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AddressGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AddressGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AddressGroupByOutputType[P]>
+            : GetScalarType<T[P], AddressGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AddressSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    street?: boolean
+    city?: boolean
+    state?: boolean
+    postalCode?: boolean
+    country?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["address"]>
+
+  export type AddressSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    street?: boolean
+    city?: boolean
+    state?: boolean
+    postalCode?: boolean
+    country?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["address"]>
+
+  export type AddressSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    street?: boolean
+    city?: boolean
+    state?: boolean
+    postalCode?: boolean
+    country?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["address"]>
+
+  export type AddressSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    street?: boolean
+    city?: boolean
+    state?: boolean
+    postalCode?: boolean
+    country?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AddressOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "street" | "city" | "state" | "postalCode" | "country" | "createdAt" | "updatedAt", ExtArgs["result"]["address"]>
+  export type AddressInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AddressIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AddressIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AddressPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Address"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      userId: number
+      type: $Enums.AddressType
+      street: string
+      city: string
+      state: string | null
+      postalCode: string
+      country: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["address"]>
+    composites: {}
+  }
+
+  type AddressGetPayload<S extends boolean | null | undefined | AddressDefaultArgs> = $Result.GetResult<Prisma.$AddressPayload, S>
+
+  type AddressCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AddressFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AddressCountAggregateInputType | true
+    }
+
+  export interface AddressDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Address'], meta: { name: 'Address' } }
+    /**
+     * Find zero or one Address that matches the filter.
+     * @param {AddressFindUniqueArgs} args - Arguments to find a Address
+     * @example
+     * // Get one Address
+     * const address = await prisma.address.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AddressFindUniqueArgs>(args: SelectSubset<T, AddressFindUniqueArgs<ExtArgs>>): Prisma__AddressClient<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Address that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AddressFindUniqueOrThrowArgs} args - Arguments to find a Address
+     * @example
+     * // Get one Address
+     * const address = await prisma.address.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AddressFindUniqueOrThrowArgs>(args: SelectSubset<T, AddressFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AddressClient<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Address that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddressFindFirstArgs} args - Arguments to find a Address
+     * @example
+     * // Get one Address
+     * const address = await prisma.address.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AddressFindFirstArgs>(args?: SelectSubset<T, AddressFindFirstArgs<ExtArgs>>): Prisma__AddressClient<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Address that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddressFindFirstOrThrowArgs} args - Arguments to find a Address
+     * @example
+     * // Get one Address
+     * const address = await prisma.address.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AddressFindFirstOrThrowArgs>(args?: SelectSubset<T, AddressFindFirstOrThrowArgs<ExtArgs>>): Prisma__AddressClient<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Addresses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddressFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Addresses
+     * const addresses = await prisma.address.findMany()
+     * 
+     * // Get first 10 Addresses
+     * const addresses = await prisma.address.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const addressWithIdOnly = await prisma.address.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AddressFindManyArgs>(args?: SelectSubset<T, AddressFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Address.
+     * @param {AddressCreateArgs} args - Arguments to create a Address.
+     * @example
+     * // Create one Address
+     * const Address = await prisma.address.create({
+     *   data: {
+     *     // ... data to create a Address
+     *   }
+     * })
+     * 
+     */
+    create<T extends AddressCreateArgs>(args: SelectSubset<T, AddressCreateArgs<ExtArgs>>): Prisma__AddressClient<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Addresses.
+     * @param {AddressCreateManyArgs} args - Arguments to create many Addresses.
+     * @example
+     * // Create many Addresses
+     * const address = await prisma.address.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AddressCreateManyArgs>(args?: SelectSubset<T, AddressCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Addresses and returns the data saved in the database.
+     * @param {AddressCreateManyAndReturnArgs} args - Arguments to create many Addresses.
+     * @example
+     * // Create many Addresses
+     * const address = await prisma.address.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Addresses and only return the `id`
+     * const addressWithIdOnly = await prisma.address.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AddressCreateManyAndReturnArgs>(args?: SelectSubset<T, AddressCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Address.
+     * @param {AddressDeleteArgs} args - Arguments to delete one Address.
+     * @example
+     * // Delete one Address
+     * const Address = await prisma.address.delete({
+     *   where: {
+     *     // ... filter to delete one Address
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AddressDeleteArgs>(args: SelectSubset<T, AddressDeleteArgs<ExtArgs>>): Prisma__AddressClient<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Address.
+     * @param {AddressUpdateArgs} args - Arguments to update one Address.
+     * @example
+     * // Update one Address
+     * const address = await prisma.address.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AddressUpdateArgs>(args: SelectSubset<T, AddressUpdateArgs<ExtArgs>>): Prisma__AddressClient<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Addresses.
+     * @param {AddressDeleteManyArgs} args - Arguments to filter Addresses to delete.
+     * @example
+     * // Delete a few Addresses
+     * const { count } = await prisma.address.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AddressDeleteManyArgs>(args?: SelectSubset<T, AddressDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Addresses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddressUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Addresses
+     * const address = await prisma.address.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AddressUpdateManyArgs>(args: SelectSubset<T, AddressUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Addresses and returns the data updated in the database.
+     * @param {AddressUpdateManyAndReturnArgs} args - Arguments to update many Addresses.
+     * @example
+     * // Update many Addresses
+     * const address = await prisma.address.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Addresses and only return the `id`
+     * const addressWithIdOnly = await prisma.address.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AddressUpdateManyAndReturnArgs>(args: SelectSubset<T, AddressUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Address.
+     * @param {AddressUpsertArgs} args - Arguments to update or create a Address.
+     * @example
+     * // Update or create a Address
+     * const address = await prisma.address.upsert({
+     *   create: {
+     *     // ... data to create a Address
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Address we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AddressUpsertArgs>(args: SelectSubset<T, AddressUpsertArgs<ExtArgs>>): Prisma__AddressClient<$Result.GetResult<Prisma.$AddressPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Addresses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddressCountArgs} args - Arguments to filter Addresses to count.
+     * @example
+     * // Count the number of Addresses
+     * const count = await prisma.address.count({
+     *   where: {
+     *     // ... the filter for the Addresses we want to count
+     *   }
+     * })
+    **/
+    count<T extends AddressCountArgs>(
+      args?: Subset<T, AddressCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AddressCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Address.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddressAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AddressAggregateArgs>(args: Subset<T, AddressAggregateArgs>): Prisma.PrismaPromise<GetAddressAggregateType<T>>
+
+    /**
+     * Group by Address.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AddressGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AddressGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AddressGroupByArgs['orderBy'] }
+        : { orderBy?: AddressGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AddressGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAddressGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Address model
+   */
+  readonly fields: AddressFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Address.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AddressClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Address model
+   */
+  interface AddressFieldRefs {
+    readonly id: FieldRef<"Address", 'Int'>
+    readonly userId: FieldRef<"Address", 'Int'>
+    readonly type: FieldRef<"Address", 'AddressType'>
+    readonly street: FieldRef<"Address", 'String'>
+    readonly city: FieldRef<"Address", 'String'>
+    readonly state: FieldRef<"Address", 'String'>
+    readonly postalCode: FieldRef<"Address", 'String'>
+    readonly country: FieldRef<"Address", 'String'>
+    readonly createdAt: FieldRef<"Address", 'DateTime'>
+    readonly updatedAt: FieldRef<"Address", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Address findUnique
+   */
+  export type AddressFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Address
+     */
+    select?: AddressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Address
+     */
+    omit?: AddressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddressInclude<ExtArgs> | null
+    /**
+     * Filter, which Address to fetch.
+     */
+    where: AddressWhereUniqueInput
+  }
+
+  /**
+   * Address findUniqueOrThrow
+   */
+  export type AddressFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Address
+     */
+    select?: AddressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Address
+     */
+    omit?: AddressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddressInclude<ExtArgs> | null
+    /**
+     * Filter, which Address to fetch.
+     */
+    where: AddressWhereUniqueInput
+  }
+
+  /**
+   * Address findFirst
+   */
+  export type AddressFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Address
+     */
+    select?: AddressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Address
+     */
+    omit?: AddressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddressInclude<ExtArgs> | null
+    /**
+     * Filter, which Address to fetch.
+     */
+    where?: AddressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Addresses to fetch.
+     */
+    orderBy?: AddressOrderByWithRelationInput | AddressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Addresses.
+     */
+    cursor?: AddressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Addresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Addresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Addresses.
+     */
+    distinct?: AddressScalarFieldEnum | AddressScalarFieldEnum[]
+  }
+
+  /**
+   * Address findFirstOrThrow
+   */
+  export type AddressFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Address
+     */
+    select?: AddressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Address
+     */
+    omit?: AddressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddressInclude<ExtArgs> | null
+    /**
+     * Filter, which Address to fetch.
+     */
+    where?: AddressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Addresses to fetch.
+     */
+    orderBy?: AddressOrderByWithRelationInput | AddressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Addresses.
+     */
+    cursor?: AddressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Addresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Addresses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Addresses.
+     */
+    distinct?: AddressScalarFieldEnum | AddressScalarFieldEnum[]
+  }
+
+  /**
+   * Address findMany
+   */
+  export type AddressFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Address
+     */
+    select?: AddressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Address
+     */
+    omit?: AddressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddressInclude<ExtArgs> | null
+    /**
+     * Filter, which Addresses to fetch.
+     */
+    where?: AddressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Addresses to fetch.
+     */
+    orderBy?: AddressOrderByWithRelationInput | AddressOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Addresses.
+     */
+    cursor?: AddressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Addresses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Addresses.
+     */
+    skip?: number
+    distinct?: AddressScalarFieldEnum | AddressScalarFieldEnum[]
+  }
+
+  /**
+   * Address create
+   */
+  export type AddressCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Address
+     */
+    select?: AddressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Address
+     */
+    omit?: AddressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddressInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Address.
+     */
+    data: XOR<AddressCreateInput, AddressUncheckedCreateInput>
+  }
+
+  /**
+   * Address createMany
+   */
+  export type AddressCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Addresses.
+     */
+    data: AddressCreateManyInput | AddressCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Address createManyAndReturn
+   */
+  export type AddressCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Address
+     */
+    select?: AddressSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Address
+     */
+    omit?: AddressOmit<ExtArgs> | null
+    /**
+     * The data used to create many Addresses.
+     */
+    data: AddressCreateManyInput | AddressCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddressIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Address update
+   */
+  export type AddressUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Address
+     */
+    select?: AddressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Address
+     */
+    omit?: AddressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddressInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Address.
+     */
+    data: XOR<AddressUpdateInput, AddressUncheckedUpdateInput>
+    /**
+     * Choose, which Address to update.
+     */
+    where: AddressWhereUniqueInput
+  }
+
+  /**
+   * Address updateMany
+   */
+  export type AddressUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Addresses.
+     */
+    data: XOR<AddressUpdateManyMutationInput, AddressUncheckedUpdateManyInput>
+    /**
+     * Filter which Addresses to update
+     */
+    where?: AddressWhereInput
+    /**
+     * Limit how many Addresses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Address updateManyAndReturn
+   */
+  export type AddressUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Address
+     */
+    select?: AddressSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Address
+     */
+    omit?: AddressOmit<ExtArgs> | null
+    /**
+     * The data used to update Addresses.
+     */
+    data: XOR<AddressUpdateManyMutationInput, AddressUncheckedUpdateManyInput>
+    /**
+     * Filter which Addresses to update
+     */
+    where?: AddressWhereInput
+    /**
+     * Limit how many Addresses to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddressIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Address upsert
+   */
+  export type AddressUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Address
+     */
+    select?: AddressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Address
+     */
+    omit?: AddressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddressInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Address to update in case it exists.
+     */
+    where: AddressWhereUniqueInput
+    /**
+     * In case the Address found by the `where` argument doesn't exist, create a new Address with this data.
+     */
+    create: XOR<AddressCreateInput, AddressUncheckedCreateInput>
+    /**
+     * In case the Address was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AddressUpdateInput, AddressUncheckedUpdateInput>
+  }
+
+  /**
+   * Address delete
+   */
+  export type AddressDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Address
+     */
+    select?: AddressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Address
+     */
+    omit?: AddressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddressInclude<ExtArgs> | null
+    /**
+     * Filter which Address to delete.
+     */
+    where: AddressWhereUniqueInput
+  }
+
+  /**
+   * Address deleteMany
+   */
+  export type AddressDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Addresses to delete
+     */
+    where?: AddressWhereInput
+    /**
+     * Limit how many Addresses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Address without action
+   */
+  export type AddressDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Address
+     */
+    select?: AddressSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Address
+     */
+    omit?: AddressOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AddressInclude<ExtArgs> | null
   }
 
 
@@ -5305,11 +6847,13 @@ export namespace Prisma {
   export type IdentityAvgAggregateOutputType = {
     id: number | null
     userId: number | null
+    verifiedBy: number | null
   }
 
   export type IdentitySumAggregateOutputType = {
     id: number | null
     userId: number | null
+    verifiedBy: number | null
   }
 
   export type IdentityMinAggregateOutputType = {
@@ -5317,8 +6861,12 @@ export namespace Prisma {
     userId: number | null
     documentType: string | null
     documentNumber: string | null
+    issueDate: Date | null
+    expiryDate: Date | null
+    proofOfAddress: string | null
     verified: boolean | null
     verifiedAt: Date | null
+    verifiedBy: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5328,8 +6876,12 @@ export namespace Prisma {
     userId: number | null
     documentType: string | null
     documentNumber: string | null
+    issueDate: Date | null
+    expiryDate: Date | null
+    proofOfAddress: string | null
     verified: boolean | null
     verifiedAt: Date | null
+    verifiedBy: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5339,8 +6891,12 @@ export namespace Prisma {
     userId: number
     documentType: number
     documentNumber: number
+    issueDate: number
+    expiryDate: number
+    proofOfAddress: number
     verified: number
     verifiedAt: number
+    verifiedBy: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -5350,11 +6906,13 @@ export namespace Prisma {
   export type IdentityAvgAggregateInputType = {
     id?: true
     userId?: true
+    verifiedBy?: true
   }
 
   export type IdentitySumAggregateInputType = {
     id?: true
     userId?: true
+    verifiedBy?: true
   }
 
   export type IdentityMinAggregateInputType = {
@@ -5362,8 +6920,12 @@ export namespace Prisma {
     userId?: true
     documentType?: true
     documentNumber?: true
+    issueDate?: true
+    expiryDate?: true
+    proofOfAddress?: true
     verified?: true
     verifiedAt?: true
+    verifiedBy?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5373,8 +6935,12 @@ export namespace Prisma {
     userId?: true
     documentType?: true
     documentNumber?: true
+    issueDate?: true
+    expiryDate?: true
+    proofOfAddress?: true
     verified?: true
     verifiedAt?: true
+    verifiedBy?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5384,8 +6950,12 @@ export namespace Prisma {
     userId?: true
     documentType?: true
     documentNumber?: true
+    issueDate?: true
+    expiryDate?: true
+    proofOfAddress?: true
     verified?: true
     verifiedAt?: true
+    verifiedBy?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -5482,8 +7052,12 @@ export namespace Prisma {
     userId: number
     documentType: string
     documentNumber: string
+    issueDate: Date | null
+    expiryDate: Date | null
+    proofOfAddress: string | null
     verified: boolean
     verifiedAt: Date | null
+    verifiedBy: number | null
     createdAt: Date
     updatedAt: Date
     _count: IdentityCountAggregateOutputType | null
@@ -5512,8 +7086,12 @@ export namespace Prisma {
     userId?: boolean
     documentType?: boolean
     documentNumber?: boolean
+    issueDate?: boolean
+    expiryDate?: boolean
+    proofOfAddress?: boolean
     verified?: boolean
     verifiedAt?: boolean
+    verifiedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -5524,8 +7102,12 @@ export namespace Prisma {
     userId?: boolean
     documentType?: boolean
     documentNumber?: boolean
+    issueDate?: boolean
+    expiryDate?: boolean
+    proofOfAddress?: boolean
     verified?: boolean
     verifiedAt?: boolean
+    verifiedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -5536,8 +7118,12 @@ export namespace Prisma {
     userId?: boolean
     documentType?: boolean
     documentNumber?: boolean
+    issueDate?: boolean
+    expiryDate?: boolean
+    proofOfAddress?: boolean
     verified?: boolean
     verifiedAt?: boolean
+    verifiedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -5548,13 +7134,17 @@ export namespace Prisma {
     userId?: boolean
     documentType?: boolean
     documentNumber?: boolean
+    issueDate?: boolean
+    expiryDate?: boolean
+    proofOfAddress?: boolean
     verified?: boolean
     verifiedAt?: boolean
+    verifiedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type IdentityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "documentType" | "documentNumber" | "verified" | "verifiedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["identity"]>
+  export type IdentityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "documentType" | "documentNumber" | "issueDate" | "expiryDate" | "proofOfAddress" | "verified" | "verifiedAt" | "verifiedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["identity"]>
   export type IdentityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -5575,8 +7165,12 @@ export namespace Prisma {
       userId: number
       documentType: string
       documentNumber: string
+      issueDate: Date | null
+      expiryDate: Date | null
+      proofOfAddress: string | null
       verified: boolean
       verifiedAt: Date | null
+      verifiedBy: number | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["identity"]>
@@ -6007,8 +7601,12 @@ export namespace Prisma {
     readonly userId: FieldRef<"Identity", 'Int'>
     readonly documentType: FieldRef<"Identity", 'String'>
     readonly documentNumber: FieldRef<"Identity", 'String'>
+    readonly issueDate: FieldRef<"Identity", 'DateTime'>
+    readonly expiryDate: FieldRef<"Identity", 'DateTime'>
+    readonly proofOfAddress: FieldRef<"Identity", 'String'>
     readonly verified: FieldRef<"Identity", 'Boolean'>
     readonly verifiedAt: FieldRef<"Identity", 'DateTime'>
+    readonly verifiedBy: FieldRef<"Identity", 'Int'>
     readonly createdAt: FieldRef<"Identity", 'DateTime'>
     readonly updatedAt: FieldRef<"Identity", 'DateTime'>
   }
@@ -6422,6 +8020,1273 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: IdentityInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model GoldItem
+   */
+
+  export type AggregateGoldItem = {
+    _count: GoldItemCountAggregateOutputType | null
+    _avg: GoldItemAvgAggregateOutputType | null
+    _sum: GoldItemSumAggregateOutputType | null
+    _min: GoldItemMinAggregateOutputType | null
+    _max: GoldItemMaxAggregateOutputType | null
+  }
+
+  export type GoldItemAvgAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    transactionId: number | null
+    karat: number | null
+    purity: number | null
+    weightGrams: number | null
+    verifiedBy: number | null
+  }
+
+  export type GoldItemSumAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    transactionId: number | null
+    karat: number | null
+    purity: number | null
+    weightGrams: number | null
+    verifiedBy: number | null
+  }
+
+  export type GoldItemMinAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    transactionId: number | null
+    type: $Enums.GoldItemType | null
+    description: string | null
+    serialNumber: string | null
+    karat: number | null
+    purity: number | null
+    weightGrams: number | null
+    origin: string | null
+    storageLocation: string | null
+    depositMethod: $Enums.DepositMethod | null
+    verified: boolean | null
+    verifiedBy: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GoldItemMaxAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    transactionId: number | null
+    type: $Enums.GoldItemType | null
+    description: string | null
+    serialNumber: string | null
+    karat: number | null
+    purity: number | null
+    weightGrams: number | null
+    origin: string | null
+    storageLocation: string | null
+    depositMethod: $Enums.DepositMethod | null
+    verified: boolean | null
+    verifiedBy: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GoldItemCountAggregateOutputType = {
+    id: number
+    userId: number
+    transactionId: number
+    type: number
+    description: number
+    serialNumber: number
+    karat: number
+    purity: number
+    weightGrams: number
+    origin: number
+    storageLocation: number
+    depositMethod: number
+    verified: number
+    verifiedBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type GoldItemAvgAggregateInputType = {
+    id?: true
+    userId?: true
+    transactionId?: true
+    karat?: true
+    purity?: true
+    weightGrams?: true
+    verifiedBy?: true
+  }
+
+  export type GoldItemSumAggregateInputType = {
+    id?: true
+    userId?: true
+    transactionId?: true
+    karat?: true
+    purity?: true
+    weightGrams?: true
+    verifiedBy?: true
+  }
+
+  export type GoldItemMinAggregateInputType = {
+    id?: true
+    userId?: true
+    transactionId?: true
+    type?: true
+    description?: true
+    serialNumber?: true
+    karat?: true
+    purity?: true
+    weightGrams?: true
+    origin?: true
+    storageLocation?: true
+    depositMethod?: true
+    verified?: true
+    verifiedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GoldItemMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    transactionId?: true
+    type?: true
+    description?: true
+    serialNumber?: true
+    karat?: true
+    purity?: true
+    weightGrams?: true
+    origin?: true
+    storageLocation?: true
+    depositMethod?: true
+    verified?: true
+    verifiedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GoldItemCountAggregateInputType = {
+    id?: true
+    userId?: true
+    transactionId?: true
+    type?: true
+    description?: true
+    serialNumber?: true
+    karat?: true
+    purity?: true
+    weightGrams?: true
+    origin?: true
+    storageLocation?: true
+    depositMethod?: true
+    verified?: true
+    verifiedBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type GoldItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GoldItem to aggregate.
+     */
+    where?: GoldItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GoldItems to fetch.
+     */
+    orderBy?: GoldItemOrderByWithRelationInput | GoldItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GoldItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GoldItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GoldItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GoldItems
+    **/
+    _count?: true | GoldItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: GoldItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: GoldItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GoldItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GoldItemMaxAggregateInputType
+  }
+
+  export type GetGoldItemAggregateType<T extends GoldItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateGoldItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGoldItem[P]>
+      : GetScalarType<T[P], AggregateGoldItem[P]>
+  }
+
+
+
+
+  export type GoldItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GoldItemWhereInput
+    orderBy?: GoldItemOrderByWithAggregationInput | GoldItemOrderByWithAggregationInput[]
+    by: GoldItemScalarFieldEnum[] | GoldItemScalarFieldEnum
+    having?: GoldItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GoldItemCountAggregateInputType | true
+    _avg?: GoldItemAvgAggregateInputType
+    _sum?: GoldItemSumAggregateInputType
+    _min?: GoldItemMinAggregateInputType
+    _max?: GoldItemMaxAggregateInputType
+  }
+
+  export type GoldItemGroupByOutputType = {
+    id: number
+    userId: number
+    transactionId: number
+    type: $Enums.GoldItemType
+    description: string | null
+    serialNumber: string | null
+    karat: number | null
+    purity: number | null
+    weightGrams: number
+    origin: string | null
+    storageLocation: string | null
+    depositMethod: $Enums.DepositMethod
+    verified: boolean
+    verifiedBy: number | null
+    createdAt: Date
+    updatedAt: Date
+    _count: GoldItemCountAggregateOutputType | null
+    _avg: GoldItemAvgAggregateOutputType | null
+    _sum: GoldItemSumAggregateOutputType | null
+    _min: GoldItemMinAggregateOutputType | null
+    _max: GoldItemMaxAggregateOutputType | null
+  }
+
+  type GetGoldItemGroupByPayload<T extends GoldItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GoldItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GoldItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GoldItemGroupByOutputType[P]>
+            : GetScalarType<T[P], GoldItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GoldItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    transactionId?: boolean
+    type?: boolean
+    description?: boolean
+    serialNumber?: boolean
+    karat?: boolean
+    purity?: boolean
+    weightGrams?: boolean
+    origin?: boolean
+    storageLocation?: boolean
+    depositMethod?: boolean
+    verified?: boolean
+    verifiedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    transaction?: boolean | TransactionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["goldItem"]>
+
+  export type GoldItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    transactionId?: boolean
+    type?: boolean
+    description?: boolean
+    serialNumber?: boolean
+    karat?: boolean
+    purity?: boolean
+    weightGrams?: boolean
+    origin?: boolean
+    storageLocation?: boolean
+    depositMethod?: boolean
+    verified?: boolean
+    verifiedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    transaction?: boolean | TransactionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["goldItem"]>
+
+  export type GoldItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    transactionId?: boolean
+    type?: boolean
+    description?: boolean
+    serialNumber?: boolean
+    karat?: boolean
+    purity?: boolean
+    weightGrams?: boolean
+    origin?: boolean
+    storageLocation?: boolean
+    depositMethod?: boolean
+    verified?: boolean
+    verifiedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    transaction?: boolean | TransactionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["goldItem"]>
+
+  export type GoldItemSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    transactionId?: boolean
+    type?: boolean
+    description?: boolean
+    serialNumber?: boolean
+    karat?: boolean
+    purity?: boolean
+    weightGrams?: boolean
+    origin?: boolean
+    storageLocation?: boolean
+    depositMethod?: boolean
+    verified?: boolean
+    verifiedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type GoldItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "transactionId" | "type" | "description" | "serialNumber" | "karat" | "purity" | "weightGrams" | "origin" | "storageLocation" | "depositMethod" | "verified" | "verifiedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["goldItem"]>
+  export type GoldItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    transaction?: boolean | TransactionDefaultArgs<ExtArgs>
+  }
+  export type GoldItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    transaction?: boolean | TransactionDefaultArgs<ExtArgs>
+  }
+  export type GoldItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    transaction?: boolean | TransactionDefaultArgs<ExtArgs>
+  }
+
+  export type $GoldItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GoldItem"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      transaction: Prisma.$TransactionPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      userId: number
+      transactionId: number
+      type: $Enums.GoldItemType
+      description: string | null
+      serialNumber: string | null
+      karat: number | null
+      purity: number | null
+      weightGrams: number
+      origin: string | null
+      storageLocation: string | null
+      depositMethod: $Enums.DepositMethod
+      verified: boolean
+      verifiedBy: number | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["goldItem"]>
+    composites: {}
+  }
+
+  type GoldItemGetPayload<S extends boolean | null | undefined | GoldItemDefaultArgs> = $Result.GetResult<Prisma.$GoldItemPayload, S>
+
+  type GoldItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GoldItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GoldItemCountAggregateInputType | true
+    }
+
+  export interface GoldItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GoldItem'], meta: { name: 'GoldItem' } }
+    /**
+     * Find zero or one GoldItem that matches the filter.
+     * @param {GoldItemFindUniqueArgs} args - Arguments to find a GoldItem
+     * @example
+     * // Get one GoldItem
+     * const goldItem = await prisma.goldItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GoldItemFindUniqueArgs>(args: SelectSubset<T, GoldItemFindUniqueArgs<ExtArgs>>): Prisma__GoldItemClient<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GoldItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GoldItemFindUniqueOrThrowArgs} args - Arguments to find a GoldItem
+     * @example
+     * // Get one GoldItem
+     * const goldItem = await prisma.goldItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GoldItemFindUniqueOrThrowArgs>(args: SelectSubset<T, GoldItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GoldItemClient<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GoldItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoldItemFindFirstArgs} args - Arguments to find a GoldItem
+     * @example
+     * // Get one GoldItem
+     * const goldItem = await prisma.goldItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GoldItemFindFirstArgs>(args?: SelectSubset<T, GoldItemFindFirstArgs<ExtArgs>>): Prisma__GoldItemClient<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GoldItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoldItemFindFirstOrThrowArgs} args - Arguments to find a GoldItem
+     * @example
+     * // Get one GoldItem
+     * const goldItem = await prisma.goldItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GoldItemFindFirstOrThrowArgs>(args?: SelectSubset<T, GoldItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__GoldItemClient<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GoldItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoldItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GoldItems
+     * const goldItems = await prisma.goldItem.findMany()
+     * 
+     * // Get first 10 GoldItems
+     * const goldItems = await prisma.goldItem.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const goldItemWithIdOnly = await prisma.goldItem.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GoldItemFindManyArgs>(args?: SelectSubset<T, GoldItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GoldItem.
+     * @param {GoldItemCreateArgs} args - Arguments to create a GoldItem.
+     * @example
+     * // Create one GoldItem
+     * const GoldItem = await prisma.goldItem.create({
+     *   data: {
+     *     // ... data to create a GoldItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends GoldItemCreateArgs>(args: SelectSubset<T, GoldItemCreateArgs<ExtArgs>>): Prisma__GoldItemClient<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GoldItems.
+     * @param {GoldItemCreateManyArgs} args - Arguments to create many GoldItems.
+     * @example
+     * // Create many GoldItems
+     * const goldItem = await prisma.goldItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GoldItemCreateManyArgs>(args?: SelectSubset<T, GoldItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GoldItems and returns the data saved in the database.
+     * @param {GoldItemCreateManyAndReturnArgs} args - Arguments to create many GoldItems.
+     * @example
+     * // Create many GoldItems
+     * const goldItem = await prisma.goldItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GoldItems and only return the `id`
+     * const goldItemWithIdOnly = await prisma.goldItem.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GoldItemCreateManyAndReturnArgs>(args?: SelectSubset<T, GoldItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GoldItem.
+     * @param {GoldItemDeleteArgs} args - Arguments to delete one GoldItem.
+     * @example
+     * // Delete one GoldItem
+     * const GoldItem = await prisma.goldItem.delete({
+     *   where: {
+     *     // ... filter to delete one GoldItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GoldItemDeleteArgs>(args: SelectSubset<T, GoldItemDeleteArgs<ExtArgs>>): Prisma__GoldItemClient<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GoldItem.
+     * @param {GoldItemUpdateArgs} args - Arguments to update one GoldItem.
+     * @example
+     * // Update one GoldItem
+     * const goldItem = await prisma.goldItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GoldItemUpdateArgs>(args: SelectSubset<T, GoldItemUpdateArgs<ExtArgs>>): Prisma__GoldItemClient<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GoldItems.
+     * @param {GoldItemDeleteManyArgs} args - Arguments to filter GoldItems to delete.
+     * @example
+     * // Delete a few GoldItems
+     * const { count } = await prisma.goldItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GoldItemDeleteManyArgs>(args?: SelectSubset<T, GoldItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GoldItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoldItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GoldItems
+     * const goldItem = await prisma.goldItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GoldItemUpdateManyArgs>(args: SelectSubset<T, GoldItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GoldItems and returns the data updated in the database.
+     * @param {GoldItemUpdateManyAndReturnArgs} args - Arguments to update many GoldItems.
+     * @example
+     * // Update many GoldItems
+     * const goldItem = await prisma.goldItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GoldItems and only return the `id`
+     * const goldItemWithIdOnly = await prisma.goldItem.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GoldItemUpdateManyAndReturnArgs>(args: SelectSubset<T, GoldItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GoldItem.
+     * @param {GoldItemUpsertArgs} args - Arguments to update or create a GoldItem.
+     * @example
+     * // Update or create a GoldItem
+     * const goldItem = await prisma.goldItem.upsert({
+     *   create: {
+     *     // ... data to create a GoldItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GoldItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GoldItemUpsertArgs>(args: SelectSubset<T, GoldItemUpsertArgs<ExtArgs>>): Prisma__GoldItemClient<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GoldItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoldItemCountArgs} args - Arguments to filter GoldItems to count.
+     * @example
+     * // Count the number of GoldItems
+     * const count = await prisma.goldItem.count({
+     *   where: {
+     *     // ... the filter for the GoldItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends GoldItemCountArgs>(
+      args?: Subset<T, GoldItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GoldItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GoldItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoldItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GoldItemAggregateArgs>(args: Subset<T, GoldItemAggregateArgs>): Prisma.PrismaPromise<GetGoldItemAggregateType<T>>
+
+    /**
+     * Group by GoldItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoldItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GoldItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GoldItemGroupByArgs['orderBy'] }
+        : { orderBy?: GoldItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GoldItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGoldItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GoldItem model
+   */
+  readonly fields: GoldItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GoldItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GoldItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    transaction<T extends TransactionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TransactionDefaultArgs<ExtArgs>>): Prisma__TransactionClient<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GoldItem model
+   */
+  interface GoldItemFieldRefs {
+    readonly id: FieldRef<"GoldItem", 'Int'>
+    readonly userId: FieldRef<"GoldItem", 'Int'>
+    readonly transactionId: FieldRef<"GoldItem", 'Int'>
+    readonly type: FieldRef<"GoldItem", 'GoldItemType'>
+    readonly description: FieldRef<"GoldItem", 'String'>
+    readonly serialNumber: FieldRef<"GoldItem", 'String'>
+    readonly karat: FieldRef<"GoldItem", 'Float'>
+    readonly purity: FieldRef<"GoldItem", 'Float'>
+    readonly weightGrams: FieldRef<"GoldItem", 'Float'>
+    readonly origin: FieldRef<"GoldItem", 'String'>
+    readonly storageLocation: FieldRef<"GoldItem", 'String'>
+    readonly depositMethod: FieldRef<"GoldItem", 'DepositMethod'>
+    readonly verified: FieldRef<"GoldItem", 'Boolean'>
+    readonly verifiedBy: FieldRef<"GoldItem", 'Int'>
+    readonly createdAt: FieldRef<"GoldItem", 'DateTime'>
+    readonly updatedAt: FieldRef<"GoldItem", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GoldItem findUnique
+   */
+  export type GoldItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemInclude<ExtArgs> | null
+    /**
+     * Filter, which GoldItem to fetch.
+     */
+    where: GoldItemWhereUniqueInput
+  }
+
+  /**
+   * GoldItem findUniqueOrThrow
+   */
+  export type GoldItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemInclude<ExtArgs> | null
+    /**
+     * Filter, which GoldItem to fetch.
+     */
+    where: GoldItemWhereUniqueInput
+  }
+
+  /**
+   * GoldItem findFirst
+   */
+  export type GoldItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemInclude<ExtArgs> | null
+    /**
+     * Filter, which GoldItem to fetch.
+     */
+    where?: GoldItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GoldItems to fetch.
+     */
+    orderBy?: GoldItemOrderByWithRelationInput | GoldItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GoldItems.
+     */
+    cursor?: GoldItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GoldItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GoldItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GoldItems.
+     */
+    distinct?: GoldItemScalarFieldEnum | GoldItemScalarFieldEnum[]
+  }
+
+  /**
+   * GoldItem findFirstOrThrow
+   */
+  export type GoldItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemInclude<ExtArgs> | null
+    /**
+     * Filter, which GoldItem to fetch.
+     */
+    where?: GoldItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GoldItems to fetch.
+     */
+    orderBy?: GoldItemOrderByWithRelationInput | GoldItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GoldItems.
+     */
+    cursor?: GoldItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GoldItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GoldItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GoldItems.
+     */
+    distinct?: GoldItemScalarFieldEnum | GoldItemScalarFieldEnum[]
+  }
+
+  /**
+   * GoldItem findMany
+   */
+  export type GoldItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemInclude<ExtArgs> | null
+    /**
+     * Filter, which GoldItems to fetch.
+     */
+    where?: GoldItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GoldItems to fetch.
+     */
+    orderBy?: GoldItemOrderByWithRelationInput | GoldItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GoldItems.
+     */
+    cursor?: GoldItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GoldItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GoldItems.
+     */
+    skip?: number
+    distinct?: GoldItemScalarFieldEnum | GoldItemScalarFieldEnum[]
+  }
+
+  /**
+   * GoldItem create
+   */
+  export type GoldItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GoldItem.
+     */
+    data: XOR<GoldItemCreateInput, GoldItemUncheckedCreateInput>
+  }
+
+  /**
+   * GoldItem createMany
+   */
+  export type GoldItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GoldItems.
+     */
+    data: GoldItemCreateManyInput | GoldItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GoldItem createManyAndReturn
+   */
+  export type GoldItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many GoldItems.
+     */
+    data: GoldItemCreateManyInput | GoldItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GoldItem update
+   */
+  export type GoldItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GoldItem.
+     */
+    data: XOR<GoldItemUpdateInput, GoldItemUncheckedUpdateInput>
+    /**
+     * Choose, which GoldItem to update.
+     */
+    where: GoldItemWhereUniqueInput
+  }
+
+  /**
+   * GoldItem updateMany
+   */
+  export type GoldItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GoldItems.
+     */
+    data: XOR<GoldItemUpdateManyMutationInput, GoldItemUncheckedUpdateManyInput>
+    /**
+     * Filter which GoldItems to update
+     */
+    where?: GoldItemWhereInput
+    /**
+     * Limit how many GoldItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GoldItem updateManyAndReturn
+   */
+  export type GoldItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * The data used to update GoldItems.
+     */
+    data: XOR<GoldItemUpdateManyMutationInput, GoldItemUncheckedUpdateManyInput>
+    /**
+     * Filter which GoldItems to update
+     */
+    where?: GoldItemWhereInput
+    /**
+     * Limit how many GoldItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GoldItem upsert
+   */
+  export type GoldItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GoldItem to update in case it exists.
+     */
+    where: GoldItemWhereUniqueInput
+    /**
+     * In case the GoldItem found by the `where` argument doesn't exist, create a new GoldItem with this data.
+     */
+    create: XOR<GoldItemCreateInput, GoldItemUncheckedCreateInput>
+    /**
+     * In case the GoldItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GoldItemUpdateInput, GoldItemUncheckedUpdateInput>
+  }
+
+  /**
+   * GoldItem delete
+   */
+  export type GoldItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemInclude<ExtArgs> | null
+    /**
+     * Filter which GoldItem to delete.
+     */
+    where: GoldItemWhereUniqueInput
+  }
+
+  /**
+   * GoldItem deleteMany
+   */
+  export type GoldItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GoldItems to delete
+     */
+    where?: GoldItemWhereInput
+    /**
+     * Limit how many GoldItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GoldItem without action
+   */
+  export type GoldItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemInclude<ExtArgs> | null
   }
 
 
@@ -8882,6 +11747,7 @@ export namespace Prisma {
     referenceNumber: string | null
     userId: number | null
     type: $Enums.TransactionType | null
+    source: $Enums.TransactionSource | null
     status: $Enums.TransactionStatus | null
     gramsPurchased: number | null
     pricePerGram: number | null
@@ -8898,6 +11764,7 @@ export namespace Prisma {
     referenceNumber: string | null
     userId: number | null
     type: $Enums.TransactionType | null
+    source: $Enums.TransactionSource | null
     status: $Enums.TransactionStatus | null
     gramsPurchased: number | null
     pricePerGram: number | null
@@ -8914,6 +11781,7 @@ export namespace Prisma {
     referenceNumber: number
     userId: number
     type: number
+    source: number
     status: number
     gramsPurchased: number
     pricePerGram: number
@@ -8952,6 +11820,7 @@ export namespace Prisma {
     referenceNumber?: true
     userId?: true
     type?: true
+    source?: true
     status?: true
     gramsPurchased?: true
     pricePerGram?: true
@@ -8968,6 +11837,7 @@ export namespace Prisma {
     referenceNumber?: true
     userId?: true
     type?: true
+    source?: true
     status?: true
     gramsPurchased?: true
     pricePerGram?: true
@@ -8984,6 +11854,7 @@ export namespace Prisma {
     referenceNumber?: true
     userId?: true
     type?: true
+    source?: true
     status?: true
     gramsPurchased?: true
     pricePerGram?: true
@@ -9087,6 +11958,7 @@ export namespace Prisma {
     referenceNumber: string
     userId: number
     type: $Enums.TransactionType
+    source: $Enums.TransactionSource
     status: $Enums.TransactionStatus
     gramsPurchased: number
     pricePerGram: number
@@ -9122,6 +11994,7 @@ export namespace Prisma {
     referenceNumber?: boolean
     userId?: boolean
     type?: boolean
+    source?: boolean
     status?: boolean
     gramsPurchased?: boolean
     pricePerGram?: boolean
@@ -9134,6 +12007,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     payment?: boolean | Transaction$paymentArgs<ExtArgs>
     holdings?: boolean | Transaction$holdingsArgs<ExtArgs>
+    goldItems?: boolean | Transaction$goldItemsArgs<ExtArgs>
     _count?: boolean | TransactionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["transaction"]>
 
@@ -9142,6 +12016,7 @@ export namespace Prisma {
     referenceNumber?: boolean
     userId?: boolean
     type?: boolean
+    source?: boolean
     status?: boolean
     gramsPurchased?: boolean
     pricePerGram?: boolean
@@ -9160,6 +12035,7 @@ export namespace Prisma {
     referenceNumber?: boolean
     userId?: boolean
     type?: boolean
+    source?: boolean
     status?: boolean
     gramsPurchased?: boolean
     pricePerGram?: boolean
@@ -9178,6 +12054,7 @@ export namespace Prisma {
     referenceNumber?: boolean
     userId?: boolean
     type?: boolean
+    source?: boolean
     status?: boolean
     gramsPurchased?: boolean
     pricePerGram?: boolean
@@ -9189,11 +12066,12 @@ export namespace Prisma {
     paymentId?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "referenceNumber" | "userId" | "type" | "status" | "gramsPurchased" | "pricePerGram" | "totalCost" | "fee" | "currency" | "createdAt" | "updatedAt" | "paymentId", ExtArgs["result"]["transaction"]>
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "referenceNumber" | "userId" | "type" | "source" | "status" | "gramsPurchased" | "pricePerGram" | "totalCost" | "fee" | "currency" | "createdAt" | "updatedAt" | "paymentId", ExtArgs["result"]["transaction"]>
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     payment?: boolean | Transaction$paymentArgs<ExtArgs>
     holdings?: boolean | Transaction$holdingsArgs<ExtArgs>
+    goldItems?: boolean | Transaction$goldItemsArgs<ExtArgs>
     _count?: boolean | TransactionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9211,12 +12089,14 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
       payment: Prisma.$PaymentPayload<ExtArgs> | null
       holdings: Prisma.$HoldingPayload<ExtArgs>[]
+      goldItems: Prisma.$GoldItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       referenceNumber: string
       userId: number
       type: $Enums.TransactionType
+      source: $Enums.TransactionSource
       status: $Enums.TransactionStatus
       gramsPurchased: number
       pricePerGram: number
@@ -9623,6 +12503,7 @@ export namespace Prisma {
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     payment<T extends Transaction$paymentArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$paymentArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     holdings<T extends Transaction$holdingsArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$holdingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HoldingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    goldItems<T extends Transaction$goldItemsArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$goldItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9656,6 +12537,7 @@ export namespace Prisma {
     readonly referenceNumber: FieldRef<"Transaction", 'String'>
     readonly userId: FieldRef<"Transaction", 'Int'>
     readonly type: FieldRef<"Transaction", 'TransactionType'>
+    readonly source: FieldRef<"Transaction", 'TransactionSource'>
     readonly status: FieldRef<"Transaction", 'TransactionStatus'>
     readonly gramsPurchased: FieldRef<"Transaction", 'Float'>
     readonly pricePerGram: FieldRef<"Transaction", 'Float'>
@@ -10101,6 +12983,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: HoldingScalarFieldEnum | HoldingScalarFieldEnum[]
+  }
+
+  /**
+   * Transaction.goldItems
+   */
+  export type Transaction$goldItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoldItem
+     */
+    select?: GoldItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoldItem
+     */
+    omit?: GoldItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoldItemInclude<ExtArgs> | null
+    where?: GoldItemWhereInput
+    orderBy?: GoldItemOrderByWithRelationInput | GoldItemOrderByWithRelationInput[]
+    cursor?: GoldItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: GoldItemScalarFieldEnum | GoldItemScalarFieldEnum[]
   }
 
   /**
@@ -12454,7 +15360,12 @@ export namespace Prisma {
     email: 'email',
     password: 'password',
     firstName: 'firstName',
+    middleName: 'middleName',
     lastName: 'lastName',
+    dateOfBirth: 'dateOfBirth',
+    gender: 'gender',
+    phoneNumber: 'phoneNumber',
+    nationality: 'nationality',
     country: 'country',
     role: 'role',
     createdAt: 'createdAt',
@@ -12462,6 +15373,22 @@ export namespace Prisma {
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const AddressScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    type: 'type',
+    street: 'street',
+    city: 'city',
+    state: 'state',
+    postalCode: 'postalCode',
+    country: 'country',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
 
 
   export const WalletScalarFieldEnum: {
@@ -12495,13 +15422,39 @@ export namespace Prisma {
     userId: 'userId',
     documentType: 'documentType',
     documentNumber: 'documentNumber',
+    issueDate: 'issueDate',
+    expiryDate: 'expiryDate',
+    proofOfAddress: 'proofOfAddress',
     verified: 'verified',
     verifiedAt: 'verifiedAt',
+    verifiedBy: 'verifiedBy',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type IdentityScalarFieldEnum = (typeof IdentityScalarFieldEnum)[keyof typeof IdentityScalarFieldEnum]
+
+
+  export const GoldItemScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    transactionId: 'transactionId',
+    type: 'type',
+    description: 'description',
+    serialNumber: 'serialNumber',
+    karat: 'karat',
+    purity: 'purity',
+    weightGrams: 'weightGrams',
+    origin: 'origin',
+    storageLocation: 'storageLocation',
+    depositMethod: 'depositMethod',
+    verified: 'verified',
+    verifiedBy: 'verifiedBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type GoldItemScalarFieldEnum = (typeof GoldItemScalarFieldEnum)[keyof typeof GoldItemScalarFieldEnum]
 
 
   export const GoldPriceScalarFieldEnum: {
@@ -12553,6 +15506,7 @@ export namespace Prisma {
     referenceNumber: 'referenceNumber',
     userId: 'userId',
     type: 'type',
+    source: 'source',
     status: 'status',
     gramsPurchased: 'gramsPurchased',
     pricePerGram: 'pricePerGram',
@@ -12653,6 +15607,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Role'
    */
   export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
@@ -12667,16 +15635,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'DateTime'
+   * Reference to a field of type 'AddressType'
    */
-  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+  export type EnumAddressTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AddressType'>
     
 
 
   /**
-   * Reference to a field of type 'DateTime[]'
+   * Reference to a field of type 'AddressType[]'
    */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+  export type ListEnumAddressTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AddressType[]'>
     
 
 
@@ -12716,6 +15684,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'GoldItemType'
+   */
+  export type EnumGoldItemTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GoldItemType'>
+    
+
+
+  /**
+   * Reference to a field of type 'GoldItemType[]'
+   */
+  export type ListEnumGoldItemTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'GoldItemType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DepositMethod'
+   */
+  export type EnumDepositMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DepositMethod'>
+    
+
+
+  /**
+   * Reference to a field of type 'DepositMethod[]'
+   */
+  export type ListEnumDepositMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DepositMethod[]'>
+    
+
+
+  /**
    * Reference to a field of type 'BigInt'
    */
   export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
@@ -12744,6 +15740,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'TransactionSource'
+   */
+  export type EnumTransactionSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionSource'>
+    
+
+
+  /**
+   * Reference to a field of type 'TransactionSource[]'
+   */
+  export type ListEnumTransactionSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionSource[]'>
+    
+
+
+  /**
    * Reference to a field of type 'TransactionStatus'
    */
   export type EnumTransactionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionStatus'>
@@ -12768,15 +15778,22 @@ export namespace Prisma {
     email?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
     firstName?: StringFilter<"User"> | string
+    middleName?: StringNullableFilter<"User"> | string | null
     lastName?: StringFilter<"User"> | string
+    dateOfBirth?: DateTimeNullableFilter<"User"> | Date | string | null
+    gender?: StringNullableFilter<"User"> | string | null
+    phoneNumber?: StringNullableFilter<"User"> | string | null
+    nationality?: StringNullableFilter<"User"> | string | null
     country?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     identity?: XOR<IdentityNullableScalarRelationFilter, IdentityWhereInput> | null
+    addresses?: AddressListRelationFilter
     transactions?: TransactionListRelationFilter
     payments?: PaymentListRelationFilter
     holdings?: HoldingListRelationFilter
+    goldItems?: GoldItemListRelationFilter
     Portfolio?: XOR<PortfolioNullableScalarRelationFilter, PortfolioWhereInput> | null
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
   }
@@ -12786,15 +15803,22 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     firstName?: SortOrder
+    middleName?: SortOrderInput | SortOrder
     lastName?: SortOrder
+    dateOfBirth?: SortOrderInput | SortOrder
+    gender?: SortOrderInput | SortOrder
+    phoneNumber?: SortOrderInput | SortOrder
+    nationality?: SortOrderInput | SortOrder
     country?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     identity?: IdentityOrderByWithRelationInput
+    addresses?: AddressOrderByRelationAggregateInput
     transactions?: TransactionOrderByRelationAggregateInput
     payments?: PaymentOrderByRelationAggregateInput
     holdings?: HoldingOrderByRelationAggregateInput
+    goldItems?: GoldItemOrderByRelationAggregateInput
     Portfolio?: PortfolioOrderByWithRelationInput
     wallet?: WalletOrderByWithRelationInput
   }
@@ -12807,15 +15831,22 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     password?: StringFilter<"User"> | string
     firstName?: StringFilter<"User"> | string
+    middleName?: StringNullableFilter<"User"> | string | null
     lastName?: StringFilter<"User"> | string
+    dateOfBirth?: DateTimeNullableFilter<"User"> | Date | string | null
+    gender?: StringNullableFilter<"User"> | string | null
+    phoneNumber?: StringNullableFilter<"User"> | string | null
+    nationality?: StringNullableFilter<"User"> | string | null
     country?: StringFilter<"User"> | string
     role?: EnumRoleFilter<"User"> | $Enums.Role
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     identity?: XOR<IdentityNullableScalarRelationFilter, IdentityWhereInput> | null
+    addresses?: AddressListRelationFilter
     transactions?: TransactionListRelationFilter
     payments?: PaymentListRelationFilter
     holdings?: HoldingListRelationFilter
+    goldItems?: GoldItemListRelationFilter
     Portfolio?: XOR<PortfolioNullableScalarRelationFilter, PortfolioWhereInput> | null
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
   }, "id" | "email">
@@ -12825,7 +15856,12 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     firstName?: SortOrder
+    middleName?: SortOrderInput | SortOrder
     lastName?: SortOrder
+    dateOfBirth?: SortOrderInput | SortOrder
+    gender?: SortOrderInput | SortOrder
+    phoneNumber?: SortOrderInput | SortOrder
+    nationality?: SortOrderInput | SortOrder
     country?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
@@ -12845,11 +15881,98 @@ export namespace Prisma {
     email?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
     firstName?: StringWithAggregatesFilter<"User"> | string
+    middleName?: StringNullableWithAggregatesFilter<"User"> | string | null
     lastName?: StringWithAggregatesFilter<"User"> | string
+    dateOfBirth?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    gender?: StringNullableWithAggregatesFilter<"User"> | string | null
+    phoneNumber?: StringNullableWithAggregatesFilter<"User"> | string | null
+    nationality?: StringNullableWithAggregatesFilter<"User"> | string | null
     country?: StringWithAggregatesFilter<"User"> | string
     role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+  }
+
+  export type AddressWhereInput = {
+    AND?: AddressWhereInput | AddressWhereInput[]
+    OR?: AddressWhereInput[]
+    NOT?: AddressWhereInput | AddressWhereInput[]
+    id?: IntFilter<"Address"> | number
+    userId?: IntFilter<"Address"> | number
+    type?: EnumAddressTypeFilter<"Address"> | $Enums.AddressType
+    street?: StringFilter<"Address"> | string
+    city?: StringFilter<"Address"> | string
+    state?: StringNullableFilter<"Address"> | string | null
+    postalCode?: StringFilter<"Address"> | string
+    country?: StringFilter<"Address"> | string
+    createdAt?: DateTimeFilter<"Address"> | Date | string
+    updatedAt?: DateTimeFilter<"Address"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type AddressOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    street?: SortOrder
+    city?: SortOrder
+    state?: SortOrderInput | SortOrder
+    postalCode?: SortOrder
+    country?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type AddressWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: AddressWhereInput | AddressWhereInput[]
+    OR?: AddressWhereInput[]
+    NOT?: AddressWhereInput | AddressWhereInput[]
+    userId?: IntFilter<"Address"> | number
+    type?: EnumAddressTypeFilter<"Address"> | $Enums.AddressType
+    street?: StringFilter<"Address"> | string
+    city?: StringFilter<"Address"> | string
+    state?: StringNullableFilter<"Address"> | string | null
+    postalCode?: StringFilter<"Address"> | string
+    country?: StringFilter<"Address"> | string
+    createdAt?: DateTimeFilter<"Address"> | Date | string
+    updatedAt?: DateTimeFilter<"Address"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type AddressOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    street?: SortOrder
+    city?: SortOrder
+    state?: SortOrderInput | SortOrder
+    postalCode?: SortOrder
+    country?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AddressCountOrderByAggregateInput
+    _avg?: AddressAvgOrderByAggregateInput
+    _max?: AddressMaxOrderByAggregateInput
+    _min?: AddressMinOrderByAggregateInput
+    _sum?: AddressSumOrderByAggregateInput
+  }
+
+  export type AddressScalarWhereWithAggregatesInput = {
+    AND?: AddressScalarWhereWithAggregatesInput | AddressScalarWhereWithAggregatesInput[]
+    OR?: AddressScalarWhereWithAggregatesInput[]
+    NOT?: AddressScalarWhereWithAggregatesInput | AddressScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Address"> | number
+    userId?: IntWithAggregatesFilter<"Address"> | number
+    type?: EnumAddressTypeWithAggregatesFilter<"Address"> | $Enums.AddressType
+    street?: StringWithAggregatesFilter<"Address"> | string
+    city?: StringWithAggregatesFilter<"Address"> | string
+    state?: StringNullableWithAggregatesFilter<"Address"> | string | null
+    postalCode?: StringWithAggregatesFilter<"Address"> | string
+    country?: StringWithAggregatesFilter<"Address"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Address"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Address"> | Date | string
   }
 
   export type WalletWhereInput = {
@@ -12994,8 +16117,12 @@ export namespace Prisma {
     userId?: IntFilter<"Identity"> | number
     documentType?: StringFilter<"Identity"> | string
     documentNumber?: StringFilter<"Identity"> | string
+    issueDate?: DateTimeNullableFilter<"Identity"> | Date | string | null
+    expiryDate?: DateTimeNullableFilter<"Identity"> | Date | string | null
+    proofOfAddress?: StringNullableFilter<"Identity"> | string | null
     verified?: BoolFilter<"Identity"> | boolean
     verifiedAt?: DateTimeNullableFilter<"Identity"> | Date | string | null
+    verifiedBy?: IntNullableFilter<"Identity"> | number | null
     createdAt?: DateTimeFilter<"Identity"> | Date | string
     updatedAt?: DateTimeFilter<"Identity"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -13006,8 +16133,12 @@ export namespace Prisma {
     userId?: SortOrder
     documentType?: SortOrder
     documentNumber?: SortOrder
+    issueDate?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    proofOfAddress?: SortOrderInput | SortOrder
     verified?: SortOrder
     verifiedAt?: SortOrderInput | SortOrder
+    verifiedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -13021,8 +16152,12 @@ export namespace Prisma {
     OR?: IdentityWhereInput[]
     NOT?: IdentityWhereInput | IdentityWhereInput[]
     documentType?: StringFilter<"Identity"> | string
+    issueDate?: DateTimeNullableFilter<"Identity"> | Date | string | null
+    expiryDate?: DateTimeNullableFilter<"Identity"> | Date | string | null
+    proofOfAddress?: StringNullableFilter<"Identity"> | string | null
     verified?: BoolFilter<"Identity"> | boolean
     verifiedAt?: DateTimeNullableFilter<"Identity"> | Date | string | null
+    verifiedBy?: IntNullableFilter<"Identity"> | number | null
     createdAt?: DateTimeFilter<"Identity"> | Date | string
     updatedAt?: DateTimeFilter<"Identity"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -13033,8 +16168,12 @@ export namespace Prisma {
     userId?: SortOrder
     documentType?: SortOrder
     documentNumber?: SortOrder
+    issueDate?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    proofOfAddress?: SortOrderInput | SortOrder
     verified?: SortOrder
     verifiedAt?: SortOrderInput | SortOrder
+    verifiedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: IdentityCountOrderByAggregateInput
@@ -13052,10 +16191,129 @@ export namespace Prisma {
     userId?: IntWithAggregatesFilter<"Identity"> | number
     documentType?: StringWithAggregatesFilter<"Identity"> | string
     documentNumber?: StringWithAggregatesFilter<"Identity"> | string
+    issueDate?: DateTimeNullableWithAggregatesFilter<"Identity"> | Date | string | null
+    expiryDate?: DateTimeNullableWithAggregatesFilter<"Identity"> | Date | string | null
+    proofOfAddress?: StringNullableWithAggregatesFilter<"Identity"> | string | null
     verified?: BoolWithAggregatesFilter<"Identity"> | boolean
     verifiedAt?: DateTimeNullableWithAggregatesFilter<"Identity"> | Date | string | null
+    verifiedBy?: IntNullableWithAggregatesFilter<"Identity"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Identity"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Identity"> | Date | string
+  }
+
+  export type GoldItemWhereInput = {
+    AND?: GoldItemWhereInput | GoldItemWhereInput[]
+    OR?: GoldItemWhereInput[]
+    NOT?: GoldItemWhereInput | GoldItemWhereInput[]
+    id?: IntFilter<"GoldItem"> | number
+    userId?: IntFilter<"GoldItem"> | number
+    transactionId?: IntFilter<"GoldItem"> | number
+    type?: EnumGoldItemTypeFilter<"GoldItem"> | $Enums.GoldItemType
+    description?: StringNullableFilter<"GoldItem"> | string | null
+    serialNumber?: StringNullableFilter<"GoldItem"> | string | null
+    karat?: FloatNullableFilter<"GoldItem"> | number | null
+    purity?: FloatNullableFilter<"GoldItem"> | number | null
+    weightGrams?: FloatFilter<"GoldItem"> | number
+    origin?: StringNullableFilter<"GoldItem"> | string | null
+    storageLocation?: StringNullableFilter<"GoldItem"> | string | null
+    depositMethod?: EnumDepositMethodFilter<"GoldItem"> | $Enums.DepositMethod
+    verified?: BoolFilter<"GoldItem"> | boolean
+    verifiedBy?: IntNullableFilter<"GoldItem"> | number | null
+    createdAt?: DateTimeFilter<"GoldItem"> | Date | string
+    updatedAt?: DateTimeFilter<"GoldItem"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    transaction?: XOR<TransactionScalarRelationFilter, TransactionWhereInput>
+  }
+
+  export type GoldItemOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    transactionId?: SortOrder
+    type?: SortOrder
+    description?: SortOrderInput | SortOrder
+    serialNumber?: SortOrderInput | SortOrder
+    karat?: SortOrderInput | SortOrder
+    purity?: SortOrderInput | SortOrder
+    weightGrams?: SortOrder
+    origin?: SortOrderInput | SortOrder
+    storageLocation?: SortOrderInput | SortOrder
+    depositMethod?: SortOrder
+    verified?: SortOrder
+    verifiedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    transaction?: TransactionOrderByWithRelationInput
+  }
+
+  export type GoldItemWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    serialNumber?: string
+    AND?: GoldItemWhereInput | GoldItemWhereInput[]
+    OR?: GoldItemWhereInput[]
+    NOT?: GoldItemWhereInput | GoldItemWhereInput[]
+    userId?: IntFilter<"GoldItem"> | number
+    transactionId?: IntFilter<"GoldItem"> | number
+    type?: EnumGoldItemTypeFilter<"GoldItem"> | $Enums.GoldItemType
+    description?: StringNullableFilter<"GoldItem"> | string | null
+    karat?: FloatNullableFilter<"GoldItem"> | number | null
+    purity?: FloatNullableFilter<"GoldItem"> | number | null
+    weightGrams?: FloatFilter<"GoldItem"> | number
+    origin?: StringNullableFilter<"GoldItem"> | string | null
+    storageLocation?: StringNullableFilter<"GoldItem"> | string | null
+    depositMethod?: EnumDepositMethodFilter<"GoldItem"> | $Enums.DepositMethod
+    verified?: BoolFilter<"GoldItem"> | boolean
+    verifiedBy?: IntNullableFilter<"GoldItem"> | number | null
+    createdAt?: DateTimeFilter<"GoldItem"> | Date | string
+    updatedAt?: DateTimeFilter<"GoldItem"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    transaction?: XOR<TransactionScalarRelationFilter, TransactionWhereInput>
+  }, "id" | "serialNumber">
+
+  export type GoldItemOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    transactionId?: SortOrder
+    type?: SortOrder
+    description?: SortOrderInput | SortOrder
+    serialNumber?: SortOrderInput | SortOrder
+    karat?: SortOrderInput | SortOrder
+    purity?: SortOrderInput | SortOrder
+    weightGrams?: SortOrder
+    origin?: SortOrderInput | SortOrder
+    storageLocation?: SortOrderInput | SortOrder
+    depositMethod?: SortOrder
+    verified?: SortOrder
+    verifiedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: GoldItemCountOrderByAggregateInput
+    _avg?: GoldItemAvgOrderByAggregateInput
+    _max?: GoldItemMaxOrderByAggregateInput
+    _min?: GoldItemMinOrderByAggregateInput
+    _sum?: GoldItemSumOrderByAggregateInput
+  }
+
+  export type GoldItemScalarWhereWithAggregatesInput = {
+    AND?: GoldItemScalarWhereWithAggregatesInput | GoldItemScalarWhereWithAggregatesInput[]
+    OR?: GoldItemScalarWhereWithAggregatesInput[]
+    NOT?: GoldItemScalarWhereWithAggregatesInput | GoldItemScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"GoldItem"> | number
+    userId?: IntWithAggregatesFilter<"GoldItem"> | number
+    transactionId?: IntWithAggregatesFilter<"GoldItem"> | number
+    type?: EnumGoldItemTypeWithAggregatesFilter<"GoldItem"> | $Enums.GoldItemType
+    description?: StringNullableWithAggregatesFilter<"GoldItem"> | string | null
+    serialNumber?: StringNullableWithAggregatesFilter<"GoldItem"> | string | null
+    karat?: FloatNullableWithAggregatesFilter<"GoldItem"> | number | null
+    purity?: FloatNullableWithAggregatesFilter<"GoldItem"> | number | null
+    weightGrams?: FloatWithAggregatesFilter<"GoldItem"> | number
+    origin?: StringNullableWithAggregatesFilter<"GoldItem"> | string | null
+    storageLocation?: StringNullableWithAggregatesFilter<"GoldItem"> | string | null
+    depositMethod?: EnumDepositMethodWithAggregatesFilter<"GoldItem"> | $Enums.DepositMethod
+    verified?: BoolWithAggregatesFilter<"GoldItem"> | boolean
+    verifiedBy?: IntNullableWithAggregatesFilter<"GoldItem"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"GoldItem"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"GoldItem"> | Date | string
   }
 
   export type GoldPriceWhereInput = {
@@ -13284,6 +16542,7 @@ export namespace Prisma {
     referenceNumber?: StringFilter<"Transaction"> | string
     userId?: IntFilter<"Transaction"> | number
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
+    source?: EnumTransactionSourceFilter<"Transaction"> | $Enums.TransactionSource
     status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     gramsPurchased?: FloatFilter<"Transaction"> | number
     pricePerGram?: FloatFilter<"Transaction"> | number
@@ -13296,6 +16555,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     payment?: XOR<PaymentNullableScalarRelationFilter, PaymentWhereInput> | null
     holdings?: HoldingListRelationFilter
+    goldItems?: GoldItemListRelationFilter
   }
 
   export type TransactionOrderByWithRelationInput = {
@@ -13303,6 +16563,7 @@ export namespace Prisma {
     referenceNumber?: SortOrder
     userId?: SortOrder
     type?: SortOrder
+    source?: SortOrder
     status?: SortOrder
     gramsPurchased?: SortOrder
     pricePerGram?: SortOrder
@@ -13315,6 +16576,7 @@ export namespace Prisma {
     user?: UserOrderByWithRelationInput
     payment?: PaymentOrderByWithRelationInput
     holdings?: HoldingOrderByRelationAggregateInput
+    goldItems?: GoldItemOrderByRelationAggregateInput
   }
 
   export type TransactionWhereUniqueInput = Prisma.AtLeast<{
@@ -13326,6 +16588,7 @@ export namespace Prisma {
     NOT?: TransactionWhereInput | TransactionWhereInput[]
     userId?: IntFilter<"Transaction"> | number
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
+    source?: EnumTransactionSourceFilter<"Transaction"> | $Enums.TransactionSource
     status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     gramsPurchased?: FloatFilter<"Transaction"> | number
     pricePerGram?: FloatFilter<"Transaction"> | number
@@ -13337,6 +16600,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     payment?: XOR<PaymentNullableScalarRelationFilter, PaymentWhereInput> | null
     holdings?: HoldingListRelationFilter
+    goldItems?: GoldItemListRelationFilter
   }, "id" | "referenceNumber" | "paymentId">
 
   export type TransactionOrderByWithAggregationInput = {
@@ -13344,6 +16608,7 @@ export namespace Prisma {
     referenceNumber?: SortOrder
     userId?: SortOrder
     type?: SortOrder
+    source?: SortOrder
     status?: SortOrder
     gramsPurchased?: SortOrder
     pricePerGram?: SortOrder
@@ -13368,6 +16633,7 @@ export namespace Prisma {
     referenceNumber?: StringWithAggregatesFilter<"Transaction"> | string
     userId?: IntWithAggregatesFilter<"Transaction"> | number
     type?: EnumTransactionTypeWithAggregatesFilter<"Transaction"> | $Enums.TransactionType
+    source?: EnumTransactionSourceWithAggregatesFilter<"Transaction"> | $Enums.TransactionSource
     status?: EnumTransactionStatusWithAggregatesFilter<"Transaction"> | $Enums.TransactionStatus
     gramsPurchased?: FloatWithAggregatesFilter<"Transaction"> | number
     pricePerGram?: FloatWithAggregatesFilter<"Transaction"> | number
@@ -13533,15 +16799,22 @@ export namespace Prisma {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     identity?: IdentityCreateNestedOneWithoutUserInput
+    addresses?: AddressCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
     holdings?: HoldingCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemCreateNestedManyWithoutUserInput
     Portfolio?: PortfolioCreateNestedOneWithoutUserInput
     wallet?: WalletCreateNestedOneWithoutUserInput
   }
@@ -13551,15 +16824,22 @@ export namespace Prisma {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     identity?: IdentityUncheckedCreateNestedOneWithoutUserInput
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
     holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
     Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
   }
@@ -13568,15 +16848,22 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     identity?: IdentityUpdateOneWithoutUserNestedInput
+    addresses?: AddressUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
     holdings?: HoldingUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUpdateManyWithoutUserNestedInput
     Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
     wallet?: WalletUpdateOneWithoutUserNestedInput
   }
@@ -13586,15 +16873,22 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     identity?: IdentityUncheckedUpdateOneWithoutUserNestedInput
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
     Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
   }
@@ -13604,7 +16898,12 @@ export namespace Prisma {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
@@ -13615,7 +16914,12 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13627,9 +16931,101 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AddressCreateInput = {
+    type?: $Enums.AddressType
+    street: string
+    city: string
+    state?: string | null
+    postalCode: string
+    country: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutAddressesInput
+  }
+
+  export type AddressUncheckedCreateInput = {
+    id?: number
+    userId: number
+    type?: $Enums.AddressType
+    street: string
+    city: string
+    state?: string | null
+    postalCode: string
+    country: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AddressUpdateInput = {
+    type?: EnumAddressTypeFieldUpdateOperationsInput | $Enums.AddressType
+    street?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: StringFieldUpdateOperationsInput | string
+    country?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAddressesNestedInput
+  }
+
+  export type AddressUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    type?: EnumAddressTypeFieldUpdateOperationsInput | $Enums.AddressType
+    street?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: StringFieldUpdateOperationsInput | string
+    country?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AddressCreateManyInput = {
+    id?: number
+    userId: number
+    type?: $Enums.AddressType
+    street: string
+    city: string
+    state?: string | null
+    postalCode: string
+    country: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AddressUpdateManyMutationInput = {
+    type?: EnumAddressTypeFieldUpdateOperationsInput | $Enums.AddressType
+    street?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: StringFieldUpdateOperationsInput | string
+    country?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AddressUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    type?: EnumAddressTypeFieldUpdateOperationsInput | $Enums.AddressType
+    street?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: StringFieldUpdateOperationsInput | string
+    country?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13769,8 +17165,12 @@ export namespace Prisma {
   export type IdentityCreateInput = {
     documentType: string
     documentNumber: string
+    issueDate?: Date | string | null
+    expiryDate?: Date | string | null
+    proofOfAddress?: string | null
     verified?: boolean
     verifiedAt?: Date | string | null
+    verifiedBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutIdentityInput
@@ -13781,8 +17181,12 @@ export namespace Prisma {
     userId: number
     documentType: string
     documentNumber: string
+    issueDate?: Date | string | null
+    expiryDate?: Date | string | null
+    proofOfAddress?: string | null
     verified?: boolean
     verifiedAt?: Date | string | null
+    verifiedBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -13790,8 +17194,12 @@ export namespace Prisma {
   export type IdentityUpdateInput = {
     documentType?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
+    issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    proofOfAddress?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutIdentityNestedInput
@@ -13802,8 +17210,12 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     documentType?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
+    issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    proofOfAddress?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13813,8 +17225,12 @@ export namespace Prisma {
     userId: number
     documentType: string
     documentNumber: string
+    issueDate?: Date | string | null
+    expiryDate?: Date | string | null
+    proofOfAddress?: string | null
     verified?: boolean
     verifiedAt?: Date | string | null
+    verifiedBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -13822,8 +17238,12 @@ export namespace Prisma {
   export type IdentityUpdateManyMutationInput = {
     documentType?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
+    issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    proofOfAddress?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -13833,8 +17253,140 @@ export namespace Prisma {
     userId?: IntFieldUpdateOperationsInput | number
     documentType?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
+    issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    proofOfAddress?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GoldItemCreateInput = {
+    type: $Enums.GoldItemType
+    description?: string | null
+    serialNumber?: string | null
+    karat?: number | null
+    purity?: number | null
+    weightGrams: number
+    origin?: string | null
+    storageLocation?: string | null
+    depositMethod?: $Enums.DepositMethod
+    verified?: boolean
+    verifiedBy?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGoldItemsInput
+    transaction: TransactionCreateNestedOneWithoutGoldItemsInput
+  }
+
+  export type GoldItemUncheckedCreateInput = {
+    id?: number
+    userId: number
+    transactionId: number
+    type: $Enums.GoldItemType
+    description?: string | null
+    serialNumber?: string | null
+    karat?: number | null
+    purity?: number | null
+    weightGrams: number
+    origin?: string | null
+    storageLocation?: string | null
+    depositMethod?: $Enums.DepositMethod
+    verified?: boolean
+    verifiedBy?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GoldItemUpdateInput = {
+    type?: EnumGoldItemTypeFieldUpdateOperationsInput | $Enums.GoldItemType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    karat?: NullableFloatFieldUpdateOperationsInput | number | null
+    purity?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightGrams?: FloatFieldUpdateOperationsInput | number
+    origin?: NullableStringFieldUpdateOperationsInput | string | null
+    storageLocation?: NullableStringFieldUpdateOperationsInput | string | null
+    depositMethod?: EnumDepositMethodFieldUpdateOperationsInput | $Enums.DepositMethod
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGoldItemsNestedInput
+    transaction?: TransactionUpdateOneRequiredWithoutGoldItemsNestedInput
+  }
+
+  export type GoldItemUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    transactionId?: IntFieldUpdateOperationsInput | number
+    type?: EnumGoldItemTypeFieldUpdateOperationsInput | $Enums.GoldItemType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    karat?: NullableFloatFieldUpdateOperationsInput | number | null
+    purity?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightGrams?: FloatFieldUpdateOperationsInput | number
+    origin?: NullableStringFieldUpdateOperationsInput | string | null
+    storageLocation?: NullableStringFieldUpdateOperationsInput | string | null
+    depositMethod?: EnumDepositMethodFieldUpdateOperationsInput | $Enums.DepositMethod
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GoldItemCreateManyInput = {
+    id?: number
+    userId: number
+    transactionId: number
+    type: $Enums.GoldItemType
+    description?: string | null
+    serialNumber?: string | null
+    karat?: number | null
+    purity?: number | null
+    weightGrams: number
+    origin?: string | null
+    storageLocation?: string | null
+    depositMethod?: $Enums.DepositMethod
+    verified?: boolean
+    verifiedBy?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GoldItemUpdateManyMutationInput = {
+    type?: EnumGoldItemTypeFieldUpdateOperationsInput | $Enums.GoldItemType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    karat?: NullableFloatFieldUpdateOperationsInput | number | null
+    purity?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightGrams?: FloatFieldUpdateOperationsInput | number
+    origin?: NullableStringFieldUpdateOperationsInput | string | null
+    storageLocation?: NullableStringFieldUpdateOperationsInput | string | null
+    depositMethod?: EnumDepositMethodFieldUpdateOperationsInput | $Enums.DepositMethod
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GoldItemUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    transactionId?: IntFieldUpdateOperationsInput | number
+    type?: EnumGoldItemTypeFieldUpdateOperationsInput | $Enums.GoldItemType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    karat?: NullableFloatFieldUpdateOperationsInput | number | null
+    purity?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightGrams?: FloatFieldUpdateOperationsInput | number
+    origin?: NullableStringFieldUpdateOperationsInput | string | null
+    storageLocation?: NullableStringFieldUpdateOperationsInput | string | null
+    depositMethod?: EnumDepositMethodFieldUpdateOperationsInput | $Enums.DepositMethod
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14102,6 +17654,7 @@ export namespace Prisma {
   export type TransactionCreateInput = {
     referenceNumber: string
     type: $Enums.TransactionType
+    source?: $Enums.TransactionSource
     status?: $Enums.TransactionStatus
     gramsPurchased: number
     pricePerGram: number
@@ -14113,6 +17666,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutTransactionsInput
     payment?: PaymentCreateNestedOneWithoutTransactionInput
     holdings?: HoldingCreateNestedManyWithoutTransactionInput
+    goldItems?: GoldItemCreateNestedManyWithoutTransactionInput
   }
 
   export type TransactionUncheckedCreateInput = {
@@ -14120,6 +17674,7 @@ export namespace Prisma {
     referenceNumber: string
     userId: number
     type: $Enums.TransactionType
+    source?: $Enums.TransactionSource
     status?: $Enums.TransactionStatus
     gramsPurchased: number
     pricePerGram: number
@@ -14130,11 +17685,13 @@ export namespace Prisma {
     updatedAt?: Date | string
     paymentId?: number | null
     holdings?: HoldingUncheckedCreateNestedManyWithoutTransactionInput
+    goldItems?: GoldItemUncheckedCreateNestedManyWithoutTransactionInput
   }
 
   export type TransactionUpdateInput = {
     referenceNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    source?: EnumTransactionSourceFieldUpdateOperationsInput | $Enums.TransactionSource
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gramsPurchased?: FloatFieldUpdateOperationsInput | number
     pricePerGram?: FloatFieldUpdateOperationsInput | number
@@ -14146,6 +17703,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
     payment?: PaymentUpdateOneWithoutTransactionNestedInput
     holdings?: HoldingUpdateManyWithoutTransactionNestedInput
+    goldItems?: GoldItemUpdateManyWithoutTransactionNestedInput
   }
 
   export type TransactionUncheckedUpdateInput = {
@@ -14153,6 +17711,7 @@ export namespace Prisma {
     referenceNumber?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    source?: EnumTransactionSourceFieldUpdateOperationsInput | $Enums.TransactionSource
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gramsPurchased?: FloatFieldUpdateOperationsInput | number
     pricePerGram?: FloatFieldUpdateOperationsInput | number
@@ -14163,6 +17722,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentId?: NullableIntFieldUpdateOperationsInput | number | null
     holdings?: HoldingUncheckedUpdateManyWithoutTransactionNestedInput
+    goldItems?: GoldItemUncheckedUpdateManyWithoutTransactionNestedInput
   }
 
   export type TransactionCreateManyInput = {
@@ -14170,6 +17730,7 @@ export namespace Prisma {
     referenceNumber: string
     userId: number
     type: $Enums.TransactionType
+    source?: $Enums.TransactionSource
     status?: $Enums.TransactionStatus
     gramsPurchased: number
     pricePerGram: number
@@ -14184,6 +17745,7 @@ export namespace Prisma {
   export type TransactionUpdateManyMutationInput = {
     referenceNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    source?: EnumTransactionSourceFieldUpdateOperationsInput | $Enums.TransactionSource
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gramsPurchased?: FloatFieldUpdateOperationsInput | number
     pricePerGram?: FloatFieldUpdateOperationsInput | number
@@ -14199,6 +17761,7 @@ export namespace Prisma {
     referenceNumber?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    source?: EnumTransactionSourceFieldUpdateOperationsInput | $Enums.TransactionSource
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gramsPurchased?: FloatFieldUpdateOperationsInput | number
     pricePerGram?: FloatFieldUpdateOperationsInput | number
@@ -14385,6 +17948,32 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type EnumRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -14408,6 +17997,12 @@ export namespace Prisma {
     isNot?: IdentityWhereInput | null
   }
 
+  export type AddressListRelationFilter = {
+    every?: AddressWhereInput
+    some?: AddressWhereInput
+    none?: AddressWhereInput
+  }
+
   export type TransactionListRelationFilter = {
     every?: TransactionWhereInput
     some?: TransactionWhereInput
@@ -14426,6 +18021,12 @@ export namespace Prisma {
     none?: HoldingWhereInput
   }
 
+  export type GoldItemListRelationFilter = {
+    every?: GoldItemWhereInput
+    some?: GoldItemWhereInput
+    none?: GoldItemWhereInput
+  }
+
   export type PortfolioNullableScalarRelationFilter = {
     is?: PortfolioWhereInput | null
     isNot?: PortfolioWhereInput | null
@@ -14434,6 +18035,15 @@ export namespace Prisma {
   export type WalletNullableScalarRelationFilter = {
     is?: WalletWhereInput | null
     isNot?: WalletWhereInput | null
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type AddressOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type TransactionOrderByRelationAggregateInput = {
@@ -14448,12 +18058,21 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type GoldItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
     password?: SortOrder
     firstName?: SortOrder
+    middleName?: SortOrder
     lastName?: SortOrder
+    dateOfBirth?: SortOrder
+    gender?: SortOrder
+    phoneNumber?: SortOrder
+    nationality?: SortOrder
     country?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
@@ -14469,7 +18088,12 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     firstName?: SortOrder
+    middleName?: SortOrder
     lastName?: SortOrder
+    dateOfBirth?: SortOrder
+    gender?: SortOrder
+    phoneNumber?: SortOrder
+    nationality?: SortOrder
     country?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
@@ -14481,7 +18105,12 @@ export namespace Prisma {
     email?: SortOrder
     password?: SortOrder
     firstName?: SortOrder
+    middleName?: SortOrder
     lastName?: SortOrder
+    dateOfBirth?: SortOrder
+    gender?: SortOrder
+    phoneNumber?: SortOrder
+    nationality?: SortOrder
     country?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
@@ -14526,6 +18155,38 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -14550,6 +18211,77 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type EnumAddressTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AddressType | EnumAddressTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AddressType[] | ListEnumAddressTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AddressType[] | ListEnumAddressTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAddressTypeFilter<$PrismaModel> | $Enums.AddressType
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type AddressCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    street?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    postalCode?: SortOrder
+    country?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AddressAvgOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type AddressMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    street?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    postalCode?: SortOrder
+    country?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AddressMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    street?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    postalCode?: SortOrder
+    country?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AddressSumOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type EnumAddressTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AddressType | EnumAddressTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AddressType[] | ListEnumAddressTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AddressType[] | ListEnumAddressTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAddressTypeWithAggregatesFilter<$PrismaModel> | $Enums.AddressType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAddressTypeFilter<$PrismaModel>
+    _max?: NestedEnumAddressTypeFilter<$PrismaModel>
+  }
+
   export type FloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
     in?: number[] | ListFloatFieldRefInput<$PrismaModel>
@@ -14566,11 +18298,6 @@ export namespace Prisma {
     in?: $Enums.Currency[] | ListEnumCurrencyFieldRefInput<$PrismaModel>
     notIn?: $Enums.Currency[] | ListEnumCurrencyFieldRefInput<$PrismaModel>
     not?: NestedEnumCurrencyFilter<$PrismaModel> | $Enums.Currency
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type WalletCountOrderByAggregateInput = {
@@ -14694,20 +18421,15 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type IdentityCountOrderByAggregateInput = {
@@ -14715,8 +18437,12 @@ export namespace Prisma {
     userId?: SortOrder
     documentType?: SortOrder
     documentNumber?: SortOrder
+    issueDate?: SortOrder
+    expiryDate?: SortOrder
+    proofOfAddress?: SortOrder
     verified?: SortOrder
     verifiedAt?: SortOrder
+    verifiedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -14724,6 +18450,7 @@ export namespace Prisma {
   export type IdentityAvgOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    verifiedBy?: SortOrder
   }
 
   export type IdentityMaxOrderByAggregateInput = {
@@ -14731,8 +18458,12 @@ export namespace Prisma {
     userId?: SortOrder
     documentType?: SortOrder
     documentNumber?: SortOrder
+    issueDate?: SortOrder
+    expiryDate?: SortOrder
+    proofOfAddress?: SortOrder
     verified?: SortOrder
     verifiedAt?: SortOrder
+    verifiedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -14742,8 +18473,12 @@ export namespace Prisma {
     userId?: SortOrder
     documentType?: SortOrder
     documentNumber?: SortOrder
+    issueDate?: SortOrder
+    expiryDate?: SortOrder
+    proofOfAddress?: SortOrder
     verified?: SortOrder
     verifiedAt?: SortOrder
+    verifiedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -14751,6 +18486,7 @@ export namespace Prisma {
   export type IdentitySumOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    verifiedBy?: SortOrder
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -14761,18 +18497,27 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
     _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type EnumGoldItemTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.GoldItemType | EnumGoldItemTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GoldItemType[] | ListEnumGoldItemTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GoldItemType[] | ListEnumGoldItemTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGoldItemTypeFilter<$PrismaModel> | $Enums.GoldItemType
   }
 
   export type FloatNullableFilter<$PrismaModel = never> = {
@@ -14786,19 +18531,129 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  export type EnumDepositMethodFilter<$PrismaModel = never> = {
+    equals?: $Enums.DepositMethod | EnumDepositMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.DepositMethod[] | ListEnumDepositMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DepositMethod[] | ListEnumDepositMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepositMethodFilter<$PrismaModel> | $Enums.DepositMethod
+  }
+
+  export type TransactionScalarRelationFilter = {
+    is?: TransactionWhereInput
+    isNot?: TransactionWhereInput
+  }
+
+  export type GoldItemCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    transactionId?: SortOrder
+    type?: SortOrder
+    description?: SortOrder
+    serialNumber?: SortOrder
+    karat?: SortOrder
+    purity?: SortOrder
+    weightGrams?: SortOrder
+    origin?: SortOrder
+    storageLocation?: SortOrder
+    depositMethod?: SortOrder
+    verified?: SortOrder
+    verifiedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GoldItemAvgOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    transactionId?: SortOrder
+    karat?: SortOrder
+    purity?: SortOrder
+    weightGrams?: SortOrder
+    verifiedBy?: SortOrder
+  }
+
+  export type GoldItemMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    transactionId?: SortOrder
+    type?: SortOrder
+    description?: SortOrder
+    serialNumber?: SortOrder
+    karat?: SortOrder
+    purity?: SortOrder
+    weightGrams?: SortOrder
+    origin?: SortOrder
+    storageLocation?: SortOrder
+    depositMethod?: SortOrder
+    verified?: SortOrder
+    verifiedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GoldItemMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    transactionId?: SortOrder
+    type?: SortOrder
+    description?: SortOrder
+    serialNumber?: SortOrder
+    karat?: SortOrder
+    purity?: SortOrder
+    weightGrams?: SortOrder
+    origin?: SortOrder
+    storageLocation?: SortOrder
+    depositMethod?: SortOrder
+    verified?: SortOrder
+    verifiedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GoldItemSumOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    transactionId?: SortOrder
+    karat?: SortOrder
+    purity?: SortOrder
+    weightGrams?: SortOrder
+    verifiedBy?: SortOrder
+  }
+
+  export type EnumGoldItemTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GoldItemType | EnumGoldItemTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GoldItemType[] | ListEnumGoldItemTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GoldItemType[] | ListEnumGoldItemTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGoldItemTypeWithAggregatesFilter<$PrismaModel> | $Enums.GoldItemType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGoldItemTypeFilter<$PrismaModel>
+    _max?: NestedEnumGoldItemTypeFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type EnumDepositMethodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DepositMethod | EnumDepositMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.DepositMethod[] | ListEnumDepositMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DepositMethod[] | ListEnumDepositMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepositMethodWithAggregatesFilter<$PrismaModel> | $Enums.DepositMethod
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDepositMethodFilter<$PrismaModel>
+    _max?: NestedEnumDepositMethodFilter<$PrismaModel>
   }
 
   export type BigIntNullableFilter<$PrismaModel = never> = {
@@ -14943,40 +18798,6 @@ export namespace Prisma {
     apiTimestamp?: SortOrder
   }
 
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type BigIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
     in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
@@ -15037,22 +18858,18 @@ export namespace Prisma {
     not?: NestedEnumTransactionTypeFilter<$PrismaModel> | $Enums.TransactionType
   }
 
+  export type EnumTransactionSourceFilter<$PrismaModel = never> = {
+    equals?: $Enums.TransactionSource | EnumTransactionSourceFieldRefInput<$PrismaModel>
+    in?: $Enums.TransactionSource[] | ListEnumTransactionSourceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TransactionSource[] | ListEnumTransactionSourceFieldRefInput<$PrismaModel>
+    not?: NestedEnumTransactionSourceFilter<$PrismaModel> | $Enums.TransactionSource
+  }
+
   export type EnumTransactionStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.TransactionStatus | EnumTransactionStatusFieldRefInput<$PrismaModel>
     in?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumTransactionStatusFilter<$PrismaModel> | $Enums.TransactionStatus
-  }
-
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type PaymentNullableScalarRelationFilter = {
@@ -15065,6 +18882,7 @@ export namespace Prisma {
     referenceNumber?: SortOrder
     userId?: SortOrder
     type?: SortOrder
+    source?: SortOrder
     status?: SortOrder
     gramsPurchased?: SortOrder
     pricePerGram?: SortOrder
@@ -15091,6 +18909,7 @@ export namespace Prisma {
     referenceNumber?: SortOrder
     userId?: SortOrder
     type?: SortOrder
+    source?: SortOrder
     status?: SortOrder
     gramsPurchased?: SortOrder
     pricePerGram?: SortOrder
@@ -15107,6 +18926,7 @@ export namespace Prisma {
     referenceNumber?: SortOrder
     userId?: SortOrder
     type?: SortOrder
+    source?: SortOrder
     status?: SortOrder
     gramsPurchased?: SortOrder
     pricePerGram?: SortOrder
@@ -15138,6 +18958,16 @@ export namespace Prisma {
     _max?: NestedEnumTransactionTypeFilter<$PrismaModel>
   }
 
+  export type EnumTransactionSourceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TransactionSource | EnumTransactionSourceFieldRefInput<$PrismaModel>
+    in?: $Enums.TransactionSource[] | ListEnumTransactionSourceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TransactionSource[] | ListEnumTransactionSourceFieldRefInput<$PrismaModel>
+    not?: NestedEnumTransactionSourceWithAggregatesFilter<$PrismaModel> | $Enums.TransactionSource
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTransactionSourceFilter<$PrismaModel>
+    _max?: NestedEnumTransactionSourceFilter<$PrismaModel>
+  }
+
   export type EnumTransactionStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.TransactionStatus | EnumTransactionStatusFieldRefInput<$PrismaModel>
     in?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
@@ -15146,22 +18976,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumTransactionStatusFilter<$PrismaModel>
     _max?: NestedEnumTransactionStatusFilter<$PrismaModel>
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type TransactionNullableScalarRelationFilter = {
@@ -15220,11 +19034,6 @@ export namespace Prisma {
     amount?: SortOrder
   }
 
-  export type TransactionScalarRelationFilter = {
-    is?: TransactionWhereInput
-    isNot?: TransactionWhereInput
-  }
-
   export type HoldingCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -15272,6 +19081,13 @@ export namespace Prisma {
     connect?: IdentityWhereUniqueInput
   }
 
+  export type AddressCreateNestedManyWithoutUserInput = {
+    create?: XOR<AddressCreateWithoutUserInput, AddressUncheckedCreateWithoutUserInput> | AddressCreateWithoutUserInput[] | AddressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AddressCreateOrConnectWithoutUserInput | AddressCreateOrConnectWithoutUserInput[]
+    createMany?: AddressCreateManyUserInputEnvelope
+    connect?: AddressWhereUniqueInput | AddressWhereUniqueInput[]
+  }
+
   export type TransactionCreateNestedManyWithoutUserInput = {
     create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
@@ -15293,6 +19109,13 @@ export namespace Prisma {
     connect?: HoldingWhereUniqueInput | HoldingWhereUniqueInput[]
   }
 
+  export type GoldItemCreateNestedManyWithoutUserInput = {
+    create?: XOR<GoldItemCreateWithoutUserInput, GoldItemUncheckedCreateWithoutUserInput> | GoldItemCreateWithoutUserInput[] | GoldItemUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GoldItemCreateOrConnectWithoutUserInput | GoldItemCreateOrConnectWithoutUserInput[]
+    createMany?: GoldItemCreateManyUserInputEnvelope
+    connect?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+  }
+
   export type PortfolioCreateNestedOneWithoutUserInput = {
     create?: XOR<PortfolioCreateWithoutUserInput, PortfolioUncheckedCreateWithoutUserInput>
     connectOrCreate?: PortfolioCreateOrConnectWithoutUserInput
@@ -15309,6 +19132,13 @@ export namespace Prisma {
     create?: XOR<IdentityCreateWithoutUserInput, IdentityUncheckedCreateWithoutUserInput>
     connectOrCreate?: IdentityCreateOrConnectWithoutUserInput
     connect?: IdentityWhereUniqueInput
+  }
+
+  export type AddressUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AddressCreateWithoutUserInput, AddressUncheckedCreateWithoutUserInput> | AddressCreateWithoutUserInput[] | AddressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AddressCreateOrConnectWithoutUserInput | AddressCreateOrConnectWithoutUserInput[]
+    createMany?: AddressCreateManyUserInputEnvelope
+    connect?: AddressWhereUniqueInput | AddressWhereUniqueInput[]
   }
 
   export type TransactionUncheckedCreateNestedManyWithoutUserInput = {
@@ -15332,6 +19162,13 @@ export namespace Prisma {
     connect?: HoldingWhereUniqueInput | HoldingWhereUniqueInput[]
   }
 
+  export type GoldItemUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<GoldItemCreateWithoutUserInput, GoldItemUncheckedCreateWithoutUserInput> | GoldItemCreateWithoutUserInput[] | GoldItemUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GoldItemCreateOrConnectWithoutUserInput | GoldItemCreateOrConnectWithoutUserInput[]
+    createMany?: GoldItemCreateManyUserInputEnvelope
+    connect?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+  }
+
   export type PortfolioUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<PortfolioCreateWithoutUserInput, PortfolioUncheckedCreateWithoutUserInput>
     connectOrCreate?: PortfolioCreateOrConnectWithoutUserInput
@@ -15346,6 +19183,14 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type EnumRoleFieldUpdateOperationsInput = {
@@ -15364,6 +19209,20 @@ export namespace Prisma {
     delete?: IdentityWhereInput | boolean
     connect?: IdentityWhereUniqueInput
     update?: XOR<XOR<IdentityUpdateToOneWithWhereWithoutUserInput, IdentityUpdateWithoutUserInput>, IdentityUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AddressUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AddressCreateWithoutUserInput, AddressUncheckedCreateWithoutUserInput> | AddressCreateWithoutUserInput[] | AddressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AddressCreateOrConnectWithoutUserInput | AddressCreateOrConnectWithoutUserInput[]
+    upsert?: AddressUpsertWithWhereUniqueWithoutUserInput | AddressUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AddressCreateManyUserInputEnvelope
+    set?: AddressWhereUniqueInput | AddressWhereUniqueInput[]
+    disconnect?: AddressWhereUniqueInput | AddressWhereUniqueInput[]
+    delete?: AddressWhereUniqueInput | AddressWhereUniqueInput[]
+    connect?: AddressWhereUniqueInput | AddressWhereUniqueInput[]
+    update?: AddressUpdateWithWhereUniqueWithoutUserInput | AddressUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AddressUpdateManyWithWhereWithoutUserInput | AddressUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AddressScalarWhereInput | AddressScalarWhereInput[]
   }
 
   export type TransactionUpdateManyWithoutUserNestedInput = {
@@ -15408,6 +19267,20 @@ export namespace Prisma {
     deleteMany?: HoldingScalarWhereInput | HoldingScalarWhereInput[]
   }
 
+  export type GoldItemUpdateManyWithoutUserNestedInput = {
+    create?: XOR<GoldItemCreateWithoutUserInput, GoldItemUncheckedCreateWithoutUserInput> | GoldItemCreateWithoutUserInput[] | GoldItemUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GoldItemCreateOrConnectWithoutUserInput | GoldItemCreateOrConnectWithoutUserInput[]
+    upsert?: GoldItemUpsertWithWhereUniqueWithoutUserInput | GoldItemUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: GoldItemCreateManyUserInputEnvelope
+    set?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    disconnect?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    delete?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    connect?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    update?: GoldItemUpdateWithWhereUniqueWithoutUserInput | GoldItemUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: GoldItemUpdateManyWithWhereWithoutUserInput | GoldItemUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: GoldItemScalarWhereInput | GoldItemScalarWhereInput[]
+  }
+
   export type PortfolioUpdateOneWithoutUserNestedInput = {
     create?: XOR<PortfolioCreateWithoutUserInput, PortfolioUncheckedCreateWithoutUserInput>
     connectOrCreate?: PortfolioCreateOrConnectWithoutUserInput
@@ -15444,6 +19317,20 @@ export namespace Prisma {
     delete?: IdentityWhereInput | boolean
     connect?: IdentityWhereUniqueInput
     update?: XOR<XOR<IdentityUpdateToOneWithWhereWithoutUserInput, IdentityUpdateWithoutUserInput>, IdentityUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AddressUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AddressCreateWithoutUserInput, AddressUncheckedCreateWithoutUserInput> | AddressCreateWithoutUserInput[] | AddressUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AddressCreateOrConnectWithoutUserInput | AddressCreateOrConnectWithoutUserInput[]
+    upsert?: AddressUpsertWithWhereUniqueWithoutUserInput | AddressUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AddressCreateManyUserInputEnvelope
+    set?: AddressWhereUniqueInput | AddressWhereUniqueInput[]
+    disconnect?: AddressWhereUniqueInput | AddressWhereUniqueInput[]
+    delete?: AddressWhereUniqueInput | AddressWhereUniqueInput[]
+    connect?: AddressWhereUniqueInput | AddressWhereUniqueInput[]
+    update?: AddressUpdateWithWhereUniqueWithoutUserInput | AddressUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AddressUpdateManyWithWhereWithoutUserInput | AddressUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AddressScalarWhereInput | AddressScalarWhereInput[]
   }
 
   export type TransactionUncheckedUpdateManyWithoutUserNestedInput = {
@@ -15488,6 +19375,20 @@ export namespace Prisma {
     deleteMany?: HoldingScalarWhereInput | HoldingScalarWhereInput[]
   }
 
+  export type GoldItemUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<GoldItemCreateWithoutUserInput, GoldItemUncheckedCreateWithoutUserInput> | GoldItemCreateWithoutUserInput[] | GoldItemUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: GoldItemCreateOrConnectWithoutUserInput | GoldItemCreateOrConnectWithoutUserInput[]
+    upsert?: GoldItemUpsertWithWhereUniqueWithoutUserInput | GoldItemUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: GoldItemCreateManyUserInputEnvelope
+    set?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    disconnect?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    delete?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    connect?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    update?: GoldItemUpdateWithWhereUniqueWithoutUserInput | GoldItemUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: GoldItemUpdateManyWithWhereWithoutUserInput | GoldItemUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: GoldItemScalarWhereInput | GoldItemScalarWhereInput[]
+  }
+
   export type PortfolioUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<PortfolioCreateWithoutUserInput, PortfolioUncheckedCreateWithoutUserInput>
     connectOrCreate?: PortfolioCreateOrConnectWithoutUserInput
@@ -15506,6 +19407,24 @@ export namespace Prisma {
     delete?: WalletWhereInput | boolean
     connect?: WalletWhereUniqueInput
     update?: XOR<XOR<WalletUpdateToOneWithWhereWithoutUserInput, WalletUpdateWithoutUserInput>, WalletUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserCreateNestedOneWithoutAddressesInput = {
+    create?: XOR<UserCreateWithoutAddressesInput, UserUncheckedCreateWithoutAddressesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAddressesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumAddressTypeFieldUpdateOperationsInput = {
+    set?: $Enums.AddressType
+  }
+
+  export type UserUpdateOneRequiredWithoutAddressesNestedInput = {
+    create?: XOR<UserCreateWithoutAddressesInput, UserUncheckedCreateWithoutAddressesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAddressesInput
+    upsert?: UserUpsertWithoutAddressesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAddressesInput, UserUpdateWithoutAddressesInput>, UserUncheckedUpdateWithoutAddressesInput>
   }
 
   export type UserCreateNestedOneWithoutWalletInput = {
@@ -15558,8 +19477,12 @@ export namespace Prisma {
     set?: boolean
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type UserUpdateOneRequiredWithoutIdentityNestedInput = {
@@ -15570,6 +19493,22 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutIdentityInput, UserUpdateWithoutIdentityInput>, UserUncheckedUpdateWithoutIdentityInput>
   }
 
+  export type UserCreateNestedOneWithoutGoldItemsInput = {
+    create?: XOR<UserCreateWithoutGoldItemsInput, UserUncheckedCreateWithoutGoldItemsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutGoldItemsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TransactionCreateNestedOneWithoutGoldItemsInput = {
+    create?: XOR<TransactionCreateWithoutGoldItemsInput, TransactionUncheckedCreateWithoutGoldItemsInput>
+    connectOrCreate?: TransactionCreateOrConnectWithoutGoldItemsInput
+    connect?: TransactionWhereUniqueInput
+  }
+
+  export type EnumGoldItemTypeFieldUpdateOperationsInput = {
+    set?: $Enums.GoldItemType
+  }
+
   export type NullableFloatFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -15578,8 +19517,24 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
+  export type EnumDepositMethodFieldUpdateOperationsInput = {
+    set?: $Enums.DepositMethod
+  }
+
+  export type UserUpdateOneRequiredWithoutGoldItemsNestedInput = {
+    create?: XOR<UserCreateWithoutGoldItemsInput, UserUncheckedCreateWithoutGoldItemsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutGoldItemsInput
+    upsert?: UserUpsertWithoutGoldItemsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutGoldItemsInput, UserUpdateWithoutGoldItemsInput>, UserUncheckedUpdateWithoutGoldItemsInput>
+  }
+
+  export type TransactionUpdateOneRequiredWithoutGoldItemsNestedInput = {
+    create?: XOR<TransactionCreateWithoutGoldItemsInput, TransactionUncheckedCreateWithoutGoldItemsInput>
+    connectOrCreate?: TransactionCreateOrConnectWithoutGoldItemsInput
+    upsert?: TransactionUpsertWithoutGoldItemsInput
+    connect?: TransactionWhereUniqueInput
+    update?: XOR<XOR<TransactionUpdateToOneWithWhereWithoutGoldItemsInput, TransactionUpdateWithoutGoldItemsInput>, TransactionUncheckedUpdateWithoutGoldItemsInput>
   }
 
   export type NullableBigIntFieldUpdateOperationsInput = {
@@ -15609,6 +19564,13 @@ export namespace Prisma {
     connect?: HoldingWhereUniqueInput | HoldingWhereUniqueInput[]
   }
 
+  export type GoldItemCreateNestedManyWithoutTransactionInput = {
+    create?: XOR<GoldItemCreateWithoutTransactionInput, GoldItemUncheckedCreateWithoutTransactionInput> | GoldItemCreateWithoutTransactionInput[] | GoldItemUncheckedCreateWithoutTransactionInput[]
+    connectOrCreate?: GoldItemCreateOrConnectWithoutTransactionInput | GoldItemCreateOrConnectWithoutTransactionInput[]
+    createMany?: GoldItemCreateManyTransactionInputEnvelope
+    connect?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+  }
+
   export type HoldingUncheckedCreateNestedManyWithoutTransactionInput = {
     create?: XOR<HoldingCreateWithoutTransactionInput, HoldingUncheckedCreateWithoutTransactionInput> | HoldingCreateWithoutTransactionInput[] | HoldingUncheckedCreateWithoutTransactionInput[]
     connectOrCreate?: HoldingCreateOrConnectWithoutTransactionInput | HoldingCreateOrConnectWithoutTransactionInput[]
@@ -15616,8 +19578,19 @@ export namespace Prisma {
     connect?: HoldingWhereUniqueInput | HoldingWhereUniqueInput[]
   }
 
+  export type GoldItemUncheckedCreateNestedManyWithoutTransactionInput = {
+    create?: XOR<GoldItemCreateWithoutTransactionInput, GoldItemUncheckedCreateWithoutTransactionInput> | GoldItemCreateWithoutTransactionInput[] | GoldItemUncheckedCreateWithoutTransactionInput[]
+    connectOrCreate?: GoldItemCreateOrConnectWithoutTransactionInput | GoldItemCreateOrConnectWithoutTransactionInput[]
+    createMany?: GoldItemCreateManyTransactionInputEnvelope
+    connect?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+  }
+
   export type EnumTransactionTypeFieldUpdateOperationsInput = {
     set?: $Enums.TransactionType
+  }
+
+  export type EnumTransactionSourceFieldUpdateOperationsInput = {
+    set?: $Enums.TransactionSource
   }
 
   export type EnumTransactionStatusFieldUpdateOperationsInput = {
@@ -15656,12 +19629,18 @@ export namespace Prisma {
     deleteMany?: HoldingScalarWhereInput | HoldingScalarWhereInput[]
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
+  export type GoldItemUpdateManyWithoutTransactionNestedInput = {
+    create?: XOR<GoldItemCreateWithoutTransactionInput, GoldItemUncheckedCreateWithoutTransactionInput> | GoldItemCreateWithoutTransactionInput[] | GoldItemUncheckedCreateWithoutTransactionInput[]
+    connectOrCreate?: GoldItemCreateOrConnectWithoutTransactionInput | GoldItemCreateOrConnectWithoutTransactionInput[]
+    upsert?: GoldItemUpsertWithWhereUniqueWithoutTransactionInput | GoldItemUpsertWithWhereUniqueWithoutTransactionInput[]
+    createMany?: GoldItemCreateManyTransactionInputEnvelope
+    set?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    disconnect?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    delete?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    connect?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    update?: GoldItemUpdateWithWhereUniqueWithoutTransactionInput | GoldItemUpdateWithWhereUniqueWithoutTransactionInput[]
+    updateMany?: GoldItemUpdateManyWithWhereWithoutTransactionInput | GoldItemUpdateManyWithWhereWithoutTransactionInput[]
+    deleteMany?: GoldItemScalarWhereInput | GoldItemScalarWhereInput[]
   }
 
   export type HoldingUncheckedUpdateManyWithoutTransactionNestedInput = {
@@ -15676,6 +19655,20 @@ export namespace Prisma {
     update?: HoldingUpdateWithWhereUniqueWithoutTransactionInput | HoldingUpdateWithWhereUniqueWithoutTransactionInput[]
     updateMany?: HoldingUpdateManyWithWhereWithoutTransactionInput | HoldingUpdateManyWithWhereWithoutTransactionInput[]
     deleteMany?: HoldingScalarWhereInput | HoldingScalarWhereInput[]
+  }
+
+  export type GoldItemUncheckedUpdateManyWithoutTransactionNestedInput = {
+    create?: XOR<GoldItemCreateWithoutTransactionInput, GoldItemUncheckedCreateWithoutTransactionInput> | GoldItemCreateWithoutTransactionInput[] | GoldItemUncheckedCreateWithoutTransactionInput[]
+    connectOrCreate?: GoldItemCreateOrConnectWithoutTransactionInput | GoldItemCreateOrConnectWithoutTransactionInput[]
+    upsert?: GoldItemUpsertWithWhereUniqueWithoutTransactionInput | GoldItemUpsertWithWhereUniqueWithoutTransactionInput[]
+    createMany?: GoldItemCreateManyTransactionInputEnvelope
+    set?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    disconnect?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    delete?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    connect?: GoldItemWhereUniqueInput | GoldItemWhereUniqueInput[]
+    update?: GoldItemUpdateWithWhereUniqueWithoutTransactionInput | GoldItemUpdateWithWhereUniqueWithoutTransactionInput[]
+    updateMany?: GoldItemUpdateManyWithWhereWithoutTransactionInput | GoldItemUpdateManyWithWhereWithoutTransactionInput[]
+    deleteMany?: GoldItemScalarWhereInput | GoldItemScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutPaymentsInput = {
@@ -15777,6 +19770,31 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedEnumRoleFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -15839,6 +19857,48 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
     in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
@@ -15861,6 +19921,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAddressTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AddressType | EnumAddressTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AddressType[] | ListEnumAddressTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AddressType[] | ListEnumAddressTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAddressTypeFilter<$PrismaModel> | $Enums.AddressType
+  }
+
+  export type NestedEnumAddressTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AddressType | EnumAddressTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AddressType[] | ListEnumAddressTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AddressType[] | ListEnumAddressTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAddressTypeWithAggregatesFilter<$PrismaModel> | $Enums.AddressType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAddressTypeFilter<$PrismaModel>
+    _max?: NestedEnumAddressTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumCurrencyFilter<$PrismaModel = never> = {
@@ -15901,17 +19978,6 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -15920,21 +19986,7 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedIntNullableFilter<$PrismaModel = never> = {
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -15942,7 +19994,12 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
@@ -15956,29 +20013,28 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  export type NestedEnumGoldItemTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.GoldItemType | EnumGoldItemTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GoldItemType[] | ListEnumGoldItemTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GoldItemType[] | ListEnumGoldItemTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGoldItemTypeFilter<$PrismaModel> | $Enums.GoldItemType
   }
 
-  export type NestedBigIntNullableFilter<$PrismaModel = never> = {
-    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
-    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
-    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
-    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
-    not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
+  export type NestedEnumDepositMethodFilter<$PrismaModel = never> = {
+    equals?: $Enums.DepositMethod | EnumDepositMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.DepositMethod[] | ListEnumDepositMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DepositMethod[] | ListEnumDepositMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepositMethodFilter<$PrismaModel> | $Enums.DepositMethod
+  }
+
+  export type NestedEnumGoldItemTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.GoldItemType | EnumGoldItemTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.GoldItemType[] | ListEnumGoldItemTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.GoldItemType[] | ListEnumGoldItemTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumGoldItemTypeWithAggregatesFilter<$PrismaModel> | $Enums.GoldItemType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumGoldItemTypeFilter<$PrismaModel>
+    _max?: NestedEnumGoldItemTypeFilter<$PrismaModel>
   }
 
   export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -15997,21 +20053,25 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
+  export type NestedEnumDepositMethodWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DepositMethod | EnumDepositMethodFieldRefInput<$PrismaModel>
+    in?: $Enums.DepositMethod[] | ListEnumDepositMethodFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DepositMethod[] | ListEnumDepositMethodFieldRefInput<$PrismaModel>
+    not?: NestedEnumDepositMethodWithAggregatesFilter<$PrismaModel> | $Enums.DepositMethod
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDepositMethodFilter<$PrismaModel>
+    _max?: NestedEnumDepositMethodFilter<$PrismaModel>
+  }
+
+  export type NestedBigIntNullableFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
   }
 
   export type NestedBigIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -16037,6 +20097,13 @@ export namespace Prisma {
     not?: NestedEnumTransactionTypeFilter<$PrismaModel> | $Enums.TransactionType
   }
 
+  export type NestedEnumTransactionSourceFilter<$PrismaModel = never> = {
+    equals?: $Enums.TransactionSource | EnumTransactionSourceFieldRefInput<$PrismaModel>
+    in?: $Enums.TransactionSource[] | ListEnumTransactionSourceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TransactionSource[] | ListEnumTransactionSourceFieldRefInput<$PrismaModel>
+    not?: NestedEnumTransactionSourceFilter<$PrismaModel> | $Enums.TransactionSource
+  }
+
   export type NestedEnumTransactionStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.TransactionStatus | EnumTransactionStatusFieldRefInput<$PrismaModel>
     in?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
@@ -16054,6 +20121,16 @@ export namespace Prisma {
     _max?: NestedEnumTransactionTypeFilter<$PrismaModel>
   }
 
+  export type NestedEnumTransactionSourceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TransactionSource | EnumTransactionSourceFieldRefInput<$PrismaModel>
+    in?: $Enums.TransactionSource[] | ListEnumTransactionSourceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TransactionSource[] | ListEnumTransactionSourceFieldRefInput<$PrismaModel>
+    not?: NestedEnumTransactionSourceWithAggregatesFilter<$PrismaModel> | $Enums.TransactionSource
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTransactionSourceFilter<$PrismaModel>
+    _max?: NestedEnumTransactionSourceFilter<$PrismaModel>
+  }
+
   export type NestedEnumTransactionStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.TransactionStatus | EnumTransactionStatusFieldRefInput<$PrismaModel>
     in?: $Enums.TransactionStatus[] | ListEnumTransactionStatusFieldRefInput<$PrismaModel>
@@ -16064,27 +20141,15 @@ export namespace Prisma {
     _max?: NestedEnumTransactionStatusFilter<$PrismaModel>
   }
 
-  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
   export type IdentityCreateWithoutUserInput = {
     documentType: string
     documentNumber: string
+    issueDate?: Date | string | null
+    expiryDate?: Date | string | null
+    proofOfAddress?: string | null
     verified?: boolean
     verifiedAt?: Date | string | null
+    verifiedBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -16093,8 +20158,12 @@ export namespace Prisma {
     id?: number
     documentType: string
     documentNumber: string
+    issueDate?: Date | string | null
+    expiryDate?: Date | string | null
+    proofOfAddress?: string | null
     verified?: boolean
     verifiedAt?: Date | string | null
+    verifiedBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -16104,9 +20173,43 @@ export namespace Prisma {
     create: XOR<IdentityCreateWithoutUserInput, IdentityUncheckedCreateWithoutUserInput>
   }
 
+  export type AddressCreateWithoutUserInput = {
+    type?: $Enums.AddressType
+    street: string
+    city: string
+    state?: string | null
+    postalCode: string
+    country: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AddressUncheckedCreateWithoutUserInput = {
+    id?: number
+    type?: $Enums.AddressType
+    street: string
+    city: string
+    state?: string | null
+    postalCode: string
+    country: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AddressCreateOrConnectWithoutUserInput = {
+    where: AddressWhereUniqueInput
+    create: XOR<AddressCreateWithoutUserInput, AddressUncheckedCreateWithoutUserInput>
+  }
+
+  export type AddressCreateManyUserInputEnvelope = {
+    data: AddressCreateManyUserInput | AddressCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TransactionCreateWithoutUserInput = {
     referenceNumber: string
     type: $Enums.TransactionType
+    source?: $Enums.TransactionSource
     status?: $Enums.TransactionStatus
     gramsPurchased: number
     pricePerGram: number
@@ -16117,12 +20220,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     payment?: PaymentCreateNestedOneWithoutTransactionInput
     holdings?: HoldingCreateNestedManyWithoutTransactionInput
+    goldItems?: GoldItemCreateNestedManyWithoutTransactionInput
   }
 
   export type TransactionUncheckedCreateWithoutUserInput = {
     id?: number
     referenceNumber: string
     type: $Enums.TransactionType
+    source?: $Enums.TransactionSource
     status?: $Enums.TransactionStatus
     gramsPurchased: number
     pricePerGram: number
@@ -16133,6 +20238,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     paymentId?: number | null
     holdings?: HoldingUncheckedCreateNestedManyWithoutTransactionInput
+    goldItems?: GoldItemUncheckedCreateNestedManyWithoutTransactionInput
   }
 
   export type TransactionCreateOrConnectWithoutUserInput = {
@@ -16205,6 +20311,51 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type GoldItemCreateWithoutUserInput = {
+    type: $Enums.GoldItemType
+    description?: string | null
+    serialNumber?: string | null
+    karat?: number | null
+    purity?: number | null
+    weightGrams: number
+    origin?: string | null
+    storageLocation?: string | null
+    depositMethod?: $Enums.DepositMethod
+    verified?: boolean
+    verifiedBy?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    transaction: TransactionCreateNestedOneWithoutGoldItemsInput
+  }
+
+  export type GoldItemUncheckedCreateWithoutUserInput = {
+    id?: number
+    transactionId: number
+    type: $Enums.GoldItemType
+    description?: string | null
+    serialNumber?: string | null
+    karat?: number | null
+    purity?: number | null
+    weightGrams: number
+    origin?: string | null
+    storageLocation?: string | null
+    depositMethod?: $Enums.DepositMethod
+    verified?: boolean
+    verifiedBy?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GoldItemCreateOrConnectWithoutUserInput = {
+    where: GoldItemWhereUniqueInput
+    create: XOR<GoldItemCreateWithoutUserInput, GoldItemUncheckedCreateWithoutUserInput>
+  }
+
+  export type GoldItemCreateManyUserInputEnvelope = {
+    data: GoldItemCreateManyUserInput | GoldItemCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type PortfolioCreateWithoutUserInput = {
     totalGrams?: number
     totalInvested?: number
@@ -16263,8 +20414,12 @@ export namespace Prisma {
   export type IdentityUpdateWithoutUserInput = {
     documentType?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
+    issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    proofOfAddress?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16273,10 +20428,46 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     documentType?: StringFieldUpdateOperationsInput | string
     documentNumber?: StringFieldUpdateOperationsInput | string
+    issueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    proofOfAddress?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     verifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AddressUpsertWithWhereUniqueWithoutUserInput = {
+    where: AddressWhereUniqueInput
+    update: XOR<AddressUpdateWithoutUserInput, AddressUncheckedUpdateWithoutUserInput>
+    create: XOR<AddressCreateWithoutUserInput, AddressUncheckedCreateWithoutUserInput>
+  }
+
+  export type AddressUpdateWithWhereUniqueWithoutUserInput = {
+    where: AddressWhereUniqueInput
+    data: XOR<AddressUpdateWithoutUserInput, AddressUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AddressUpdateManyWithWhereWithoutUserInput = {
+    where: AddressScalarWhereInput
+    data: XOR<AddressUpdateManyMutationInput, AddressUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AddressScalarWhereInput = {
+    AND?: AddressScalarWhereInput | AddressScalarWhereInput[]
+    OR?: AddressScalarWhereInput[]
+    NOT?: AddressScalarWhereInput | AddressScalarWhereInput[]
+    id?: IntFilter<"Address"> | number
+    userId?: IntFilter<"Address"> | number
+    type?: EnumAddressTypeFilter<"Address"> | $Enums.AddressType
+    street?: StringFilter<"Address"> | string
+    city?: StringFilter<"Address"> | string
+    state?: StringNullableFilter<"Address"> | string | null
+    postalCode?: StringFilter<"Address"> | string
+    country?: StringFilter<"Address"> | string
+    createdAt?: DateTimeFilter<"Address"> | Date | string
+    updatedAt?: DateTimeFilter<"Address"> | Date | string
   }
 
   export type TransactionUpsertWithWhereUniqueWithoutUserInput = {
@@ -16303,6 +20494,7 @@ export namespace Prisma {
     referenceNumber?: StringFilter<"Transaction"> | string
     userId?: IntFilter<"Transaction"> | number
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
+    source?: EnumTransactionSourceFilter<"Transaction"> | $Enums.TransactionSource
     status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     gramsPurchased?: FloatFilter<"Transaction"> | number
     pricePerGram?: FloatFilter<"Transaction"> | number
@@ -16374,6 +20566,44 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Holding"> | Date | string
   }
 
+  export type GoldItemUpsertWithWhereUniqueWithoutUserInput = {
+    where: GoldItemWhereUniqueInput
+    update: XOR<GoldItemUpdateWithoutUserInput, GoldItemUncheckedUpdateWithoutUserInput>
+    create: XOR<GoldItemCreateWithoutUserInput, GoldItemUncheckedCreateWithoutUserInput>
+  }
+
+  export type GoldItemUpdateWithWhereUniqueWithoutUserInput = {
+    where: GoldItemWhereUniqueInput
+    data: XOR<GoldItemUpdateWithoutUserInput, GoldItemUncheckedUpdateWithoutUserInput>
+  }
+
+  export type GoldItemUpdateManyWithWhereWithoutUserInput = {
+    where: GoldItemScalarWhereInput
+    data: XOR<GoldItemUpdateManyMutationInput, GoldItemUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type GoldItemScalarWhereInput = {
+    AND?: GoldItemScalarWhereInput | GoldItemScalarWhereInput[]
+    OR?: GoldItemScalarWhereInput[]
+    NOT?: GoldItemScalarWhereInput | GoldItemScalarWhereInput[]
+    id?: IntFilter<"GoldItem"> | number
+    userId?: IntFilter<"GoldItem"> | number
+    transactionId?: IntFilter<"GoldItem"> | number
+    type?: EnumGoldItemTypeFilter<"GoldItem"> | $Enums.GoldItemType
+    description?: StringNullableFilter<"GoldItem"> | string | null
+    serialNumber?: StringNullableFilter<"GoldItem"> | string | null
+    karat?: FloatNullableFilter<"GoldItem"> | number | null
+    purity?: FloatNullableFilter<"GoldItem"> | number | null
+    weightGrams?: FloatFilter<"GoldItem"> | number
+    origin?: StringNullableFilter<"GoldItem"> | string | null
+    storageLocation?: StringNullableFilter<"GoldItem"> | string | null
+    depositMethod?: EnumDepositMethodFilter<"GoldItem"> | $Enums.DepositMethod
+    verified?: BoolFilter<"GoldItem"> | boolean
+    verifiedBy?: IntNullableFilter<"GoldItem"> | number | null
+    createdAt?: DateTimeFilter<"GoldItem"> | Date | string
+    updatedAt?: DateTimeFilter<"GoldItem"> | Date | string
+  }
+
   export type PortfolioUpsertWithoutUserInput = {
     update: XOR<PortfolioUpdateWithoutUserInput, PortfolioUncheckedUpdateWithoutUserInput>
     create: XOR<PortfolioCreateWithoutUserInput, PortfolioUncheckedCreateWithoutUserInput>
@@ -16430,11 +20660,16 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserCreateWithoutWalletInput = {
+  export type UserCreateWithoutAddressesInput = {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
@@ -16443,15 +20678,22 @@ export namespace Prisma {
     transactions?: TransactionCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
     holdings?: HoldingCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemCreateNestedManyWithoutUserInput
     Portfolio?: PortfolioCreateNestedOneWithoutUserInput
+    wallet?: WalletCreateNestedOneWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutWalletInput = {
+  export type UserUncheckedCreateWithoutAddressesInput = {
     id?: number
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
@@ -16460,6 +20702,118 @@ export namespace Prisma {
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
     holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
+    Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAddressesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAddressesInput, UserUncheckedCreateWithoutAddressesInput>
+  }
+
+  export type UserUpsertWithoutAddressesInput = {
+    update: XOR<UserUpdateWithoutAddressesInput, UserUncheckedUpdateWithoutAddressesInput>
+    create: XOR<UserCreateWithoutAddressesInput, UserUncheckedCreateWithoutAddressesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAddressesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAddressesInput, UserUncheckedUpdateWithoutAddressesInput>
+  }
+
+  export type UserUpdateWithoutAddressesInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    identity?: IdentityUpdateOneWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    payments?: PaymentUpdateManyWithoutUserNestedInput
+    holdings?: HoldingUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUpdateManyWithoutUserNestedInput
+    Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAddressesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    identity?: IdentityUncheckedUpdateOneWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
+    Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutWalletInput = {
+    email: string
+    password: string
+    firstName: string
+    middleName?: string | null
+    lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
+    country: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    identity?: IdentityCreateNestedOneWithoutUserInput
+    addresses?: AddressCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    payments?: PaymentCreateNestedManyWithoutUserInput
+    holdings?: HoldingCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemCreateNestedManyWithoutUserInput
+    Portfolio?: PortfolioCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutWalletInput = {
+    id?: number
+    email: string
+    password: string
+    firstName: string
+    middleName?: string | null
+    lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
+    country: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    identity?: IdentityUncheckedCreateNestedOneWithoutUserInput
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
     Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
   }
 
@@ -16483,15 +20837,22 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     identity?: IdentityUpdateOneWithoutUserNestedInput
+    addresses?: AddressUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
     holdings?: HoldingUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUpdateManyWithoutUserNestedInput
     Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
   }
 
@@ -16500,15 +20861,22 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     identity?: IdentityUncheckedUpdateOneWithoutUserNestedInput
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
     Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
   }
 
@@ -16516,15 +20884,22 @@ export namespace Prisma {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     identity?: IdentityCreateNestedOneWithoutUserInput
+    addresses?: AddressCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
     holdings?: HoldingCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemCreateNestedManyWithoutUserInput
     wallet?: WalletCreateNestedOneWithoutUserInput
   }
 
@@ -16533,15 +20908,22 @@ export namespace Prisma {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     identity?: IdentityUncheckedCreateNestedOneWithoutUserInput
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
     holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
   }
 
@@ -16565,15 +20947,22 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     identity?: IdentityUpdateOneWithoutUserNestedInput
+    addresses?: AddressUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
     holdings?: HoldingUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUpdateManyWithoutUserNestedInput
     wallet?: WalletUpdateOneWithoutUserNestedInput
   }
 
@@ -16582,15 +20971,22 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     identity?: IdentityUncheckedUpdateOneWithoutUserNestedInput
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
   }
 
@@ -16598,14 +20994,21 @@ export namespace Prisma {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    addresses?: AddressCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
     holdings?: HoldingCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemCreateNestedManyWithoutUserInput
     Portfolio?: PortfolioCreateNestedOneWithoutUserInput
     wallet?: WalletCreateNestedOneWithoutUserInput
   }
@@ -16615,14 +21018,21 @@ export namespace Prisma {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
     holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
     Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
   }
@@ -16647,14 +21057,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    addresses?: AddressUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
     holdings?: HoldingUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUpdateManyWithoutUserNestedInput
     Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
     wallet?: WalletUpdateOneWithoutUserNestedInput
   }
@@ -16664,11 +21081,168 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
+    Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
+    wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutGoldItemsInput = {
+    email: string
+    password: string
+    firstName: string
+    middleName?: string | null
+    lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
+    country: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    identity?: IdentityCreateNestedOneWithoutUserInput
+    addresses?: AddressCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    payments?: PaymentCreateNestedManyWithoutUserInput
+    holdings?: HoldingCreateNestedManyWithoutUserInput
+    Portfolio?: PortfolioCreateNestedOneWithoutUserInput
+    wallet?: WalletCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutGoldItemsInput = {
+    id?: number
+    email: string
+    password: string
+    firstName: string
+    middleName?: string | null
+    lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
+    country: string
+    role?: $Enums.Role
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    identity?: IdentityUncheckedCreateNestedOneWithoutUserInput
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
+    Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
+    wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutGoldItemsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutGoldItemsInput, UserUncheckedCreateWithoutGoldItemsInput>
+  }
+
+  export type TransactionCreateWithoutGoldItemsInput = {
+    referenceNumber: string
+    type: $Enums.TransactionType
+    source?: $Enums.TransactionSource
+    status?: $Enums.TransactionStatus
+    gramsPurchased: number
+    pricePerGram: number
+    totalCost: number
+    fee?: number | null
+    currency?: $Enums.Currency
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutTransactionsInput
+    payment?: PaymentCreateNestedOneWithoutTransactionInput
+    holdings?: HoldingCreateNestedManyWithoutTransactionInput
+  }
+
+  export type TransactionUncheckedCreateWithoutGoldItemsInput = {
+    id?: number
+    referenceNumber: string
+    userId: number
+    type: $Enums.TransactionType
+    source?: $Enums.TransactionSource
+    status?: $Enums.TransactionStatus
+    gramsPurchased: number
+    pricePerGram: number
+    totalCost: number
+    fee?: number | null
+    currency?: $Enums.Currency
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    paymentId?: number | null
+    holdings?: HoldingUncheckedCreateNestedManyWithoutTransactionInput
+  }
+
+  export type TransactionCreateOrConnectWithoutGoldItemsInput = {
+    where: TransactionWhereUniqueInput
+    create: XOR<TransactionCreateWithoutGoldItemsInput, TransactionUncheckedCreateWithoutGoldItemsInput>
+  }
+
+  export type UserUpsertWithoutGoldItemsInput = {
+    update: XOR<UserUpdateWithoutGoldItemsInput, UserUncheckedUpdateWithoutGoldItemsInput>
+    create: XOR<UserCreateWithoutGoldItemsInput, UserUncheckedCreateWithoutGoldItemsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutGoldItemsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutGoldItemsInput, UserUncheckedUpdateWithoutGoldItemsInput>
+  }
+
+  export type UserUpdateWithoutGoldItemsInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    identity?: IdentityUpdateOneWithoutUserNestedInput
+    addresses?: AddressUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    payments?: PaymentUpdateManyWithoutUserNestedInput
+    holdings?: HoldingUpdateManyWithoutUserNestedInput
+    Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
+    wallet?: WalletUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutGoldItemsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    identity?: IdentityUncheckedUpdateOneWithoutUserNestedInput
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
@@ -16676,18 +21250,71 @@ export namespace Prisma {
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
   }
 
+  export type TransactionUpsertWithoutGoldItemsInput = {
+    update: XOR<TransactionUpdateWithoutGoldItemsInput, TransactionUncheckedUpdateWithoutGoldItemsInput>
+    create: XOR<TransactionCreateWithoutGoldItemsInput, TransactionUncheckedCreateWithoutGoldItemsInput>
+    where?: TransactionWhereInput
+  }
+
+  export type TransactionUpdateToOneWithWhereWithoutGoldItemsInput = {
+    where?: TransactionWhereInput
+    data: XOR<TransactionUpdateWithoutGoldItemsInput, TransactionUncheckedUpdateWithoutGoldItemsInput>
+  }
+
+  export type TransactionUpdateWithoutGoldItemsInput = {
+    referenceNumber?: StringFieldUpdateOperationsInput | string
+    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    source?: EnumTransactionSourceFieldUpdateOperationsInput | $Enums.TransactionSource
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
+    gramsPurchased?: FloatFieldUpdateOperationsInput | number
+    pricePerGram?: FloatFieldUpdateOperationsInput | number
+    totalCost?: FloatFieldUpdateOperationsInput | number
+    fee?: NullableFloatFieldUpdateOperationsInput | number | null
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
+    payment?: PaymentUpdateOneWithoutTransactionNestedInput
+    holdings?: HoldingUpdateManyWithoutTransactionNestedInput
+  }
+
+  export type TransactionUncheckedUpdateWithoutGoldItemsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    referenceNumber?: StringFieldUpdateOperationsInput | string
+    userId?: IntFieldUpdateOperationsInput | number
+    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    source?: EnumTransactionSourceFieldUpdateOperationsInput | $Enums.TransactionSource
+    status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
+    gramsPurchased?: FloatFieldUpdateOperationsInput | number
+    pricePerGram?: FloatFieldUpdateOperationsInput | number
+    totalCost?: FloatFieldUpdateOperationsInput | number
+    fee?: NullableFloatFieldUpdateOperationsInput | number | null
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paymentId?: NullableIntFieldUpdateOperationsInput | number | null
+    holdings?: HoldingUncheckedUpdateManyWithoutTransactionNestedInput
+  }
+
   export type UserCreateWithoutTransactionsInput = {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     identity?: IdentityCreateNestedOneWithoutUserInput
+    addresses?: AddressCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
     holdings?: HoldingCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemCreateNestedManyWithoutUserInput
     Portfolio?: PortfolioCreateNestedOneWithoutUserInput
     wallet?: WalletCreateNestedOneWithoutUserInput
   }
@@ -16697,14 +21324,21 @@ export namespace Prisma {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     identity?: IdentityUncheckedCreateNestedOneWithoutUserInput
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
     holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
     Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
   }
@@ -16769,6 +21403,51 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type GoldItemCreateWithoutTransactionInput = {
+    type: $Enums.GoldItemType
+    description?: string | null
+    serialNumber?: string | null
+    karat?: number | null
+    purity?: number | null
+    weightGrams: number
+    origin?: string | null
+    storageLocation?: string | null
+    depositMethod?: $Enums.DepositMethod
+    verified?: boolean
+    verifiedBy?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGoldItemsInput
+  }
+
+  export type GoldItemUncheckedCreateWithoutTransactionInput = {
+    id?: number
+    userId: number
+    type: $Enums.GoldItemType
+    description?: string | null
+    serialNumber?: string | null
+    karat?: number | null
+    purity?: number | null
+    weightGrams: number
+    origin?: string | null
+    storageLocation?: string | null
+    depositMethod?: $Enums.DepositMethod
+    verified?: boolean
+    verifiedBy?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GoldItemCreateOrConnectWithoutTransactionInput = {
+    where: GoldItemWhereUniqueInput
+    create: XOR<GoldItemCreateWithoutTransactionInput, GoldItemUncheckedCreateWithoutTransactionInput>
+  }
+
+  export type GoldItemCreateManyTransactionInputEnvelope = {
+    data: GoldItemCreateManyTransactionInput | GoldItemCreateManyTransactionInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutTransactionsInput = {
     update: XOR<UserUpdateWithoutTransactionsInput, UserUncheckedUpdateWithoutTransactionsInput>
     create: XOR<UserCreateWithoutTransactionsInput, UserUncheckedCreateWithoutTransactionsInput>
@@ -16784,14 +21463,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     identity?: IdentityUpdateOneWithoutUserNestedInput
+    addresses?: AddressUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
     holdings?: HoldingUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUpdateManyWithoutUserNestedInput
     Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
     wallet?: WalletUpdateOneWithoutUserNestedInput
   }
@@ -16801,14 +21487,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     identity?: IdentityUncheckedUpdateOneWithoutUserNestedInput
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
     Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
   }
@@ -16865,18 +21558,41 @@ export namespace Prisma {
     data: XOR<HoldingUpdateManyMutationInput, HoldingUncheckedUpdateManyWithoutTransactionInput>
   }
 
+  export type GoldItemUpsertWithWhereUniqueWithoutTransactionInput = {
+    where: GoldItemWhereUniqueInput
+    update: XOR<GoldItemUpdateWithoutTransactionInput, GoldItemUncheckedUpdateWithoutTransactionInput>
+    create: XOR<GoldItemCreateWithoutTransactionInput, GoldItemUncheckedCreateWithoutTransactionInput>
+  }
+
+  export type GoldItemUpdateWithWhereUniqueWithoutTransactionInput = {
+    where: GoldItemWhereUniqueInput
+    data: XOR<GoldItemUpdateWithoutTransactionInput, GoldItemUncheckedUpdateWithoutTransactionInput>
+  }
+
+  export type GoldItemUpdateManyWithWhereWithoutTransactionInput = {
+    where: GoldItemScalarWhereInput
+    data: XOR<GoldItemUpdateManyMutationInput, GoldItemUncheckedUpdateManyWithoutTransactionInput>
+  }
+
   export type UserCreateWithoutPaymentsInput = {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     identity?: IdentityCreateNestedOneWithoutUserInput
+    addresses?: AddressCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     holdings?: HoldingCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemCreateNestedManyWithoutUserInput
     Portfolio?: PortfolioCreateNestedOneWithoutUserInput
     wallet?: WalletCreateNestedOneWithoutUserInput
   }
@@ -16886,14 +21602,21 @@ export namespace Prisma {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     identity?: IdentityUncheckedCreateNestedOneWithoutUserInput
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
     Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
   }
@@ -16906,6 +21629,7 @@ export namespace Prisma {
   export type TransactionCreateWithoutPaymentInput = {
     referenceNumber: string
     type: $Enums.TransactionType
+    source?: $Enums.TransactionSource
     status?: $Enums.TransactionStatus
     gramsPurchased: number
     pricePerGram: number
@@ -16916,6 +21640,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTransactionsInput
     holdings?: HoldingCreateNestedManyWithoutTransactionInput
+    goldItems?: GoldItemCreateNestedManyWithoutTransactionInput
   }
 
   export type TransactionUncheckedCreateWithoutPaymentInput = {
@@ -16923,6 +21648,7 @@ export namespace Prisma {
     referenceNumber: string
     userId: number
     type: $Enums.TransactionType
+    source?: $Enums.TransactionSource
     status?: $Enums.TransactionStatus
     gramsPurchased: number
     pricePerGram: number
@@ -16932,6 +21658,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     holdings?: HoldingUncheckedCreateNestedManyWithoutTransactionInput
+    goldItems?: GoldItemUncheckedCreateNestedManyWithoutTransactionInput
   }
 
   export type TransactionCreateOrConnectWithoutPaymentInput = {
@@ -16954,14 +21681,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     identity?: IdentityUpdateOneWithoutUserNestedInput
+    addresses?: AddressUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     holdings?: HoldingUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUpdateManyWithoutUserNestedInput
     Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
     wallet?: WalletUpdateOneWithoutUserNestedInput
   }
@@ -16971,14 +21705,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     identity?: IdentityUncheckedUpdateOneWithoutUserNestedInput
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
     Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
   }
@@ -16997,6 +21738,7 @@ export namespace Prisma {
   export type TransactionUpdateWithoutPaymentInput = {
     referenceNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    source?: EnumTransactionSourceFieldUpdateOperationsInput | $Enums.TransactionSource
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gramsPurchased?: FloatFieldUpdateOperationsInput | number
     pricePerGram?: FloatFieldUpdateOperationsInput | number
@@ -17007,6 +21749,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
     holdings?: HoldingUpdateManyWithoutTransactionNestedInput
+    goldItems?: GoldItemUpdateManyWithoutTransactionNestedInput
   }
 
   export type TransactionUncheckedUpdateWithoutPaymentInput = {
@@ -17014,6 +21757,7 @@ export namespace Prisma {
     referenceNumber?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    source?: EnumTransactionSourceFieldUpdateOperationsInput | $Enums.TransactionSource
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gramsPurchased?: FloatFieldUpdateOperationsInput | number
     pricePerGram?: FloatFieldUpdateOperationsInput | number
@@ -17023,20 +21767,28 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     holdings?: HoldingUncheckedUpdateManyWithoutTransactionNestedInput
+    goldItems?: GoldItemUncheckedUpdateManyWithoutTransactionNestedInput
   }
 
   export type UserCreateWithoutHoldingsInput = {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     identity?: IdentityCreateNestedOneWithoutUserInput
+    addresses?: AddressCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemCreateNestedManyWithoutUserInput
     Portfolio?: PortfolioCreateNestedOneWithoutUserInput
     wallet?: WalletCreateNestedOneWithoutUserInput
   }
@@ -17046,14 +21798,21 @@ export namespace Prisma {
     email: string
     password: string
     firstName: string
+    middleName?: string | null
     lastName: string
+    dateOfBirth?: Date | string | null
+    gender?: string | null
+    phoneNumber?: string | null
+    nationality?: string | null
     country: string
     role?: $Enums.Role
     createdAt?: Date | string
     updatedAt?: Date | string
     identity?: IdentityUncheckedCreateNestedOneWithoutUserInput
+    addresses?: AddressUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
+    goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
     Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
   }
@@ -17066,6 +21825,7 @@ export namespace Prisma {
   export type TransactionCreateWithoutHoldingsInput = {
     referenceNumber: string
     type: $Enums.TransactionType
+    source?: $Enums.TransactionSource
     status?: $Enums.TransactionStatus
     gramsPurchased: number
     pricePerGram: number
@@ -17076,6 +21836,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTransactionsInput
     payment?: PaymentCreateNestedOneWithoutTransactionInput
+    goldItems?: GoldItemCreateNestedManyWithoutTransactionInput
   }
 
   export type TransactionUncheckedCreateWithoutHoldingsInput = {
@@ -17083,6 +21844,7 @@ export namespace Prisma {
     referenceNumber: string
     userId: number
     type: $Enums.TransactionType
+    source?: $Enums.TransactionSource
     status?: $Enums.TransactionStatus
     gramsPurchased: number
     pricePerGram: number
@@ -17092,6 +21854,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     paymentId?: number | null
+    goldItems?: GoldItemUncheckedCreateNestedManyWithoutTransactionInput
   }
 
   export type TransactionCreateOrConnectWithoutHoldingsInput = {
@@ -17114,14 +21877,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     identity?: IdentityUpdateOneWithoutUserNestedInput
+    addresses?: AddressUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUpdateManyWithoutUserNestedInput
     Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
     wallet?: WalletUpdateOneWithoutUserNestedInput
   }
@@ -17131,14 +21901,21 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     firstName?: StringFieldUpdateOperationsInput | string
+    middleName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: StringFieldUpdateOperationsInput | string
+    dateOfBirth?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    gender?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    nationality?: NullableStringFieldUpdateOperationsInput | string | null
     country?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     identity?: IdentityUncheckedUpdateOneWithoutUserNestedInput
+    addresses?: AddressUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
+    goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
     Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
   }
@@ -17157,6 +21934,7 @@ export namespace Prisma {
   export type TransactionUpdateWithoutHoldingsInput = {
     referenceNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    source?: EnumTransactionSourceFieldUpdateOperationsInput | $Enums.TransactionSource
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gramsPurchased?: FloatFieldUpdateOperationsInput | number
     pricePerGram?: FloatFieldUpdateOperationsInput | number
@@ -17167,6 +21945,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
     payment?: PaymentUpdateOneWithoutTransactionNestedInput
+    goldItems?: GoldItemUpdateManyWithoutTransactionNestedInput
   }
 
   export type TransactionUncheckedUpdateWithoutHoldingsInput = {
@@ -17174,6 +21953,7 @@ export namespace Prisma {
     referenceNumber?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    source?: EnumTransactionSourceFieldUpdateOperationsInput | $Enums.TransactionSource
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gramsPurchased?: FloatFieldUpdateOperationsInput | number
     pricePerGram?: FloatFieldUpdateOperationsInput | number
@@ -17183,12 +21963,26 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentId?: NullableIntFieldUpdateOperationsInput | number | null
+    goldItems?: GoldItemUncheckedUpdateManyWithoutTransactionNestedInput
+  }
+
+  export type AddressCreateManyUserInput = {
+    id?: number
+    type?: $Enums.AddressType
+    street: string
+    city: string
+    state?: string | null
+    postalCode: string
+    country: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type TransactionCreateManyUserInput = {
     id?: number
     referenceNumber: string
     type: $Enums.TransactionType
+    source?: $Enums.TransactionSource
     status?: $Enums.TransactionStatus
     gramsPurchased: number
     pricePerGram: number
@@ -17220,9 +22014,63 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type GoldItemCreateManyUserInput = {
+    id?: number
+    transactionId: number
+    type: $Enums.GoldItemType
+    description?: string | null
+    serialNumber?: string | null
+    karat?: number | null
+    purity?: number | null
+    weightGrams: number
+    origin?: string | null
+    storageLocation?: string | null
+    depositMethod?: $Enums.DepositMethod
+    verified?: boolean
+    verifiedBy?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AddressUpdateWithoutUserInput = {
+    type?: EnumAddressTypeFieldUpdateOperationsInput | $Enums.AddressType
+    street?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: StringFieldUpdateOperationsInput | string
+    country?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AddressUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumAddressTypeFieldUpdateOperationsInput | $Enums.AddressType
+    street?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: StringFieldUpdateOperationsInput | string
+    country?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AddressUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    type?: EnumAddressTypeFieldUpdateOperationsInput | $Enums.AddressType
+    street?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: StringFieldUpdateOperationsInput | string
+    country?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TransactionUpdateWithoutUserInput = {
     referenceNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    source?: EnumTransactionSourceFieldUpdateOperationsInput | $Enums.TransactionSource
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gramsPurchased?: FloatFieldUpdateOperationsInput | number
     pricePerGram?: FloatFieldUpdateOperationsInput | number
@@ -17233,12 +22081,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     payment?: PaymentUpdateOneWithoutTransactionNestedInput
     holdings?: HoldingUpdateManyWithoutTransactionNestedInput
+    goldItems?: GoldItemUpdateManyWithoutTransactionNestedInput
   }
 
   export type TransactionUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     referenceNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    source?: EnumTransactionSourceFieldUpdateOperationsInput | $Enums.TransactionSource
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gramsPurchased?: FloatFieldUpdateOperationsInput | number
     pricePerGram?: FloatFieldUpdateOperationsInput | number
@@ -17249,12 +22099,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paymentId?: NullableIntFieldUpdateOperationsInput | number | null
     holdings?: HoldingUncheckedUpdateManyWithoutTransactionNestedInput
+    goldItems?: GoldItemUncheckedUpdateManyWithoutTransactionNestedInput
   }
 
   export type TransactionUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     referenceNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    source?: EnumTransactionSourceFieldUpdateOperationsInput | $Enums.TransactionSource
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     gramsPurchased?: FloatFieldUpdateOperationsInput | number
     pricePerGram?: FloatFieldUpdateOperationsInput | number
@@ -17326,10 +22178,81 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type GoldItemUpdateWithoutUserInput = {
+    type?: EnumGoldItemTypeFieldUpdateOperationsInput | $Enums.GoldItemType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    karat?: NullableFloatFieldUpdateOperationsInput | number | null
+    purity?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightGrams?: FloatFieldUpdateOperationsInput | number
+    origin?: NullableStringFieldUpdateOperationsInput | string | null
+    storageLocation?: NullableStringFieldUpdateOperationsInput | string | null
+    depositMethod?: EnumDepositMethodFieldUpdateOperationsInput | $Enums.DepositMethod
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    transaction?: TransactionUpdateOneRequiredWithoutGoldItemsNestedInput
+  }
+
+  export type GoldItemUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    transactionId?: IntFieldUpdateOperationsInput | number
+    type?: EnumGoldItemTypeFieldUpdateOperationsInput | $Enums.GoldItemType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    karat?: NullableFloatFieldUpdateOperationsInput | number | null
+    purity?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightGrams?: FloatFieldUpdateOperationsInput | number
+    origin?: NullableStringFieldUpdateOperationsInput | string | null
+    storageLocation?: NullableStringFieldUpdateOperationsInput | string | null
+    depositMethod?: EnumDepositMethodFieldUpdateOperationsInput | $Enums.DepositMethod
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GoldItemUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    transactionId?: IntFieldUpdateOperationsInput | number
+    type?: EnumGoldItemTypeFieldUpdateOperationsInput | $Enums.GoldItemType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    karat?: NullableFloatFieldUpdateOperationsInput | number | null
+    purity?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightGrams?: FloatFieldUpdateOperationsInput | number
+    origin?: NullableStringFieldUpdateOperationsInput | string | null
+    storageLocation?: NullableStringFieldUpdateOperationsInput | string | null
+    depositMethod?: EnumDepositMethodFieldUpdateOperationsInput | $Enums.DepositMethod
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type HoldingCreateManyTransactionInput = {
     id?: number
     userId: number
     amount: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GoldItemCreateManyTransactionInput = {
+    id?: number
+    userId: number
+    type: $Enums.GoldItemType
+    description?: string | null
+    serialNumber?: string | null
+    karat?: number | null
+    purity?: number | null
+    weightGrams: number
+    origin?: string | null
+    storageLocation?: string | null
+    depositMethod?: $Enums.DepositMethod
+    verified?: boolean
+    verifiedBy?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -17353,6 +22276,59 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     userId?: IntFieldUpdateOperationsInput | number
     amount?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GoldItemUpdateWithoutTransactionInput = {
+    type?: EnumGoldItemTypeFieldUpdateOperationsInput | $Enums.GoldItemType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    karat?: NullableFloatFieldUpdateOperationsInput | number | null
+    purity?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightGrams?: FloatFieldUpdateOperationsInput | number
+    origin?: NullableStringFieldUpdateOperationsInput | string | null
+    storageLocation?: NullableStringFieldUpdateOperationsInput | string | null
+    depositMethod?: EnumDepositMethodFieldUpdateOperationsInput | $Enums.DepositMethod
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGoldItemsNestedInput
+  }
+
+  export type GoldItemUncheckedUpdateWithoutTransactionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    type?: EnumGoldItemTypeFieldUpdateOperationsInput | $Enums.GoldItemType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    karat?: NullableFloatFieldUpdateOperationsInput | number | null
+    purity?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightGrams?: FloatFieldUpdateOperationsInput | number
+    origin?: NullableStringFieldUpdateOperationsInput | string | null
+    storageLocation?: NullableStringFieldUpdateOperationsInput | string | null
+    depositMethod?: EnumDepositMethodFieldUpdateOperationsInput | $Enums.DepositMethod
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GoldItemUncheckedUpdateManyWithoutTransactionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    userId?: IntFieldUpdateOperationsInput | number
+    type?: EnumGoldItemTypeFieldUpdateOperationsInput | $Enums.GoldItemType
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    serialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    karat?: NullableFloatFieldUpdateOperationsInput | number | null
+    purity?: NullableFloatFieldUpdateOperationsInput | number | null
+    weightGrams?: FloatFieldUpdateOperationsInput | number
+    origin?: NullableStringFieldUpdateOperationsInput | string | null
+    storageLocation?: NullableStringFieldUpdateOperationsInput | string | null
+    depositMethod?: EnumDepositMethodFieldUpdateOperationsInput | $Enums.DepositMethod
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    verifiedBy?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

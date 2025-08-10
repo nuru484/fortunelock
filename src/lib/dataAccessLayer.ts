@@ -3,28 +3,35 @@ import "server-only";
 import { cookies } from "next/headers";
 import { decrypt } from "./session";
 import prisma from "@/config/prismaClient";
-import { redirect } from "next/navigation";
 
 export async function verifySession() {
   try {
     const cookie = (await cookies()).get("session")?.value;
+
     if (!cookie) {
-      redirect("/login");
+      return null;
     }
 
+    // Decrypt and validate the session
     const session = await decrypt(cookie);
-    if (!session?.userId || !session?.role) {
-      redirect("/login");
+
+    if (!session || !session.userId || !session.expiresAt) {
+      return null;
     }
 
-    return { isAuth: true, userId: session.userId, role: session.role };
+    // Check if session is expired
+    if (new Date(session.expiresAt) < new Date()) {
+      return null;
+    }
+
+    return session;
   } catch (error) {
-    console.error("Error verifying session:", error);
-    redirect("/login");
+    console.error("Session verification error:", error);
+    return null;
   }
 }
 
-export async function getUser() {
+export async function verifySessionWithUser() {
   try {
     const session = await verifySession();
     if (!session) {
@@ -35,16 +42,62 @@ export async function getUser() {
       where: {
         id: session.userId,
       },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+        country: true,
+      },
     });
 
     if (!user) {
-      console.error("User not found for ID:", session.userId);
       return null;
     }
 
-    return user;
+    return { session, user };
   } catch (error) {
-    console.error("Failed to fetch user:", error);
+    console.error("Session verification error:", error);
     return null;
+  }
+}
+
+export async function verifySessionWithRole(requiredRole?: string[]) {
+  try {
+    const result = await verifySessionWithUser();
+    if (!result) {
+      return null;
+    }
+
+    // Check role if specified
+    if (requiredRole && !requiredRole.includes(result.user.role)) {
+      return null;
+    }
+
+    return result.user;
+  } catch (error) {
+    console.error("Role verification error:", error);
+    return null;
+  }
+}
+
+// Option 4: Resource ownership verification
+export async function verifyResourceOwnership(resourceUserId: number) {
+  try {
+    const session = await verifySession();
+    if (!session) {
+      return { authorized: false, reason: "not_authenticated" };
+    }
+
+    // Check if the session user owns the resource
+    if (session.userId !== resourceUserId) {
+      return { authorized: false, reason: "not_owner" };
+    }
+
+    return { authorized: true, session };
+  } catch (error) {
+    console.error("Resource ownership verification error:", error);
+    return { authorized: false, reason: "verification_error" };
   }
 }

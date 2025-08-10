@@ -38,21 +38,50 @@ enum Currency {
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  email        String        @unique
-  password     String
-  firstName    String
-  lastName     String
-  country      String
-  role         Role          @default(USER)
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  password    String
+  firstName   String
+  middleName  String?
+  lastName    String
+  dateOfBirth DateTime?
+  gender      String?
+  phoneNumber String?
+  nationality String?
+  country     String
+  role        Role      @default(USER)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
   identity     Identity?
+  addresses    Address[]
   transactions Transaction[]
   payments     Payment[]
   holdings     Holding[]
+  goldItems    GoldItem[]
   Portfolio    Portfolio?
   wallet       Wallet?
+}
+
+model Address {
+  id         Int         @id @default(autoincrement())
+  userId     Int
+  user       User        @relation(fields: [userId], references: [id])
+  type       AddressType @default(RESIDENTIAL)
+  street     String
+  city       String
+  state      String?
+  postalCode String
+  country    String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+enum AddressType {
+  RESIDENTIAL
+  MAILING
+  BUSINESS
 }
 
 model Wallet {
@@ -83,10 +112,49 @@ model Identity {
   user           User      @relation(fields: [userId], references: [id])
   documentType   String
   documentNumber String    @unique
+  issueDate      DateTime?
+  expiryDate     DateTime?
+  proofOfAddress String?
   verified       Boolean   @default(false)
   verifiedAt     DateTime?
+  verifiedBy     Int?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+}
+
+enum GoldItemType {
+  BAR
+  COIN
+  JEWELRY
+  OTHER
+}
+
+enum DepositMethod {
+  PHYSICAL
+  ONLINE_PURCHASE
+}
+
+model GoldItem {
+  id              Int           @id @default(autoincrement())
+  userId          Int
+  transactionId   Int
+  type            GoldItemType // BAR, COIN, JEWELRY
+  description     String? // e.g., "PAMP Suisse Bar", "Krugerrand Coin"
+  serialNumber    String?       @unique // Some bars have unique numbers
+  karat           Float? // e.g., 24, 22, 18
+  purity          Float? // e.g., 0.9999 for 24k
+  weightGrams     Float
+  origin          String? // Country or refinery
+  storageLocation String? // e.g., "Vault A - Shelf 3"
+  depositMethod   DepositMethod @default(PHYSICAL)
+  verified        Boolean       @default(false)
+  verifiedBy      Int? // Admin ID
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relations
+  user        User        @relation(fields: [userId], references: [id])
+  transaction Transaction @relation(fields: [transactionId], references: [id])
 }
 
 model GoldPrice {
@@ -139,23 +207,30 @@ model GoldUnitMetadata {
   updatedAt    DateTime @updatedAt
 }
 
+enum TransactionSource {
+  ONLINE
+  PHYSICAL_DEPOSIT
+}
+
 model Transaction {
   id              Int               @id @default(autoincrement())
   referenceNumber String            @unique
   userId          Int
   user            User              @relation(fields: [userId], references: [id])
   type            TransactionType
+  source          TransactionSource @default(ONLINE)
   status          TransactionStatus @default(PENDING)
   gramsPurchased  Float
   pricePerGram    Float
   totalCost       Float
-  fee             Float? // New: Optional transaction fee
+  fee             Float?
   currency        Currency          @default(USD)
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   payment         Payment?          @relation(fields: [paymentId], references: [id])
   paymentId       Int?              @unique
   holdings        Holding[]
+  goldItems       GoldItem[]
 }
 
 model Payment {

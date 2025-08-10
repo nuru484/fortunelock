@@ -27,7 +27,6 @@ const GoldPriceDisplay = () => {
   const [currency, setCurrency] = useState<string>("USD");
   const { data, isLoading, error, refetch } = useGetGoldPricesQuery(currency);
 
-  console.log("Gold Price: ", data);
   const [updateGoldPrices, { isLoading: isUpdating }] =
     useUpdateGoldPricesMutation();
 

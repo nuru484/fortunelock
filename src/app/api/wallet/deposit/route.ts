@@ -1,82 +1,34 @@
 // src/app/api/wallet/deposit/route.ts
 import { NextResponse } from "next/server";
-import { verifySession } from "@/lib/dataAccessLayer";
+import { verifySessionWithUser } from "@/lib/dataAccessLayer";
 import prisma from "@/config/prismaClient";
 import { Currency } from "@/generated/prisma";
-import Stripe from "stripe";
-import ENV from "@/config/env";
-
-// Stripe configuration
-const STRIPE_SECRET_KEY = ENV.STRIPE_SECRET_KEY;
-
-if (!STRIPE_SECRET_KEY) {
-  throw new Error("STRIPE_SECRET_KEY is not set in environment variables");
-}
-
-const stripe = new Stripe(STRIPE_SECRET_KEY);
-
-// Helper function to initialize Stripe payment
-// Fix 1: In your route.ts file, update the initializeStripePayment function
-
-async function initializeStripePayment(
-  email: string,
-  amount: number,
-  currency: string,
-  paymentId: string,
-  callbackUrl?: string
-) {
-  const baseUrl = process.env.NEXT_BASE_URL || "http://localhost:3000";
-
-  // Ensure unit_amount is an integer (round to nearest cent)
-  const unitAmountInCents = Math.round(amount * 100);
-
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ["card"],
-    customer_email: email,
-    line_items: [
-      {
-        price_data: {
-          currency: currency.toLowerCase(),
-          product_data: {
-            name: "Wallet Deposit",
-          },
-          unit_amount: unitAmountInCents, // Now guaranteed to be an integer
-        },
-        quantity: 1,
-      },
-    ],
-    mode: "payment",
-    success_url: callbackUrl
-      ? `${callbackUrl}?session_id={CHECKOUT_SESSION_ID}`
-      : `${baseUrl}/dashboard/wallet/deposit/callback?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: callbackUrl
-      ? `${callbackUrl}?session_id={CHECKOUT_SESSION_ID}`
-      : `${baseUrl}/dashboard/wallet/deposit/callback?session_id={CHECKOUT_SESSION_ID}`,
-    metadata: {
-      paymentId,
-    },
-  });
-
-  return session;
-}
-
-// Helper function to verify Stripe payment
-async function verifyStripePayment(sessionId: string) {
-  const session = await stripe.checkout.sessions.retrieve(sessionId);
-  return session;
-}
+import {
+  initializeStripePayment,
+  verifyStripePayment,
+} from "@/utils/stripePayment";
 
 // POST: Initialize deposit
 export async function POST(request: Request) {
   try {
     // Check authentication
-    const session = await verifySession();
-    if (!session) {
+    const result = await verifySessionWithUser();
+
+    if (!result?.session) {
       return NextResponse.json(
-        { error: "Unauthenticated: Please log in." },
+        { error: "Unauthenticated: Please log in.", success: false },
         { status: 401 }
       );
     }
+
+    if (!result.user) {
+      return NextResponse.json(
+        { error: "Authenticated user not found", success: false },
+        { status: 404 }
+      );
+    }
+
+    const userId = result.user.id;
 
     const body = await request.json();
     const { amount, currency = "USD", callbackUrl } = body;
@@ -100,7 +52,7 @@ export async function POST(request: Request) {
 
     // Get user details
     const user = await prisma.user.findUnique({
-      where: { id: session.userId },
+      where: { id: userId },
       select: { id: true, email: true, firstName: true, lastName: true },
     });
 
@@ -177,6 +129,22 @@ export async function POST(request: Request) {
 // PUT: Verify and complete deposit
 export async function PUT(request: Request) {
   try {
+    const sessionResult = await verifySessionWithUser();
+
+    if (!sessionResult?.session) {
+      return NextResponse.json(
+        { error: "Unauthenticated: Please log in.", success: false },
+        { status: 401 }
+      );
+    }
+
+    if (!sessionResult.user) {
+      return NextResponse.json(
+        { error: "Authenticated user not found", success: false },
+        { status: 404 }
+      );
+    }
+
     const body = await request.json();
     const { reference, paymentId } = body;
 
@@ -260,7 +228,7 @@ export async function PUT(request: Request) {
         },
       });
 
-      // Get.ProgressEvent or create wallet
+      // Get or create wallet
       let wallet = await tx.wallet.findUnique({
         where: { userId: payment.userId },
       });
@@ -318,16 +286,26 @@ export async function PUT(request: Request) {
 
 export async function GET() {
   try {
-    const session = await verifySession();
-    if (!session) {
+    const result = await verifySessionWithUser();
+
+    if (!result?.session) {
       return NextResponse.json(
-        { error: "Unauthenticated: Please log in." },
+        { error: "Unauthenticated: Please log in.", success: false },
         { status: 401 }
       );
     }
 
+    if (!result.user) {
+      return NextResponse.json(
+        { error: "Authenticated user not found", success: false },
+        { status: 404 }
+      );
+    }
+
+    const userId = result.user.id;
+
     const wallet = await prisma.wallet.findUnique({
-      where: { userId: session.userId },
+      where: { userId: userId },
       select: {
         balance: true,
         currency: true,
@@ -335,17 +313,19 @@ export async function GET() {
       },
     });
 
-    if (!wallet) {
-      return NextResponse.json({ error: "Wallet not found" }, { status: 404 });
-    }
+    const finalWallet = wallet || {
+      balance: 0,
+      currency: Currency.USD,
+      updatedAt: new Date(),
+    };
 
     return NextResponse.json(
       {
         success: true,
         data: {
-          balance: wallet.balance,
-          currency: wallet.currency,
-          updatedAt: wallet.updatedAt,
+          balance: finalWallet.balance,
+          currency: finalWallet.currency,
+          updatedAt: finalWallet.updatedAt,
         },
       },
       { status: 200 }

@@ -1,3 +1,4 @@
+// src/redux/api/apiSlice.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
@@ -10,6 +11,7 @@ export const apiSlice = createApi({
     "Wallet",
     "Portfolio",
     "Transaction",
+    "GoldItem",
   ],
   endpoints: (builder) => ({
     authUser: builder.query({
@@ -25,10 +27,32 @@ export const apiSlice = createApi({
       invalidatesTags: ["User"],
     }),
     signupUser: builder.mutation({
-      query: ({ email, password, firstName, lastName, country }) => ({
+      query: ({
+        email,
+        password,
+        firstName,
+        middleName,
+        lastName,
+        dateOfBirth,
+        gender,
+        phoneNumber,
+        nationality,
+        country,
+      }) => ({
         url: "signup",
         method: "POST",
-        body: { email, password, firstName, lastName, country },
+        body: {
+          email,
+          password,
+          firstName,
+          middleName,
+          lastName,
+          dateOfBirth,
+          gender,
+          phoneNumber,
+          nationality,
+          country,
+        },
       }),
       invalidatesTags: ["User"],
     }),
@@ -81,6 +105,34 @@ export const apiSlice = createApi({
       query: () => "dashboard",
       providesTags: ["User", "Portfolio", "Wallet", "Transaction", "GoldPrice"],
     }),
+
+    // Admin endpoints
+    getAllUsers: builder.query({
+      query: ({ page = 1, limit = 50, search = "" }) => ({
+        url: `admin/users?page=${page}&limit=${limit}&search=${encodeURIComponent(
+          search
+        )}`,
+      }),
+      providesTags: ["User"],
+    }),
+    getUserById: builder.query({
+      query: (userId) => `admin/users/${userId}`,
+      providesTags: ["User", "Portfolio"],
+    }),
+    depositPhysicalGold: builder.mutation({
+      query: ({ userId, goldItem, pricePerGram, currency, adminNotes }) => ({
+        url: "admin/deposit-physical-gold",
+        method: "POST",
+        body: {
+          userId,
+          goldItem,
+          pricePerGram,
+          currency,
+          adminNotes,
+        },
+      }),
+      invalidatesTags: ["Portfolio", "Transaction", "GoldItem", "User"],
+    }),
   }),
 });
 
@@ -96,4 +148,9 @@ export const {
   useBuyGoldMutation,
   useGetPortfolioQuery,
   useGetDashboardQuery,
+
+  // Admin hooks
+  useGetAllUsersQuery,
+  useGetUserByIdQuery,
+  useDepositPhysicalGoldMutation,
 } = apiSlice;

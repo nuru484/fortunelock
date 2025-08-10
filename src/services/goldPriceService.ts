@@ -1,3 +1,4 @@
+// src/services/goldPriceService.ts
 import { PrismaClient, GoldPrice, Currency } from "@/generated/prisma";
 import {
   fetchGoldPrice,

@@ -148,6 +148,7 @@ const GoldPurchaseForm: React.FC = () => {
               )}
             </div>
           </CardHeader>
+
           <CardContent>
             {error || !goldPriceData?.price ? (
               <div className="text-center text-red-500">
@@ -180,6 +181,7 @@ const GoldPurchaseForm: React.FC = () => {
               </div>
             </div>
           </CardHeader>
+
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

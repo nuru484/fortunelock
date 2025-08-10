@@ -1,3 +1,4 @@
+// src/components/wallet/WalletBalance.tsx
 "use client";
 import React from "react";
 import { Wallet } from "lucide-react";

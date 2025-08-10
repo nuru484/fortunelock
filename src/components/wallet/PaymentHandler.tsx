@@ -71,10 +71,10 @@ const PaymentHandler = () => {
     { code: "KWD", flag: "🇰🇼", name: "Kuwaiti Dinar" },
   ];
 
-  // Calculate deposit details whenever inputs change
+  // Calculate deposit details whenever inputs change - NO FEES
   useEffect(() => {
-    const processingFee = amount * 0.029 + 0.3; // Stripe fee structure
-    const total = amount + processingFee;
+    const processingFee = 0; // No processing fees
+    const total = amount; // Total equals the amount (no additional fees)
 
     setDepositDetails({
       amount,
@@ -96,8 +96,9 @@ const PaymentHandler = () => {
     try {
       const callbackUrl = `${window.location.origin}/dashboard/wallet/deposit/callback`;
 
+      // Send the exact amount (no fees added)
       const response = await initializeDeposit({
-        amount: depositDetails.total,
+        amount: depositDetails.amount, // Changed from depositDetails.total to depositDetails.amount
         currency,
         callbackUrl,
       }).unwrap();
@@ -258,7 +259,7 @@ const PaymentHandler = () => {
               <div>
                 <CardTitle className="text-gray-900">Deposit Funds</CardTitle>
                 <CardDescription>
-                  Add money to your wallet instantly
+                  Add money to your wallet instantly - No fees!
                 </CardDescription>
               </div>
             </div>
@@ -300,38 +301,38 @@ const PaymentHandler = () => {
                 </div>
               </div>
 
-              {/* Transaction Summary */}
+              {/* Transaction Summary - Simplified without fees */}
               {amount > 0 && (
-                <Card className="bg-gray-50 border-gray-200">
+                <Card className="bg-green-50 border-green-200">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg text-gray-900">
+                    <CardTitle className="text-lg text-green-900 flex items-center gap-2">
                       Deposit Summary
+                      <span className="text-sm bg-green-200 text-green-800 px-2 py-1 rounded-full">
+                        No Fees!
+                      </span>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Deposit Amount:</span>
-                        <span className="font-semibold">
+                        <span className="text-green-600">Deposit Amount:</span>
+                        <span className="font-semibold text-green-900">
                           {formatCurrency(depositDetails.amount, currency)}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Processing Fee:</span>
-                        <span className="font-semibold">
-                          {formatCurrency(
-                            depositDetails.processingFee,
-                            currency
-                          )}
+                        <span className="text-green-600">Processing Fee:</span>
+                        <span className="font-semibold text-green-900">
+                          {formatCurrency(0, currency)}
                         </span>
                       </div>
-                      <div className="h-px bg-gray-300"></div>
+                      <div className="h-px bg-green-300"></div>
                       <div className="flex justify-between items-center text-lg">
-                        <span className="font-semibold text-gray-900">
-                          Total Amount:
+                        <span className="font-semibold text-green-900">
+                          You&apos;ll Receive:
                         </span>
-                        <span className="font-bold text-blue-600">
-                          {formatCurrency(depositDetails.total, currency)}
+                        <span className="font-bold text-green-600">
+                          {formatCurrency(depositDetails.amount, currency)}
                         </span>
                       </div>
                     </div>
@@ -352,7 +353,7 @@ const PaymentHandler = () => {
                 ) : (
                   `Deposit ${
                     amount > 0
-                      ? formatCurrency(depositDetails.total, currency)
+                      ? formatCurrency(depositDetails.amount, currency)
                       : "Funds"
                   }`
                 )}
@@ -362,7 +363,7 @@ const PaymentHandler = () => {
         </Card>
       </div>
 
-      {/* Confirmation Dialog */}
+      {/* Confirmation Dialog - Updated to remove fee display */}
       <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -381,6 +382,9 @@ const PaymentHandler = () => {
                 <span className="font-semibold text-blue-900">
                   Deposit Details
                 </span>
+                <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded-full ml-auto">
+                  No Fees!
+                </span>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
@@ -392,16 +396,16 @@ const PaymentHandler = () => {
                 <div className="flex justify-between">
                   <span className="text-blue-800">Processing Fee:</span>
                   <span className="font-semibold text-blue-900">
-                    {formatCurrency(depositDetails.processingFee, currency)}
+                    {formatCurrency(0, currency)}
                   </span>
                 </div>
                 <div className="h-px bg-blue-300 my-2"></div>
                 <div className="flex justify-between text-base">
                   <span className="font-semibold text-blue-900">
-                    Total to Pay:
+                    You&apos;ll Receive:
                   </span>
                   <span className="font-bold text-blue-900">
-                    {formatCurrency(depositDetails.total, currency)}
+                    {formatCurrency(depositDetails.amount, currency)}
                   </span>
                 </div>
               </div>

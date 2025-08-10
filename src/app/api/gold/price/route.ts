@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { GoldPriceService } from "@/services/goldPriceService";
 import { fetchGoldPrice } from "@/utils/goldPriceApi";
 import { Currency } from "@/generated/prisma";
-import { verifySession } from "@/lib/dataAccessLayer";
+import { verifySessionWithUser } from "@/lib/dataAccessLayer";
 
 // Store last update time to implement hourly updates
 let lastUpdateTime = 0;
@@ -17,11 +17,19 @@ export async function GET(request: Request) {
 
   try {
     // Check if user is authenticated
-    const session = await verifySession();
-    if (!session) {
+    const sessionResult = await verifySessionWithUser();
+
+    if (!sessionResult?.session) {
       return NextResponse.json(
-        { error: "Unauthenticated: Please log in." },
+        { error: "Unauthenticated: Please log in.", success: false },
         { status: 401 }
+      );
+    }
+
+    if (!sessionResult.user) {
+      return NextResponse.json(
+        { error: "Authenticated user not found", success: false },
+        { status: 404 }
       );
     }
 
@@ -39,10 +47,8 @@ export async function GET(request: Request) {
 
       if (updateResult.success) {
         lastUpdateTime = currentTime;
-        console.log("Price update successful:", updateResult.message);
       } else {
         console.error("Price update failed:", updateResult.message);
-        // Continue with existing data even if update fails
       }
 
       // If this was just an update request, return the update result
@@ -81,7 +87,6 @@ export async function GET(request: Request) {
 
       if (!price) {
         // If no price in DB, try to fetch from API as fallback
-        console.log("No price found in DB, fetching from API...");
         const apiPrice = await fetchGoldPrice(currency);
 
         if (!apiPrice) {
@@ -91,7 +96,6 @@ export async function GET(request: Request) {
           );
         }
 
-        // Return API data directly (without storing, since the main update will handle that)
         return NextResponse.json(
           {
             price: {
@@ -152,10 +156,23 @@ export async function GET(request: Request) {
   }
 }
 
-// Optional: Handle POST requests for manual price updates
 export async function POST() {
   try {
-    console.log("Manual price update triggered via POST...");
+    const sessionResult = await verifySessionWithUser();
+
+    if (!sessionResult?.session) {
+      return NextResponse.json(
+        { error: "Unauthenticated: Please log in.", success: false },
+        { status: 401 }
+      );
+    }
+
+    if (!sessionResult.user) {
+      return NextResponse.json(
+        { error: "Authenticated user not found", success: false },
+        { status: 404 }
+      );
+    }
 
     const updateResult = await GoldPriceService.updateAllCurrencyPrices();
     lastUpdateTime = Date.now();

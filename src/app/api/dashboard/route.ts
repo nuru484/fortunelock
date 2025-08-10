@@ -1,6 +1,7 @@
+// src/app/api/dashboard/route.ts
 import { NextResponse } from "next/server";
 import prisma from "@/config/prismaClient";
-import { verifySession, getUser } from "@/lib/dataAccessLayer";
+import { verifySessionWithUser } from "@/lib/dataAccessLayer";
 import { Currency } from "@/generated/prisma";
 
 interface DashboardResponse {
@@ -45,79 +46,83 @@ interface DashboardResponse {
 
 export async function GET(): Promise<NextResponse> {
   try {
-    // Verify authentication
-    const session = await verifySession();
-    if (!session) {
+    const result = await verifySessionWithUser();
+
+    if (!result?.session) {
       return NextResponse.json(
         { error: "Unauthenticated: Please log in.", success: false },
         { status: 401 }
       );
     }
 
-    // Get user
-    const user = await getUser();
-    if (!user) {
+    if (!result.user) {
       return NextResponse.json(
-        { error: "User not found.", success: false },
+        { error: "Authenticated user not found", success: false },
         { status: 404 }
       );
     }
 
-    // Fetch portfolio
-    const portfolio = await prisma.portfolio.findUnique({
-      where: { userId: user.id },
-      select: {
-        id: true,
-        totalGrams: true,
-        totalInvested: true,
-        currentValue: true,
-        unrealizedGain: true,
-        lastCalculatedAt: true,
-      },
-    });
+    const userId = result.user.id;
 
-    // Fetch wallet
-    const wallet = await prisma.wallet.findUnique({
-      where: { userId: user.id },
-      select: { balance: true, currency: true },
-    });
+    // Fetch all user-owned resources in parallel
+    // No additional ownership checks needed since we're filtering by user.id
+    const [portfolio, wallet, recentTransactions] = await Promise.all([
+      // Portfolio - owned by user.id
+      prisma.portfolio.findUnique({
+        where: { userId },
+        select: {
+          id: true,
+          totalGrams: true,
+          totalInvested: true,
+          currentValue: true,
+          unrealizedGain: true,
+          lastCalculatedAt: true,
+        },
+      }),
 
-    if (!wallet) {
-      return NextResponse.json(
-        { error: "Wallet not found.", success: false },
-        { status: 404 }
-      );
+      // Wallet - owned by user.id
+      prisma.wallet.findUnique({
+        where: { userId },
+        select: { balance: true, currency: true },
+      }),
+
+      // Transactions - owned by user.id
+      prisma.transaction.findMany({
+        where: { userId },
+        select: {
+          id: true,
+          referenceNumber: true,
+          type: true,
+          status: true,
+          gramsPurchased: true,
+          totalCost: true,
+          currency: true,
+          createdAt: true,
+        },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      }),
+    ]);
+
+    let finalWallet = wallet;
+    if (!finalWallet) {
+      finalWallet = { balance: 0, currency: Currency.USD };
     }
-
-    // Fetch recent transactions (last 5)
-    const recentTransactions = await prisma.transaction.findMany({
-      where: { userId: user.id },
-      select: {
-        id: true,
-        referenceNumber: true,
-        type: true,
-        status: true,
-        gramsPurchased: true,
-        totalCost: true,
-        currency: true,
-        createdAt: true,
-      },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-    });
 
     // Fetch current gold price
     const goldPrice = await prisma.goldPrice.findFirst({
-      where: { currency: wallet.currency, isActive: true },
+      where: { currency: finalWallet.currency, isActive: true },
       select: { pricePerGram: true, currency: true, recordedAt: true },
       orderBy: { recordedAt: "desc" },
     });
 
-    if (!goldPrice) {
-      return NextResponse.json(
-        { error: "Failed to fetch gold price.", success: false },
-        { status: 503 }
-      );
+    let finalGoldPrice = goldPrice;
+    if (!finalGoldPrice) {
+      finalGoldPrice = {
+        pricePerGram: 0,
+        currency: finalWallet.currency,
+        recordedAt: new Date(),
+      };
     }
 
     // Prepare response
@@ -125,12 +130,12 @@ export async function GET(): Promise<NextResponse> {
       success: true,
       message: "Dashboard data retrieved successfully.",
       user: {
-        id: user.id,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        country: user.country,
-        role: user.role,
+        id: userId,
+        email: result.user.email,
+        firstName: result.user.firstName,
+        lastName: result.user.lastName,
+        country: result.user.country,
+        role: result.user.role,
       },
       portfolio: portfolio || {
         id: 0,
@@ -140,9 +145,12 @@ export async function GET(): Promise<NextResponse> {
         unrealizedGain: 0,
         lastCalculatedAt: new Date(),
       },
-      wallet,
+      wallet: {
+        balance: finalWallet.balance,
+        currency: finalWallet.currency,
+      },
       recentTransactions,
-      goldPrice,
+      goldPrice: finalGoldPrice,
     };
 
     return NextResponse.json(response, { status: 200 });

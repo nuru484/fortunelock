@@ -125,9 +125,27 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   password: 'password',
   firstName: 'firstName',
+  middleName: 'middleName',
   lastName: 'lastName',
+  dateOfBirth: 'dateOfBirth',
+  gender: 'gender',
+  phoneNumber: 'phoneNumber',
+  nationality: 'nationality',
   country: 'country',
   role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AddressScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  street: 'street',
+  city: 'city',
+  state: 'state',
+  postalCode: 'postalCode',
+  country: 'country',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -157,8 +175,31 @@ exports.Prisma.IdentityScalarFieldEnum = {
   userId: 'userId',
   documentType: 'documentType',
   documentNumber: 'documentNumber',
+  issueDate: 'issueDate',
+  expiryDate: 'expiryDate',
+  proofOfAddress: 'proofOfAddress',
   verified: 'verified',
   verifiedAt: 'verifiedAt',
+  verifiedBy: 'verifiedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.GoldItemScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  transactionId: 'transactionId',
+  type: 'type',
+  description: 'description',
+  serialNumber: 'serialNumber',
+  karat: 'karat',
+  purity: 'purity',
+  weightGrams: 'weightGrams',
+  origin: 'origin',
+  storageLocation: 'storageLocation',
+  depositMethod: 'depositMethod',
+  verified: 'verified',
+  verifiedBy: 'verifiedBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -206,6 +247,7 @@ exports.Prisma.TransactionScalarFieldEnum = {
   referenceNumber: 'referenceNumber',
   userId: 'userId',
   type: 'type',
+  source: 'source',
   status: 'status',
   gramsPurchased: 'gramsPurchased',
   pricePerGram: 'pricePerGram',
@@ -258,6 +300,12 @@ exports.Role = exports.$Enums.Role = {
   USER: 'USER'
 };
 
+exports.AddressType = exports.$Enums.AddressType = {
+  RESIDENTIAL: 'RESIDENTIAL',
+  MAILING: 'MAILING',
+  BUSINESS: 'BUSINESS'
+};
+
 exports.Currency = exports.$Enums.Currency = {
   USD: 'USD',
   EUR: 'EUR',
@@ -265,9 +313,26 @@ exports.Currency = exports.$Enums.Currency = {
   KWD: 'KWD'
 };
 
+exports.GoldItemType = exports.$Enums.GoldItemType = {
+  BAR: 'BAR',
+  COIN: 'COIN',
+  JEWELRY: 'JEWELRY',
+  OTHER: 'OTHER'
+};
+
+exports.DepositMethod = exports.$Enums.DepositMethod = {
+  PHYSICAL: 'PHYSICAL',
+  ONLINE_PURCHASE: 'ONLINE_PURCHASE'
+};
+
 exports.TransactionType = exports.$Enums.TransactionType = {
   PURCHASE: 'PURCHASE',
   SALE: 'SALE'
+};
+
+exports.TransactionSource = exports.$Enums.TransactionSource = {
+  ONLINE: 'ONLINE',
+  PHYSICAL_DEPOSIT: 'PHYSICAL_DEPOSIT'
 };
 
 exports.TransactionStatus = exports.$Enums.TransactionStatus = {
@@ -278,9 +343,11 @@ exports.TransactionStatus = exports.$Enums.TransactionStatus = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  Address: 'Address',
   Wallet: 'Wallet',
   Portfolio: 'Portfolio',
   Identity: 'Identity',
+  GoldItem: 'GoldItem',
   GoldPrice: 'GoldPrice',
   GoldUnitMetadata: 'GoldUnitMetadata',
   Transaction: 'Transaction',

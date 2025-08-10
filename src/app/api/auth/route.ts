@@ -1,20 +1,44 @@
 // src/app/api/auth/route.ts
 import { NextResponse } from "next/server";
-import { getUser } from "@/lib/dataAccessLayer";
+import { verifySessionWithUser } from "@/lib/dataAccessLayer";
 
 export async function GET() {
   try {
-    const user = await getUser();
+    const sessionResult = await verifySessionWithUser();
 
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    if (!sessionResult) {
+      return NextResponse.json(
+        {
+          error: "Unauthenticated: Please log in.",
+          success: false,
+          user: null,
+        },
+        { status: 401 }
+      );
     }
 
-    return NextResponse.json({ user });
+    const { user } = sessionResult;
+
+    // Add cache headers for better performance
+    const response = NextResponse.json({
+      user,
+      success: true,
+    });
+
+    response.headers.set(
+      "Cache-Control",
+      "private, max-age=300, stale-while-revalidate=3600"
+    );
+
+    return response;
   } catch (error) {
     console.error("Error fetching user:", error);
     return NextResponse.json(
-      { error: "Failed to fetch user" },
+      {
+        error: "Internal server error",
+        success: false,
+        user: null,
+      },
       { status: 500 }
     );
   }

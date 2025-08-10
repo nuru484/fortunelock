@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   User,
   Wallet,
+  Vault,
 } from "lucide-react";
 
 import {
@@ -20,7 +21,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { useAuthUserQuery } from "@/redux/api/apiSlice";
+import { useUser } from "./providers/UserProvider";
 
 // Navigation items for admins and users
 const adminNavigationItems = [
@@ -43,6 +44,11 @@ const adminNavigationItems = [
     name: "Gold Prices",
     path: "/dashboard/gold-prices",
     icon: BarChart3,
+  },
+  {
+    name: "Physical Gold Deposits",
+    path: "/dashboard/deposit-gold",
+    icon: Vault,
   },
 ];
 
@@ -74,11 +80,41 @@ const userNavigationItems = [
   },
 ];
 
+function SidebarSkeleton() {
+  return (
+    <Sidebar
+      collapsible="icon"
+      className="border-r border-sidebar-border/20 shadow-sm"
+    >
+      <SidebarHeader className="flex items-center px-6 py-5 border-b border-sidebar-border/20">
+        <div className="h-7 w-7 bg-gray-200 rounded animate-pulse" />
+        <div className="h-6 w-40 bg-gray-200 rounded animate-pulse ml-3" />
+      </SidebarHeader>
+      <SidebarContent className="px-2">
+        <SidebarMenu className="space-y-1.5">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <SidebarMenuItem key={i}>
+              <div className="px-4 py-3 gap-4 flex items-center">
+                <div className="h-6 w-6 bg-gray-200 rounded animate-pulse" />
+                <div className="h-4 w-20 bg-gray-200 rounded animate-pulse" />
+              </div>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarContent>
+    </Sidebar>
+  );
+}
+
 export default function DashboardSidebar() {
   const pathname = usePathname();
-  const { data } = useAuthUserQuery(undefined);
-  const isAdmin = ["SUPER_ADMIN", "ADMIN"].includes(data?.user?.role);
+  const { user, isAuthenticated } = useUser();
 
+  if (!isAuthenticated || !user) {
+    return <SidebarSkeleton />;
+  }
+
+  const isAdmin = ["SUPER_ADMIN", "ADMIN"].includes(user.role);
   const navigationItems = isAdmin ? adminNavigationItems : userNavigationItems;
 
   return (
