@@ -14,6 +14,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import UserProfileDropdown from "./UserProfileDropdown";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import ModeToggleButton from "./ModeToggleButton";
 
 const pageConfigs = [
   {
@@ -178,6 +179,10 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
             </div>
             <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
               <UserProfileDropdown />
+            </div>
+
+            <div className="w-10 h-10">
+              <ModeToggleButton />
             </div>
           </div>
         </div>

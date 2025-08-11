@@ -1,7 +1,8 @@
 // src/components/providers/UserProvider.tsx
 "use client";
-import React, { createContext, useContext, ReactNode } from "react";
+import React, { createContext, useContext, ReactNode, useEffect } from "react";
 import { useAuthUserQuery } from "@/redux/api/apiSlice";
+import { useRouter } from "next/navigation";
 
 interface User {
   id: number;
@@ -34,9 +35,16 @@ interface UserProviderProps {
 
 export function UserProvider({ children }: UserProviderProps) {
   const { data, isLoading, error } = useAuthUserQuery(undefined);
+  const router = useRouter();
 
   const user = data?.user ?? null;
   const isAuthenticated = !!user;
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated && error) {
+      router.push("/login");
+    }
+  }, [isLoading, isAuthenticated, error, router]);
 
   return (
     <UserContext.Provider value={{ user, isAuthenticated, isLoading, error }}>

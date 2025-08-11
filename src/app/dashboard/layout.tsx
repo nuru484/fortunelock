@@ -5,9 +5,6 @@ import DashboardHeader from "@/components/DashboardHeader";
 import { UserProvider } from "@/components/providers/UserProvider";
 import Footer from "@/components/Footer";
 
-// export const dynamic = "force-dynamic";
-// export const revalidate = 0;
-
 export default async function Layout({
   children,
 }: {
