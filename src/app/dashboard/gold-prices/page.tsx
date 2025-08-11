@@ -1,4 +1,5 @@
 // src/app/dashboard/gold-prices/page.tsx
+"use client";
 import GoldPriceChart from "@/components/gold/GoldPriceChart";
 
 export default function GoldPricePage() {

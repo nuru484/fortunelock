@@ -97,30 +97,29 @@ export async function GET(): Promise<NextResponse> {
       );
     }
 
-    // Fetch all admin dashboard data in parallel
+    // Fetch all admin dashboard data in parallel with optimized queries
     const [
-      totalUsers,
-      totalAdmins,
+      userStats,
       totalVerifiedUsers,
-      totalGoldAggregate,
-      totalTransactions,
-      totalRevenueAggregate,
+      portfolioStats,
+      transactionStats,
+      revenueStats,
       recentTransactions,
       pendingVerifications,
       pendingGoldItems,
       goldPrices,
       recentUsers,
     ] = await Promise.all([
-      // Total users
-      prisma.user.count(),
-
-      // Total admins
-      prisma.user.count({ where: { role: Role.ADMIN } }),
+      // Combined user statistics in a single query
+      prisma.user.groupBy({
+        by: ["role"],
+        _count: { role: true },
+      }),
 
       // Total verified users (KYC)
       prisma.identity.count({ where: { verified: true } }),
 
-      // Total gold grams and value locked
+      // Combined portfolio aggregation
       prisma.portfolio.aggregate({
         _sum: {
           totalGrams: true,
@@ -128,16 +127,16 @@ export async function GET(): Promise<NextResponse> {
         },
       }),
 
-      // Total transactions
+      // Transaction count
       prisma.transaction.count(),
 
-      // Total revenue from fees
+      // Revenue from successful transactions
       prisma.transaction.aggregate({
         _sum: { fee: true },
         where: { status: TransactionStatus.SUCCESS },
       }),
 
-      // Recent transactions (last 10)
+      // Recent transactions with user details
       prisma.transaction.findMany({
         select: {
           id: true,
@@ -204,18 +203,19 @@ export async function GET(): Promise<NextResponse> {
         take: 10,
       }),
 
-      // Current gold prices for all currencies
-      Promise.all(
-        Object.values(Currency).map((curr) =>
-          prisma.goldPrice.findFirst({
-            where: { currency: curr, isActive: true },
-            select: { pricePerGram: true, currency: true, recordedAt: true },
-            orderBy: { recordedAt: "desc" },
-          })
-        )
-      ).then((prices) => prices.filter(Boolean)),
+      // Current gold prices for all currencies in a single query
+      prisma.goldPrice.findMany({
+        where: { isActive: true },
+        select: {
+          pricePerGram: true,
+          currency: true,
+          recordedAt: true,
+        },
+        orderBy: { recordedAt: "desc" },
+        distinct: ["currency"],
+      }),
 
-      // Recent users (last 5)
+      // Recent users
       prisma.user.findMany({
         select: {
           id: true,
@@ -230,15 +230,23 @@ export async function GET(): Promise<NextResponse> {
       }),
     ]);
 
-    // Prepare stats
+    // Process user statistics from grouped results
+    const totalUsers = userStats.reduce(
+      (sum, group) => sum + group._count.role,
+      0
+    );
+    const totalAdmins =
+      userStats.find((group) => group.role === Role.ADMIN)?._count.role || 0;
+
+    // Prepare optimized stats object
     const stats = {
       totalUsers,
       totalAdmins,
       totalVerifiedUsers,
-      totalGoldGrams: totalGoldAggregate._sum.totalGrams || 0,
-      totalValueLocked: totalGoldAggregate._sum.currentValue || 0,
-      totalTransactions,
-      totalRevenue: totalRevenueAggregate._sum.fee || 0,
+      totalGoldGrams: portfolioStats._sum.totalGrams || 0,
+      totalValueLocked: portfolioStats._sum.currentValue || 0,
+      totalTransactions: transactionStats,
+      totalRevenue: revenueStats._sum.fee || 0,
     };
 
     const response: AdminDashboardResponse = {
