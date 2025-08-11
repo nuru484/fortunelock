@@ -61,7 +61,7 @@ model User {
   payments     Payment[]
   holdings     Holding[]
   goldItems    GoldItem[]
-  Portfolio    Portfolio?
+  portfolio    Portfolio?
   wallet       Wallet?
 }
 

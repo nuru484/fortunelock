@@ -2289,7 +2289,7 @@ export namespace Prisma {
     payments?: boolean | User$paymentsArgs<ExtArgs>
     holdings?: boolean | User$holdingsArgs<ExtArgs>
     goldItems?: boolean | User$goldItemsArgs<ExtArgs>
-    Portfolio?: boolean | User$PortfolioArgs<ExtArgs>
+    portfolio?: boolean | User$portfolioArgs<ExtArgs>
     wallet?: boolean | User$walletArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
@@ -2356,7 +2356,7 @@ export namespace Prisma {
     payments?: boolean | User$paymentsArgs<ExtArgs>
     holdings?: boolean | User$holdingsArgs<ExtArgs>
     goldItems?: boolean | User$goldItemsArgs<ExtArgs>
-    Portfolio?: boolean | User$PortfolioArgs<ExtArgs>
+    portfolio?: boolean | User$portfolioArgs<ExtArgs>
     wallet?: boolean | User$walletArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -2372,7 +2372,7 @@ export namespace Prisma {
       payments: Prisma.$PaymentPayload<ExtArgs>[]
       holdings: Prisma.$HoldingPayload<ExtArgs>[]
       goldItems: Prisma.$GoldItemPayload<ExtArgs>[]
-      Portfolio: Prisma.$PortfolioPayload<ExtArgs> | null
+      portfolio: Prisma.$PortfolioPayload<ExtArgs> | null
       wallet: Prisma.$WalletPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -2791,7 +2791,7 @@ export namespace Prisma {
     payments<T extends User$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     holdings<T extends User$holdingsArgs<ExtArgs> = {}>(args?: Subset<T, User$holdingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HoldingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     goldItems<T extends User$goldItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$goldItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoldItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    Portfolio<T extends User$PortfolioArgs<ExtArgs> = {}>(args?: Subset<T, User$PortfolioArgs<ExtArgs>>): Prisma__PortfolioClient<$Result.GetResult<Prisma.$PortfolioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    portfolio<T extends User$portfolioArgs<ExtArgs> = {}>(args?: Subset<T, User$portfolioArgs<ExtArgs>>): Prisma__PortfolioClient<$Result.GetResult<Prisma.$PortfolioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     wallet<T extends User$walletArgs<ExtArgs> = {}>(args?: Subset<T, User$walletArgs<ExtArgs>>): Prisma__WalletClient<$Result.GetResult<Prisma.$WalletPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3364,9 +3364,9 @@ export namespace Prisma {
   }
 
   /**
-   * User.Portfolio
+   * User.portfolio
    */
-  export type User$PortfolioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$portfolioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Portfolio
      */
@@ -15809,7 +15809,7 @@ export namespace Prisma {
     payments?: PaymentListRelationFilter
     holdings?: HoldingListRelationFilter
     goldItems?: GoldItemListRelationFilter
-    Portfolio?: XOR<PortfolioNullableScalarRelationFilter, PortfolioWhereInput> | null
+    portfolio?: XOR<PortfolioNullableScalarRelationFilter, PortfolioWhereInput> | null
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
   }
 
@@ -15835,7 +15835,7 @@ export namespace Prisma {
     payments?: PaymentOrderByRelationAggregateInput
     holdings?: HoldingOrderByRelationAggregateInput
     goldItems?: GoldItemOrderByRelationAggregateInput
-    Portfolio?: PortfolioOrderByWithRelationInput
+    portfolio?: PortfolioOrderByWithRelationInput
     wallet?: WalletOrderByWithRelationInput
   }
 
@@ -15864,7 +15864,7 @@ export namespace Prisma {
     payments?: PaymentListRelationFilter
     holdings?: HoldingListRelationFilter
     goldItems?: GoldItemListRelationFilter
-    Portfolio?: XOR<PortfolioNullableScalarRelationFilter, PortfolioWhereInput> | null
+    portfolio?: XOR<PortfolioNullableScalarRelationFilter, PortfolioWhereInput> | null
     wallet?: XOR<WalletNullableScalarRelationFilter, WalletWhereInput> | null
   }, "id" | "email">
 
@@ -16835,7 +16835,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutUserInput
     holdings?: HoldingCreateNestedManyWithoutUserInput
     goldItems?: GoldItemCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioCreateNestedOneWithoutUserInput
     wallet?: WalletCreateNestedOneWithoutUserInput
   }
 
@@ -16861,7 +16861,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
     holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
     goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
   }
 
@@ -16886,7 +16886,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutUserNestedInput
     holdings?: HoldingUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUpdateOneWithoutUserNestedInput
     wallet?: WalletUpdateOneWithoutUserNestedInput
   }
 
@@ -16912,7 +16912,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
   }
 
@@ -20709,7 +20709,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutUserInput
     holdings?: HoldingCreateNestedManyWithoutUserInput
     goldItems?: GoldItemCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioCreateNestedOneWithoutUserInput
     wallet?: WalletCreateNestedOneWithoutUserInput
   }
 
@@ -20734,7 +20734,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
     holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
     goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
   }
 
@@ -20774,7 +20774,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutUserNestedInput
     holdings?: HoldingUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUpdateOneWithoutUserNestedInput
     wallet?: WalletUpdateOneWithoutUserNestedInput
   }
 
@@ -20799,7 +20799,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
   }
 
@@ -20824,7 +20824,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutUserInput
     holdings?: HoldingCreateNestedManyWithoutUserInput
     goldItems?: GoldItemCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWalletInput = {
@@ -20849,7 +20849,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
     holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
     goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWalletInput = {
@@ -20889,7 +20889,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutUserNestedInput
     holdings?: HoldingUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWalletInput = {
@@ -20914,7 +20914,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPortfolioInput = {
@@ -21051,7 +21051,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutUserInput
     holdings?: HoldingCreateNestedManyWithoutUserInput
     goldItems?: GoldItemCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioCreateNestedOneWithoutUserInput
     wallet?: WalletCreateNestedOneWithoutUserInput
   }
 
@@ -21076,7 +21076,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
     holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
     goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
   }
 
@@ -21116,7 +21116,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutUserNestedInput
     holdings?: HoldingUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUpdateOneWithoutUserNestedInput
     wallet?: WalletUpdateOneWithoutUserNestedInput
   }
 
@@ -21141,7 +21141,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
   }
 
@@ -21165,7 +21165,7 @@ export namespace Prisma {
     transactions?: TransactionCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
     holdings?: HoldingCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioCreateNestedOneWithoutUserInput
     wallet?: WalletCreateNestedOneWithoutUserInput
   }
 
@@ -21190,7 +21190,7 @@ export namespace Prisma {
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
     holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
   }
 
@@ -21270,7 +21270,7 @@ export namespace Prisma {
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
     holdings?: HoldingUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUpdateOneWithoutUserNestedInput
     wallet?: WalletUpdateOneWithoutUserNestedInput
   }
 
@@ -21295,7 +21295,7 @@ export namespace Prisma {
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
   }
 
@@ -21365,7 +21365,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutUserInput
     holdings?: HoldingCreateNestedManyWithoutUserInput
     goldItems?: GoldItemCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioCreateNestedOneWithoutUserInput
     wallet?: WalletCreateNestedOneWithoutUserInput
   }
 
@@ -21390,7 +21390,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
     holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
     goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
   }
 
@@ -21530,7 +21530,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutUserNestedInput
     holdings?: HoldingUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUpdateOneWithoutUserNestedInput
     wallet?: WalletUpdateOneWithoutUserNestedInput
   }
 
@@ -21555,7 +21555,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
   }
 
@@ -21647,7 +21647,7 @@ export namespace Prisma {
     transactions?: TransactionCreateNestedManyWithoutUserInput
     holdings?: HoldingCreateNestedManyWithoutUserInput
     goldItems?: GoldItemCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioCreateNestedOneWithoutUserInput
     wallet?: WalletCreateNestedOneWithoutUserInput
   }
 
@@ -21672,7 +21672,7 @@ export namespace Prisma {
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     holdings?: HoldingUncheckedCreateNestedManyWithoutUserInput
     goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
   }
 
@@ -21752,7 +21752,7 @@ export namespace Prisma {
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     holdings?: HoldingUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUpdateOneWithoutUserNestedInput
     wallet?: WalletUpdateOneWithoutUserNestedInput
   }
 
@@ -21777,7 +21777,7 @@ export namespace Prisma {
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     holdings?: HoldingUncheckedUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
   }
 
@@ -21847,7 +21847,7 @@ export namespace Prisma {
     transactions?: TransactionCreateNestedManyWithoutUserInput
     payments?: PaymentCreateNestedManyWithoutUserInput
     goldItems?: GoldItemCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioCreateNestedOneWithoutUserInput
     wallet?: WalletCreateNestedOneWithoutUserInput
   }
 
@@ -21872,7 +21872,7 @@ export namespace Prisma {
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     payments?: PaymentUncheckedCreateNestedManyWithoutUserInput
     goldItems?: GoldItemUncheckedCreateNestedManyWithoutUserInput
-    Portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
+    portfolio?: PortfolioUncheckedCreateNestedOneWithoutUserInput
     wallet?: WalletUncheckedCreateNestedOneWithoutUserInput
   }
 
@@ -21952,7 +21952,7 @@ export namespace Prisma {
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     payments?: PaymentUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUpdateOneWithoutUserNestedInput
     wallet?: WalletUpdateOneWithoutUserNestedInput
   }
 
@@ -21977,7 +21977,7 @@ export namespace Prisma {
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     payments?: PaymentUncheckedUpdateManyWithoutUserNestedInput
     goldItems?: GoldItemUncheckedUpdateManyWithoutUserNestedInput
-    Portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
+    portfolio?: PortfolioUncheckedUpdateOneWithoutUserNestedInput
     wallet?: WalletUncheckedUpdateOneWithoutUserNestedInput
   }
 

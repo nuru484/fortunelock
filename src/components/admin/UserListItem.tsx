@@ -21,7 +21,7 @@ const UserListItem: React.FC<UserListItemProps> = ({ user }) => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push(`/admin/users/${user.id}`);
+    router.push(`/dashboard/users/${user.id}`);
   };
 
   const getRoleConfig = (role: string) => {

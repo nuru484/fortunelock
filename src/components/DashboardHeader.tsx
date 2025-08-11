@@ -14,13 +14,20 @@ import {
 import { Badge } from "@/components/ui/badge";
 import UserProfileDropdown from "./UserProfileDropdown";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import ModeToggleButton from "./ModeToggleButton";
 
 const pageConfigs = [
   {
     paths: ["/dashboard"],
     title: "Dashboard",
     description: "Your dashboard overview",
+    icon: PieChart,
+    gradientFrom: "amber-400",
+    gradientTo: "yellow-500",
+  },
+  {
+    paths: ["/dashboard/admin"],
+    title: "Dashboard",
+    description: "Admin dashboard overview",
     icon: PieChart,
     gradientFrom: "amber-400",
     gradientTo: "yellow-500",
@@ -72,6 +79,7 @@ const pageConfigs = [
   },
   {
     paths: ["/dashboard/users"],
+    dynamicPaths: [/^\/dashboard\/users\/[^/]+$/],
     title: "User Management",
     description: "Manage and monitor user accounts",
     icon: Users,
@@ -105,9 +113,17 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
   }
 
   // Find matching page configuration
-  const currentPageConfig = pageConfigs.find((config) =>
-    config.paths.some((path) => pathname.endsWith(path))
-  );
+  const currentPageConfig = pageConfigs.find((config) => {
+    // Check static paths
+    if (config.paths.some((path) => pathname.endsWith(path))) {
+      return true;
+    }
+    // Check dynamic paths (if any)
+    if (config.dynamicPaths) {
+      return config.dynamicPaths.some((regex) => regex.test(pathname));
+    }
+    return false;
+  });
 
   // If no config found, don't render the header
   if (!currentPageConfig) {
@@ -162,10 +178,6 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
             </div>
             <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
               <UserProfileDropdown />
-            </div>
-
-            <div>
-              <ModeToggleButton />
             </div>
           </div>
         </div>

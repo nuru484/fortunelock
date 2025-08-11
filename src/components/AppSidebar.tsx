@@ -27,7 +27,7 @@ import { useUser } from "./providers/UserProvider";
 const adminNavigationItems = [
   {
     name: "Dashboard",
-    path: "/dashboard",
+    path: "/dashboard/admin",
     icon: LayoutDashboard,
   },
   {

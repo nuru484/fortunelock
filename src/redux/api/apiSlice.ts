@@ -1,4 +1,3 @@
-// src/redux/api/apiSlice.ts (updated getUserById to use query param)
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
@@ -133,6 +132,28 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Portfolio", "Transaction", "GoldItem", "User"],
     }),
+    getAdminDashboard: builder.query({
+      query: () => "admin/dashboard",
+      providesTags: [
+        "User",
+        "Portfolio",
+        "Wallet",
+        "Transaction",
+        "GoldPrice",
+        "GoldItem",
+      ],
+    }),
+    getUserDetails: builder.query({
+      query: (userId) => `admin/users/${userId}/details`,
+      providesTags: [
+        "User",
+        "Portfolio",
+        "Wallet",
+        "Transaction",
+        "GoldItem",
+        "Payment",
+      ],
+    }),
   }),
 });
 
@@ -153,4 +174,6 @@ export const {
   useGetAllUsersQuery,
   useGetUserByIdQuery,
   useDepositPhysicalGoldMutation,
+  useGetAdminDashboardQuery,
+  useGetUserDetailsQuery,
 } = apiSlice;
