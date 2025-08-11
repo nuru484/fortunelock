@@ -19,8 +19,8 @@ export const metadata = {
   description: "A gold vault to purchase gold",
 };
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+// export const dynamic = "force-dynamic";
+// export const revalidate = 0;
 
 export default function RootLayout({
   children,
