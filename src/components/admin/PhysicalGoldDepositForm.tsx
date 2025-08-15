@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import {
   useDepositPhysicalGoldMutation,
   useGetAllUsersQuery,
-  useGetUserByIdQuery,
+  useGetUserDetailsQuery,
   useGetGoldPricesQuery,
 } from "@/redux/api/apiSlice";
 import { Input } from "@/components/ui/input";
@@ -42,6 +42,7 @@ import {
   CheckCircle,
   Coins,
   Shield,
+  X,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -59,25 +60,22 @@ interface GoldItem {
   storageLocation?: string;
 }
 
+// Fixed interfaces to match your API responses
 interface ApiUser {
   id: number;
   firstName: string;
   lastName: string;
+  middleName?: string | null;
   email: string;
-}
-
-interface Portfolio {
-  totalGrams: number;
-  totalInvested: number;
-  currentValue: number;
-}
-
-interface SelectedUser {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  portfolio?: Portfolio;
+  phoneNumber?: string | null;
+  nationality?: string | null;
+  country: string;
+  dateOfBirth?: Date | null;
+  gender?: string | null;
+  role: string;
+  createdAt: Date;
+  updatedAt: Date;
+  profilePicture?: string | null;
 }
 
 interface TransactionSummary {
@@ -85,36 +83,6 @@ interface TransactionSummary {
   pricePerGram: number;
   totalValue: number;
   currency: string;
-}
-
-interface UsersQueryResult {
-  users: ApiUser[];
-  totalUsers: number;
-  currentPage: number;
-  totalPages: number;
-}
-
-interface UserByIdResult {
-  user: ApiUser;
-  portfolio?: Portfolio;
-}
-
-interface GoldPriceResult {
-  price: {
-    pricePerGram: number;
-    currency: Currency;
-    recordedAt: string;
-  };
-}
-
-interface DepositMutationResult {
-  message: string;
-  success: boolean;
-  transaction: {
-    id: number;
-    referenceNumber: string;
-    gramsPurchased: number;
-  };
 }
 
 interface DepositPayload {
@@ -137,6 +105,7 @@ interface DepositPayload {
 const PhysicalGoldDepositForm: React.FC = () => {
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [userSearchTerm, setUserSearchTerm] = useState<string>("");
+  const [showUserSearch, setShowUserSearch] = useState<boolean>(true);
   const [currency, setCurrency] = useState<Currency>("USD");
   const [pricePerGram, setPricePerGram] = useState<number>(0);
   const [useCurrentPrice, setUseCurrentPrice] = useState<boolean>(true);
@@ -164,25 +133,23 @@ const PhysicalGoldDepositForm: React.FC = () => {
   const [depositPhysicalGold, { isLoading: isDepositing }] =
     useDepositPhysicalGoldMutation();
 
+  // Fixed query hooks to match your actual API endpoints
   const { data: usersData, isLoading: usersLoading } = useGetAllUsersQuery({
     page: 1,
     limit: 100,
     search: userSearchTerm,
-  }) as { data?: UsersQueryResult; isLoading: boolean };
+  });
 
-  const { data: selectedUserData } = useGetUserByIdQuery(selectedUserId, {
+  // Use getUserDetails instead of getUserById to match your API
+  const { data: userDetailsData } = useGetUserDetailsQuery(selectedUserId, {
     skip: !selectedUserId,
-  }) as { data?: UserByIdResult };
+  });
 
   const {
     data: goldPriceData,
     isLoading: priceLoading,
     error: priceError,
-  } = useGetGoldPricesQuery(currency) as {
-    data?: GoldPriceResult;
-    isLoading: boolean;
-    error?: unknown;
-  };
+  } = useGetGoldPricesQuery(currency);
 
   const currentGoldPrice = goldPriceData?.price?.pricePerGram || 0;
 
@@ -204,15 +171,46 @@ const PhysicalGoldDepositForm: React.FC = () => {
     });
   }, [goldItem.weightGrams, pricePerGram, currency]);
 
-  const selectedUser: SelectedUser | null = selectedUserData?.user
-    ? {
-        id: selectedUserData.user.id,
-        firstName: selectedUserData.user.firstName,
-        lastName: selectedUserData.user.lastName,
-        email: selectedUserData.user.email,
-        portfolio: selectedUserData.portfolio,
-      }
+  // Extract selected user data from the correct API response
+  const selectedUser = userDetailsData?.success ? userDetailsData.data : null;
+  const selectedUserPortfolio = userDetailsData?.success
+    ? userDetailsData.data.portfolio
     : null;
+
+  const handleUserSelect = (user: ApiUser) => {
+    setSelectedUserId(user.id);
+    setUserSearchTerm(
+      `${user.firstName}${user.middleName ? ` ${user.middleName}` : ""} ${
+        user.lastName
+      }`
+    );
+    setShowUserSearch(false);
+  };
+
+  const handleClearUserSelection = () => {
+    setSelectedUserId(null);
+    setUserSearchTerm("");
+    setShowUserSearch(true);
+  };
+
+  const handleUserSearchChange = (value: string) => {
+    setUserSearchTerm(value);
+    if (value.trim() === "") {
+      setShowUserSearch(false);
+    } else {
+      setShowUserSearch(true);
+      if (
+        selectedUserId &&
+        selectedUser &&
+        value !==
+          `${selectedUser.firstName}${
+            selectedUser.middleName ? ` ${selectedUser.middleName}` : ""
+          } ${selectedUser.lastName}`
+      ) {
+        setSelectedUserId(null);
+      }
+    }
+  };
 
   const handleGoldItemChange = <K extends keyof GoldItem>(
     field: K,
@@ -259,11 +257,12 @@ const PhysicalGoldDepositForm: React.FC = () => {
         ...(adminNotes && { adminNotes }),
       };
 
-      (await depositPhysicalGold(payload).unwrap()) as DepositMutationResult;
+      await depositPhysicalGold(payload).unwrap();
 
       // Reset form
       setSelectedUserId(null);
       setUserSearchTerm("");
+      setShowUserSearch(true);
       setGoldItem({
         type: "BAR",
         description: "",
@@ -279,7 +278,11 @@ const PhysicalGoldDepositForm: React.FC = () => {
       setIsConfirmOpen(false);
 
       toast.success(
-        `Successfully deposited ${goldItem.weightGrams} grams of gold for ${selectedUser?.firstName} ${selectedUser?.lastName}`,
+        `Successfully deposited ${goldItem.weightGrams} grams of gold for ${
+          selectedUser?.firstName
+        }${selectedUser?.middleName ? ` ${selectedUser.middleName}` : ""} ${
+          selectedUser?.lastName
+        }`,
         { duration: 5000 }
       );
     } catch (error: unknown) {
@@ -380,6 +383,7 @@ const PhysicalGoldDepositForm: React.FC = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  {/* Search Input */}
                   <div>
                     <Label className="text-sm font-semibold text-muted-foreground">
                       Search User
@@ -390,14 +394,26 @@ const PhysicalGoldDepositForm: React.FC = () => {
                         type="text"
                         placeholder="Search by name or email..."
                         value={userSearchTerm}
-                        onChange={(e) => setUserSearchTerm(e.target.value)}
+                        onChange={(e) => handleUserSearchChange(e.target.value)}
                         className="pl-10 bg-muted/30 border-border focus:ring-ring"
                       />
+                      {selectedUserId && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={handleClearUserSelection}
+                          className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-muted/80"
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      )}
                     </div>
                   </div>
 
-                  {userSearchTerm && (
-                    <div className="space-y-2 max-h-60 overflow-y-auto">
+                  {/* Search Results */}
+                  {showUserSearch && userSearchTerm && !selectedUserId && (
+                    <div className="space-y-2 max-h-60 overflow-y-auto border border-border rounded-lg bg-card">
                       {usersLoading ? (
                         <div className="flex items-center justify-center py-4">
                           <Loader2 className="w-5 h-5 animate-spin text-primary" />
@@ -405,34 +421,27 @@ const PhysicalGoldDepositForm: React.FC = () => {
                             Searching users...
                           </span>
                         </div>
-                      ) : usersData?.users?.length ? (
+                      ) : usersData?.success && usersData?.users?.length ? (
                         usersData.users.map((user: ApiUser) => (
                           <div
                             key={user.id}
-                            onClick={() => {
-                              setSelectedUserId(user.id);
-                              setUserSearchTerm(
-                                `${user.firstName} ${user.lastName}`
-                              );
-                            }}
-                            className={`p-3 rounded-lg border cursor-pointer transition-all ${
-                              selectedUserId === user.id
-                                ? "border-primary bg-muted/70"
-                                : "border-border hover:border-primary hover:bg-muted/50"
-                            }`}
+                            onClick={() => handleUserSelect(user)}
+                            className="p-3 border-b border-border last:border-b-0 cursor-pointer transition-all hover:bg-muted/50"
                           >
                             <div className="flex items-center justify-between">
                               <div>
                                 <p className="font-medium text-card-foreground">
-                                  {user.firstName} {user.lastName}
+                                  {user.firstName}{" "}
+                                  {user.middleName ? `${user.middleName} ` : ""}
+                                  {user.lastName}
                                 </p>
                                 <p className="text-sm text-muted-foreground">
                                   {user.email}
                                 </p>
                               </div>
-                              {selectedUserId === user.id && (
-                                <CheckCircle className="w-5 h-5 text-primary" />
-                              )}
+                              <div className="text-xs text-muted-foreground">
+                                ID: {user.id}
+                              </div>
                             </div>
                           </div>
                         ))
@@ -444,22 +453,59 @@ const PhysicalGoldDepositForm: React.FC = () => {
                     </div>
                   )}
 
+                  {/* Selected User Display */}
                   {selectedUser && (
-                    <Card className="bg-secondary border-border">
+                    <Card className="bg-secondary border-primary/20 border-2">
                       <CardContent className="pt-6">
                         <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <CheckCircle className="w-5 h-5 text-primary" />
+                              <p className="font-semibold text-primary">
+                                Selected User
+                              </p>
+                            </div>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={handleClearUserSelection}
+                              className="h-6 w-6 p-0 hover:bg-muted/80"
+                            >
+                              <X className="w-4 h-4" />
+                            </Button>
+                          </div>
                           <div>
-                            <p className="font-semibold text-secondary-foreground">
-                              Selected User
-                            </p>
-                            <p className="text-secondary-foreground">
-                              {selectedUser.firstName} {selectedUser.lastName}
+                            <p className="font-semibold text-secondary-foreground text-lg">
+                              {selectedUser.firstName}{" "}
+                              {selectedUser.middleName
+                                ? `${selectedUser.middleName} `
+                                : ""}
+                              {selectedUser.lastName}
                             </p>
                             <p className="text-sm text-muted-foreground">
                               {selectedUser.email}
                             </p>
+                            <p className="text-xs text-muted-foreground">
+                              User ID: {selectedUser.id}
+                            </p>
+                            {selectedUser.phoneNumber && (
+                              <p className="text-xs text-muted-foreground">
+                                Phone: {selectedUser.phoneNumber}
+                              </p>
+                            )}
+                            {selectedUser.nationality && (
+                              <p className="text-xs text-muted-foreground">
+                                Nationality: {selectedUser.nationality}
+                              </p>
+                            )}
+                            {selectedUser.country && (
+                              <p className="text-xs text-muted-foreground">
+                                Country: {selectedUser.country}
+                              </p>
+                            )}
                           </div>
-                          {selectedUser.portfolio && (
+                          {selectedUserPortfolio && (
                             <div className="pt-2 border-t border-border">
                               <p className="text-sm font-medium text-secondary-foreground mb-2">
                                 Current Portfolio
@@ -470,7 +516,7 @@ const PhysicalGoldDepositForm: React.FC = () => {
                                     Total Gold
                                   </p>
                                   <p className="font-semibold text-secondary-foreground">
-                                    {selectedUser.portfolio.totalGrams.toFixed(
+                                    {selectedUserPortfolio.totalGrams.toFixed(
                                       4
                                     )}{" "}
                                     grams
@@ -482,7 +528,7 @@ const PhysicalGoldDepositForm: React.FC = () => {
                                   </p>
                                   <p className="font-semibold text-secondary-foreground">
                                     {formatCurrency(
-                                      selectedUser.portfolio.totalInvested,
+                                      selectedUserPortfolio.totalInvested,
                                       currency
                                     )}
                                   </p>
@@ -493,7 +539,7 @@ const PhysicalGoldDepositForm: React.FC = () => {
                                   </p>
                                   <p className="font-semibold text-secondary-foreground">
                                     {formatCurrency(
-                                      selectedUser.portfolio.currentValue,
+                                      selectedUserPortfolio.currentValue,
                                       currency
                                     )}
                                   </p>
@@ -819,7 +865,7 @@ const PhysicalGoldDepositForm: React.FC = () => {
         </Card>
       </div>
 
-      {/* Confirmation Dialog - Now Scrollable */}
+      {/* Confirmation Dialog */}
       <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col bg-card border-border">
           <DialogHeader className="flex-shrink-0">
@@ -848,7 +894,11 @@ const PhysicalGoldDepositForm: React.FC = () => {
                   <div className="space-y-2">
                     <p className="text-secondary-foreground">
                       <span className="font-medium">Name:</span>{" "}
-                      {selectedUser.firstName} {selectedUser.lastName}
+                      {selectedUser.firstName}{" "}
+                      {selectedUser.middleName
+                        ? `${selectedUser.middleName} `
+                        : ""}
+                      {selectedUser.lastName}
                     </p>
                     <p className="text-secondary-foreground">
                       <span className="font-medium">Email:</span>{" "}
@@ -858,6 +908,24 @@ const PhysicalGoldDepositForm: React.FC = () => {
                       <span className="font-medium">User ID:</span>{" "}
                       {selectedUser.id}
                     </p>
+                    {selectedUser.phoneNumber && (
+                      <p className="text-secondary-foreground">
+                        <span className="font-medium">Phone:</span>{" "}
+                        {selectedUser.phoneNumber}
+                      </p>
+                    )}
+                    {selectedUser.nationality && (
+                      <p className="text-secondary-foreground">
+                        <span className="font-medium">Nationality:</span>{" "}
+                        {selectedUser.nationality}
+                      </p>
+                    )}
+                    {selectedUser.country && (
+                      <p className="text-secondary-foreground">
+                        <span className="font-medium">Country:</span>{" "}
+                        {selectedUser.country}
+                      </p>
+                    )}
                   </div>
                 </CardContent>
               </Card>
