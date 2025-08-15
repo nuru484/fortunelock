@@ -17,11 +17,10 @@ const Footer = () => {
                 </span>
               </div>
               <p className="text-muted-foreground text-sm mb-4">
-                Established 1987. Your trusted partner for secure precious
-                metals storage, trading, and investment solutions.
+                Your trusted partner for secure precious metals storage,
+                trading, and investment solutions.
               </p>
               <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-muted-foreground">
-                <MapPin className="w-4 h-4" />
                 <span>Licensed Precious Metals Dealer</span>
               </div>
             </div>
@@ -65,8 +64,12 @@ const Footer = () => {
               </h3>
               <div className="space-y-3 text-sm text-muted-foreground">
                 <div className="flex items-center justify-center md:justify-start gap-2">
+                  <MapPin className="w-4 h-4" />
+                  <span>15 Kensington St., London, UK</span>
+                </div>
+                <div className="flex items-center justify-center md:justify-start gap-2">
                   <Phone className="w-4 h-4" />
-                  <span>+1 (555) GOLD-SAFE</span>
+                  <span>+8136163830</span>
                 </div>
                 <div className="flex items-center justify-center md:justify-start gap-2">
                   <Mail className="w-4 h-4" />
@@ -113,7 +116,7 @@ const Footer = () => {
             {/* Disclaimer */}
             <div className="mt-6 p-4 bg-secondary rounded-lg">
               <p className="text-xs text-muted-foreground text-center leading-relaxed">
-                <strong className="text-primary">Important Notice:</strong>{" "}
+                <strong className="text-primary">Important Notice:</strong>
                 Precious metals investments carry market risk. Past performance
                 does not guarantee future results. All storage and transaction
                 fees apply as per our fee schedule. Physical gold deposits
