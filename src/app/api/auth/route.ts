@@ -25,11 +25,6 @@ export async function GET() {
       success: true,
     });
 
-    response.headers.set(
-      "Cache-Control",
-      "private, max-age=300, stale-while-revalidate=3600"
-    );
-
     return response;
   } catch (error) {
     console.error("Error fetching user:", error);

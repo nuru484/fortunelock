@@ -31,15 +31,15 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
 
   if (!transactions || transactions.length === 0) {
     return (
-      <div className="bg-gradient-to-br from-slate-50 to-gray-100 border border-gray-200 shadow-lg rounded-xl">
+      <div className="bg-background border border-muted shadow-lg rounded-lg">
         <div className="p-12 text-center">
-          <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
-            <CreditCard className="w-8 h-8 text-gray-400" />
+          <div className="w-16 h-16 bg-muted rounded-full mx-auto mb-4 flex items-center justify-center">
+            <CreditCard className="w-8 h-8 text-muted-foreground" />
           </div>
-          <div className="text-gray-400 text-lg font-medium mb-2">
+          <div className="text-muted-foreground text-lg font-medium mb-2">
             No transactions found
           </div>
-          <div className="text-gray-500 text-sm">
+          <div className="text-muted-foreground text-sm">
             Your transaction history will appear here once you start trading
           </div>
         </div>
@@ -52,26 +52,26 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
       case "PURCHASE":
         return {
           icon: ArrowDownLeft,
-          color: "text-green-600",
-          bgColor: "bg-green-100",
+          color: "text-accent-foreground",
+          bgColor: "bg-accent",
           label: "Purchase",
-          borderColor: "border-green-200",
+          borderColor: "border-accent",
         };
       case "SALE":
         return {
           icon: ArrowUpRight,
-          color: "text-red-600",
-          bgColor: "bg-red-100",
+          color: "text-destructive-foreground",
+          bgColor: "bg-destructive",
           label: "Sale",
-          borderColor: "border-red-200",
+          borderColor: "border-destructive",
         };
       default:
         return {
           icon: CreditCard,
-          color: "text-gray-600",
-          bgColor: "bg-gray-100",
+          color: "text-muted-foreground",
+          bgColor: "bg-muted",
           label: type,
-          borderColor: "border-gray-200",
+          borderColor: "border-muted",
         };
     }
   };
@@ -81,34 +81,34 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
       case "SUCCESS":
         return {
           icon: CheckCircle,
-          color: "text-green-700",
-          bgColor: "bg-green-100",
+          color: "text-accent-foreground",
+          bgColor: "bg-accent",
           label: "Completed",
-          borderColor: "border-green-200",
+          borderColor: "border-accent",
         };
       case "PENDING":
         return {
           icon: Clock,
-          color: "text-yellow-700",
-          bgColor: "bg-yellow-100",
+          color: "text-primary-foreground",
+          bgColor: "bg-primary",
           label: "Pending",
-          borderColor: "border-yellow-200",
+          borderColor: "border-primary",
         };
       case "FAILED":
         return {
           icon: XCircle,
-          color: "text-red-700",
-          bgColor: "bg-red-100",
+          color: "text-destructive-foreground",
+          bgColor: "bg-destructive",
           label: "Failed",
-          borderColor: "border-red-200",
+          borderColor: "border-destructive",
         };
       default:
         return {
           icon: Clock,
-          color: "text-gray-700",
-          bgColor: "bg-gray-100",
+          color: "text-muted-foreground",
+          bgColor: "bg-muted",
           label: status,
-          borderColor: "border-gray-200",
+          borderColor: "border-muted",
         };
     }
   };
@@ -162,23 +162,23 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
   const totalValue = transactions.reduce((sum, tx) => sum + tx.totalCost, 0);
 
   return (
-    <div className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-xl overflow-hidden">
+    <div className="bg-card border border-muted shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-gray-100 px-6 py-6">
+      <div className="bg-muted border-b border-muted-secondary px-6 py-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-2 h-8 bg-gradient-to-b from-indigo-500 to-purple-600 rounded-full"></div>
+            <div className="w-2 h-8 bg-gradient-to-b from-primary to-accent rounded-full"></div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-800">
+              <h2 className="text-2xl font-bold text-foreground">
                 Transaction History
               </h2>
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Complete record of your gold trades
               </p>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm font-medium text-gray-600 bg-white px-3 py-1 rounded-full border">
+            <span className="text-sm font-medium text-muted-foreground bg-card px-3 py-1 rounded-full border border-muted">
               {filteredTransactions.length}{" "}
               {filteredTransactions.length === 1
                 ? "transaction"
@@ -190,11 +190,11 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
         {/* Filter and Stats */}
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-gray-500" />
+            <Filter className="w-4 h-4 text-muted-foreground" />
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="bg-white border border-gray-200 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="bg-card border border-muted rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="ALL">All Status</option>
               <option value="SUCCESS">Completed</option>
@@ -204,10 +204,12 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
           </div>
 
           <div className="flex gap-4 text-sm">
-            <span className="text-green-600 font-medium">
+            <span className="text-accent-foreground font-medium">
               {totalPurchases} Purchases
             </span>
-            <span className="text-red-600 font-medium">{totalSales} Sales</span>
+            <span className="text-destructive-foreground font-medium">
+              {totalSales} Sales
+            </span>
           </div>
         </div>
       </div>
@@ -216,26 +218,26 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="bg-gray-50 hover:bg-gray-50 border-b border-gray-100">
-              <th className="font-semibold text-gray-700 py-4 px-6 text-left">
+            <tr className="bg-muted hover:bg-muted border-b border-muted-secondary">
+              <th className="font-semibold text-foreground py-4 px-6 text-left">
                 Transaction
               </th>
-              <th className="font-semibold text-gray-700 py-4 px-6 text-left">
+              <th className="font-semibold text-foreground py-4 px-6 text-left">
                 Type
               </th>
-              <th className="font-semibold text-gray-700 py-4 px-6 text-center">
+              <th className="font-semibold text-foreground py-4 px-6 text-center">
                 Status
               </th>
-              <th className="font-semibold text-gray-700 py-4 px-6 text-right">
+              <th className="font-semibold text-foreground py-4 px-6 text-right">
                 Weight
               </th>
-              <th className="font-semibold text-gray-700 py-4 px-6 text-right">
+              <th className="font-semibold text-foreground py-4 px-6 text-right">
                 Amount
               </th>
-              <th className="font-semibold text-gray-700 py-4 px-6 text-left">
+              <th className="font-semibold text-foreground py-4 px-6 text-left">
                 Date
               </th>
-              <th className="font-semibold text-gray-700 py-4 px-6 text-center">
+              <th className="font-semibold text-foreground py-4 px-6 text-center">
                 Payment
               </th>
             </tr>
@@ -252,15 +254,15 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
                 <tr
                   key={tx.id}
                   className={`
-                    border-b border-gray-50 hover:bg-blue-25 transition-colors duration-200
-                    ${index % 2 === 0 ? "bg-white" : "bg-gray-25/30"}
+                    border-b border-muted-secondary hover:bg-muted-secondary transition-colors duration-200
+                    ${index % 2 === 0 ? "bg-card" : "bg-muted/30"}
                   `}
                 >
                   {/* Transaction ID */}
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
-                      <span className="font-mono text-sm font-medium text-gray-800">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="font-mono text-sm font-medium text-foreground">
                         #{tx.id}
                       </span>
                     </div>
@@ -289,8 +291,8 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
                   {/* Weight */}
                   <td className="py-4 px-6 text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <Scale className="w-4 h-4 text-amber-600" />
-                      <span className="font-semibold text-amber-800">
+                      <Scale className="w-4 h-4 text-primary" />
+                      <span className="font-semibold text-primary-foreground">
                         {formatWeight(tx.gramsPurchased)}
                       </span>
                     </div>
@@ -303,8 +305,8 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
                       <span
                         className={`font-semibold text-lg ${
                           tx.type === "PURCHASE"
-                            ? "text-red-600"
-                            : "text-green-600"
+                            ? "text-destructive-foreground"
+                            : "text-accent-foreground"
                         }`}
                       >
                         {tx.type === "PURCHASE" ? "-" : "+"}
@@ -316,12 +318,12 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
                   {/* Date */}
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-gray-500" />
+                      <Calendar className="w-4 h-4 text-muted-foreground" />
                       <div className="flex flex-col">
-                        <span className="text-gray-800 font-medium text-sm">
+                        <span className="text-foreground font-medium text-sm">
                           {formatDate(tx.createdAt)}
                         </span>
-                        <span className="text-gray-500 text-xs">
+                        <span className="text-muted-foreground text-xs">
                           {new Date(tx.createdAt).toLocaleTimeString("en-US", {
                             hour: "2-digit",
                             minute: "2-digit",
@@ -338,18 +340,20 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
                         className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${
                           tx.payment.status === "completed" ||
                           tx.payment.status === "SUCCESS"
-                            ? "bg-green-100 text-green-800 border-green-200"
+                            ? "bg-accent text-accent-foreground border-accent"
                             : tx.payment.status === "pending" ||
                               tx.payment.status === "PENDING"
-                            ? "bg-yellow-100 text-yellow-800 border-yellow-200"
-                            : "bg-red-100 text-red-800 border-red-200"
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "bg-destructive text-destructive-foreground border-destructive"
                         }`}
                       >
                         <CreditCard className="w-4 h-4" />
                         {tx.payment.status}
                       </span>
                     ) : (
-                      <span className="text-gray-400 text-sm italic">N/A</span>
+                      <span className="text-muted-foreground text-sm italic">
+                        N/A
+                      </span>
                     )}
                   </td>
                 </tr>
@@ -360,13 +364,13 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
       </div>
 
       {/* Footer Summary */}
-      <div className="bg-gray-50 px-6 py-4 border-t border-gray-100">
+      <div className="bg-muted px-6 py-4 border-t border-muted-secondary">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="text-gray-700">
+          <div className="text-foreground">
             <span className="font-medium">Total Transactions:</span>
             <span className="font-bold ml-2">{transactions.length}</span>
           </div>
-          <div className="text-gray-700">
+          <div className="text-foreground">
             <span className="font-medium">Total Volume:</span>
             <span className="font-bold ml-2">
               {formatWeight(
@@ -374,7 +378,7 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
               )}
             </span>
           </div>
-          <div className="text-gray-700 md:text-right">
+          <div className="text-foreground md:text-right">
             <span className="font-medium">Total Value:</span>
             <span className="font-bold ml-2">
               {transactions.length > 0

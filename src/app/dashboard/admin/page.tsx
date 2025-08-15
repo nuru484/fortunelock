@@ -20,17 +20,19 @@ const AdminDashboardPage: React.FC = () => {
 
   if (!user || user.role !== "ADMIN" || isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-          <div className="text-gray-600 text-lg font-medium">Loading...</div>
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <div className="text-muted-foreground text-lg font-medium">
+            Loading...
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Main Content */}
       <div className="w-full max-w-none mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6 lg:space-y-8">
@@ -54,24 +56,26 @@ const AdminDashboardPage: React.FC = () => {
           )}
 
           {/* Quick Actions */}
-          <Card className="bg-white border-gray-200 shadow-lg">
+          <Card className="bg-card border-border shadow-lg hover:shadow-xl transition-shadow">
             <CardHeader className="pb-3">
-              <CardTitle className="text-gray-900">Quick Actions</CardTitle>
+              <CardTitle className="text-foreground text-lg font-semibold">
+                Quick Actions
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <Link href="/admin/users">
-                  <Button className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold">
+                <Link href="/admin/users" className="block">
+                  <Button className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold transition-colors shadow-md hover:shadow-lg">
                     Manage Users
                   </Button>
                 </Link>
-                <Link href="/admin/gold-prices">
-                  <Button className="w-full h-12 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold">
+                <Link href="/admin/gold-prices" className="block">
+                  <Button className="w-full h-12 bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold transition-colors shadow-md hover:shadow-lg">
                     Update Gold Prices
                   </Button>
                 </Link>
-                <Link href="/admin/transactions">
-                  <Button className="w-full h-12 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-semibold">
+                <Link href="/admin/transactions" className="block">
+                  <Button className="w-full h-12 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold transition-colors shadow-md hover:shadow-lg">
                     View All Transactions
                   </Button>
                 </Link>
@@ -80,32 +84,42 @@ const AdminDashboardPage: React.FC = () => {
           </Card>
 
           {/* System Notice */}
-          <Card className="bg-blue-50 border-blue-200">
+          <Card className="bg-gradient-to-r from-card to-muted border-border shadow-lg">
             <CardHeader className="pb-4">
               <div className="flex items-center gap-3">
-                <Shield className="w-5 h-5 text-blue-600 flex-shrink-0" />
-                <CardTitle className="text-blue-900 text-lg">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Shield className="w-5 h-5 text-primary flex-shrink-0" />
+                </div>
+                <CardTitle className="text-foreground text-lg font-semibold">
                   System Overview
                 </CardTitle>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-blue-800">
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-blue-600 rounded-full flex-shrink-0"></div>
-                  <span>Real-time monitoring</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg border border-primary/10">
+                  <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0 animate-pulse"></div>
+                  <span className="text-foreground font-medium">
+                    Real-time monitoring
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-blue-600 rounded-full flex-shrink-0"></div>
-                  <span>Audit logs available</span>
+                <div className="flex items-center gap-3 p-3 bg-secondary/5 rounded-lg border border-secondary/10">
+                  <div className="w-2 h-2 bg-secondary rounded-full flex-shrink-0"></div>
+                  <span className="text-foreground font-medium">
+                    Audit logs available
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-blue-600 rounded-full flex-shrink-0"></div>
-                  <span>Compliance checks</span>
+                <div className="flex items-center gap-3 p-3 bg-accent/5 rounded-lg border border-accent/10">
+                  <div className="w-2 h-2 bg-accent rounded-full flex-shrink-0"></div>
+                  <span className="text-foreground font-medium">
+                    Compliance checks
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-blue-600 rounded-full flex-shrink-0"></div>
-                  <span>Secure vault management</span>
+                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg border border-border">
+                  <div className="w-2 h-2 bg-muted-foreground rounded-full flex-shrink-0"></div>
+                  <span className="text-foreground font-medium">
+                    Secure vault management
+                  </span>
                 </div>
               </div>
             </CardContent>

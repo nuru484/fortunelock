@@ -3,6 +3,7 @@ import "server-only";
 import ENV from "@/config/env";
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify, type JWTPayload } from "jose";
+import { redirect } from "next/navigation";
 
 const secretKey = ENV.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -80,4 +81,9 @@ export async function updateSession() {
 export async function deleteSession() {
   const cookieStore = await cookies();
   cookieStore.delete("session");
+}
+
+export default async function logout() {
+  await deleteSession();
+  redirect("/login");
 }

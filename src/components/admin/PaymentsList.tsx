@@ -30,15 +30,15 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
 
   if (!payments || payments.length === 0) {
     return (
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 border border-blue-200 shadow-lg rounded-xl">
+      <div className="bg-gradient-to-br from-muted to-muted-secondary border border-border shadow-lg rounded-xl">
         <div className="p-12 text-center">
-          <div className="w-16 h-16 bg-blue-200 rounded-full mx-auto mb-4 flex items-center justify-center">
-            <CreditCard className="w-8 h-8 text-blue-600" />
+          <div className="w-16 h-16 bg-muted rounded-full mx-auto mb-4 flex items-center justify-center">
+            <CreditCard className="w-8 h-8 text-primary" />
           </div>
-          <div className="text-blue-600 text-lg font-medium mb-2">
+          <div className="text-primary text-lg font-medium mb-2">
             No payment records found
           </div>
-          <div className="text-blue-700 text-sm">
+          <div className="text-primary-foreground text-sm">
             Your payment history will be displayed here once transactions are
             processed
           </div>
@@ -57,9 +57,9 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
     ) {
       return {
         icon: CreditCard,
-        color: "text-blue-600",
-        bgColor: "bg-blue-100",
-        borderColor: "border-blue-200",
+        color: "text-primary",
+        bgColor: "bg-muted",
+        borderColor: "border-border",
         label: "Card Payment",
       };
     } else if (
@@ -69,9 +69,9 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
     ) {
       return {
         icon: Smartphone,
-        color: "text-purple-600",
-        bgColor: "bg-purple-100",
-        borderColor: "border-purple-200",
+        color: "text-accent",
+        bgColor: "bg-accent/50",
+        borderColor: "border-accent",
         label: "Digital Wallet",
       };
     } else if (
@@ -81,9 +81,9 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
     ) {
       return {
         icon: Building2,
-        color: "text-green-600",
-        bgColor: "bg-green-100",
-        borderColor: "border-green-200",
+        color: "text-secondary",
+        bgColor: "bg-secondary/50",
+        borderColor: "border-secondary",
         label: "Bank Transfer",
       };
     } else if (
@@ -92,17 +92,17 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
     ) {
       return {
         icon: Wallet,
-        color: "text-indigo-600",
-        bgColor: "bg-indigo-100",
-        borderColor: "border-indigo-200",
+        color: "text-primary",
+        bgColor: "bg-muted",
+        borderColor: "border-border",
         label: "Wallet Balance",
       };
     } else {
       return {
         icon: CreditCard,
-        color: "text-gray-600",
-        bgColor: "bg-gray-100",
-        borderColor: "border-gray-200",
+        color: "text-muted-foreground",
+        bgColor: "bg-muted",
+        borderColor: "border-border",
         label: method,
       };
     }
@@ -118,9 +118,9 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
     ) {
       return {
         icon: CheckCircle,
-        color: "text-green-700",
-        bgColor: "bg-green-100",
-        borderColor: "border-green-200",
+        color: "text-chart-4",
+        bgColor: "bg-chart-4/20",
+        borderColor: "border-chart-4/50",
         label: "Completed",
       };
     } else if (
@@ -129,9 +129,9 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
     ) {
       return {
         icon: Clock,
-        color: "text-yellow-700",
-        bgColor: "bg-yellow-100",
-        borderColor: "border-yellow-200",
+        color: "text-chart-5",
+        bgColor: "bg-chart-5/20",
+        borderColor: "border-chart-5/50",
         label: "Processing",
       };
     } else if (
@@ -141,9 +141,9 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
     ) {
       return {
         icon: XCircle,
-        color: "text-red-700",
-        bgColor: "bg-red-100",
-        borderColor: "border-red-200",
+        color: "text-destructive",
+        bgColor: "bg-destructive/20",
+        borderColor: "border-destructive/50",
         label: "Failed",
       };
     } else if (
@@ -152,17 +152,17 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
     ) {
       return {
         icon: AlertCircle,
-        color: "text-orange-700",
-        bgColor: "bg-orange-100",
-        borderColor: "border-orange-200",
+        color: "text-chart-1",
+        bgColor: "bg-chart-1/20",
+        borderColor: "border-chart-1/50",
         label: "Refunded",
       };
     } else {
       return {
         icon: Clock,
-        color: "text-gray-700",
-        bgColor: "bg-gray-100",
-        borderColor: "border-gray-200",
+        color: "text-muted-foreground",
+        bgColor: "bg-muted",
+        borderColor: "border-border",
         label: status,
       };
     }
@@ -241,23 +241,23 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
   ).length;
 
   return (
-    <div className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-xl overflow-hidden">
+    <div className="bg-card border border-border shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-xl overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100 px-6 py-6">
+      <div className="bg-gradient-to-r from-muted to-muted-secondary border-b border-border px-6 py-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full"></div>
+            <div className="w-2 h-8 bg-gradient-to-b from-primary to-primary-foreground rounded-full"></div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-800">
+              <h2 className="text-2xl font-bold text-card-foreground">
                 Payment History
               </h2>
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Complete record of all payment transactions
               </p>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm font-medium text-gray-600 bg-white px-3 py-1 rounded-full border">
+            <span className="text-sm font-medium text-muted-foreground bg-card px-3 py-1 rounded-full border">
               {filteredAndSortedPayments.length}{" "}
               {filteredAndSortedPayments.length === 1 ? "payment" : "payments"}
             </span>
@@ -268,11 +268,11 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <Filter className="w-4 h-4 text-gray-500" />
+              <Filter className="w-4 h-4 text-muted-foreground" />
               <select
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                className="bg-white border border-gray-200 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="bg-card border border-border rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="ALL">All Status</option>
                 <option value="success">Completed</option>
@@ -282,11 +282,11 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
             </div>
 
             <div className="flex items-center gap-2">
-              <ArrowUpDown className="w-4 h-4 text-gray-500" />
+              <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-white border border-gray-200 rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="bg-card border border-border rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="date">Sort by Date</option>
                 <option value="amount">Sort by Amount</option>
@@ -295,10 +295,10 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
           </div>
 
           <div className="flex gap-4 text-sm">
-            <span className="text-green-600 font-medium">
+            <span className="text-chart-4 font-medium">
               {completedPayments} Completed
             </span>
-            <span className="text-blue-600 font-medium">
+            <span className="text-primary font-medium">
               {payments.length - completedPayments} Pending
             </span>
           </div>
@@ -309,20 +309,20 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="bg-gray-50 hover:bg-gray-50 border-b border-gray-100">
-              <th className="font-semibold text-gray-700 py-4 px-6 text-left">
+            <tr className="bg-muted hover:bg-muted border-b border-border">
+              <th className="font-semibold text-muted-foreground py-4 px-6 text-left">
                 Payment ID
               </th>
-              <th className="font-semibold text-gray-700 py-4 px-6 text-left">
+              <th className="font-semibold text-muted-foreground py-4 px-6 text-left">
                 Method
               </th>
-              <th className="font-semibold text-gray-700 py-4 px-6 text-right">
+              <th className="font-semibold text-muted-foreground py-4 px-6 text-right">
                 Amount
               </th>
-              <th className="font-semibold text-gray-700 py-4 px-6 text-center">
+              <th className="font-semibold text-muted-foreground py-4 px-6 text-center">
                 Status
               </th>
-              <th className="font-semibold text-gray-700 py-4 px-6 text-left">
+              <th className="font-semibold text-muted-foreground py-4 px-6 text-left">
                 Processed
               </th>
             </tr>
@@ -339,15 +339,15 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
                 <tr
                   key={payment.id}
                   className={`
-                    border-b border-gray-50 hover:bg-blue-25 transition-colors duration-200
-                    ${index % 2 === 0 ? "bg-white" : "bg-gray-25/30"}
+                    border-b border-border hover:bg-muted transition-colors duration-200
+                    ${index % 2 === 0 ? "bg-card" : "bg-muted/30"}
                   `}
                 >
                   {/* Payment ID */}
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span className="font-mono text-sm font-medium text-gray-800">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="font-mono text-sm font-medium text-card-foreground">
                         #{payment.id}
                       </span>
                     </div>
@@ -364,10 +364,10 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
                         />
                       </div>
                       <div>
-                        <div className="font-medium text-gray-800">
+                        <div className="font-medium text-card-foreground">
                           {methodConfig.label}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-muted-foreground">
                           {payment.method}
                         </div>
                       </div>
@@ -379,10 +379,10 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
                     <div className="flex items-center justify-end gap-2">
                       <span className="text-lg">{currencyConfig.flag}</span>
                       <div className="text-right">
-                        <div className="font-semibold text-lg text-gray-800">
+                        <div className="font-semibold text-lg text-card-foreground">
                           {formatCurrency(payment.amount, payment.currency)}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-muted-foreground">
                           {currencyConfig.name}
                         </div>
                       </div>
@@ -403,18 +403,18 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
                   <td className="py-4 px-6">
                     {payment.processedAt ? (
                       <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-gray-500" />
+                        <Calendar className="w-4 h-4 text-muted-foreground" />
                         <div className="flex flex-col">
-                          <span className="text-gray-800 font-medium text-sm">
+                          <span className="text-card-foreground font-medium text-sm">
                             {formatDate(payment.processedAt)}
                           </span>
-                          <span className="text-gray-500 text-xs">
+                          <span className="text-muted-foreground text-xs">
                             {getTimeAgo(payment.processedAt)}
                           </span>
                         </div>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-2 text-gray-400">
+                      <div className="flex items-center gap-2 text-muted-foreground">
                         <Clock className="w-4 h-4" />
                         <span className="text-sm italic">Pending</span>
                       </div>
@@ -428,19 +428,19 @@ const PaymentsList = ({ payments }: PaymentsListProps) => {
       </div>
 
       {/* Footer Summary */}
-      <div className="bg-gray-50 px-6 py-4 border-t border-gray-100">
+      <div className="bg-muted px-6 py-4 border-t border-border">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="text-gray-700">
+          <div className="text-muted-foreground">
             <span className="font-medium">Total Payments:</span>
             <span className="font-bold ml-2">{payments.length}</span>
           </div>
-          <div className="text-gray-700">
+          <div className="text-muted-foreground">
             <span className="font-medium">Success Rate:</span>
-            <span className="font-bold ml-2 text-green-600">
+            <span className="font-bold ml-2 text-chart-4">
               {Math.round((completedPayments / payments.length) * 100)}%
             </span>
           </div>
-          <div className="text-gray-700 md:text-right">
+          <div className="text-muted-foreground md:text-right">
             <span className="font-medium">Total Value:</span>
             <span className="font-bold ml-2">
               {payments.length > 0

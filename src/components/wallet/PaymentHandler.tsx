@@ -98,7 +98,7 @@ const PaymentHandler = () => {
 
       // Send the exact amount (no fees added)
       const response = await initializeDeposit({
-        amount: depositDetails.amount, // Changed from depositDetails.total to depositDetails.amount
+        amount: depositDetails.amount,
         currency,
         callbackUrl,
       }).unwrap();
@@ -185,15 +185,15 @@ const PaymentHandler = () => {
 
   if (status === "pending") {
     return (
-      <Card className="bg-white border-gray-200 shadow-lg">
+      <Card className="bg-[var(--card)] border-[var(--border)] shadow-lg">
         <CardContent className="pt-6">
           <div className="text-center space-y-4">
-            <div className="p-6 bg-blue-50 rounded-lg border border-blue-200">
-              <Loader2 className="w-8 h-8 animate-spin text-blue-600 mx-auto mb-3" />
-              <h3 className="text-xl font-semibold text-blue-900 mb-2">
+            <div className="p-6 bg-[var(--muted)] rounded-[var(--radius)] border border-[var(--muted-secondary)]">
+              <Loader2 className="w-8 h-8 animate-spin text-[var(--primary)] mx-auto mb-3" />
+              <h3 className="text-xl font-semibold text-[var(--card-foreground)] mb-2">
                 Payment Initiated
               </h3>
-              <p className="text-blue-700 text-sm">
+              <p className="text-[var(--muted-foreground)] text-sm">
                 Complete your payment in the Stripe Checkout window, then click
                 verify below.
               </p>
@@ -203,7 +203,7 @@ const PaymentHandler = () => {
               <Button
                 onClick={handleVerifyPayment}
                 disabled={isVerifying}
-                className="flex-1 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white h-12"
+                className="flex-1 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-[var(--primary-foreground)] h-12"
               >
                 {isVerifying ? (
                   <div className="flex items-center gap-2">
@@ -218,7 +218,7 @@ const PaymentHandler = () => {
               <Button
                 onClick={resetPayment}
                 variant="outline"
-                className="flex-1 h-12"
+                className="flex-1 h-12 border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)]"
               >
                 <X className="w-4 h-4 mr-2" />
                 Cancel
@@ -232,14 +232,14 @@ const PaymentHandler = () => {
 
   if (status === "success") {
     return (
-      <Card className="bg-white border-gray-200 shadow-lg">
+      <Card className="bg-[var(--card)] border-[var(--border)] shadow-lg">
         <CardContent className="pt-6">
           <div className="text-center py-8">
-            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-            <h3 className="text-2xl font-semibold text-green-900 mb-2">
+            <CheckCircle className="w-16 h-16 text-[var(--chart-3)] mx-auto mb-4" />
+            <h3 className="text-2xl font-semibold text-[var(--card-foreground)] mb-2">
               Deposit Successful!
             </h3>
-            <p className="text-green-700 text-lg">
+            <p className="text-[var(--muted-foreground)] text-lg">
               Your wallet has been credited successfully.
             </p>
           </div>
@@ -252,13 +252,15 @@ const PaymentHandler = () => {
     <>
       <div className="space-y-8">
         {/* Deposit Form */}
-        <Card className="bg-white border-gray-200 shadow-lg">
+        <Card className="bg-[var(--card)] border-[var(--border)] shadow-lg">
           <CardHeader>
             <div className="flex items-center gap-3">
-              <Calculator className="w-6 h-6 text-blue-600" />
+              <Calculator className="w-6 h-6 text-[var(--primary)]" />
               <div>
-                <CardTitle className="text-gray-900">Deposit Funds</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-[var(--card-foreground)]">
+                  Deposit Funds
+                </CardTitle>
+                <CardDescription className="text-[var(--muted-foreground)]">
                   Add money to your wallet instantly - No fees!
                 </CardDescription>
               </div>
@@ -268,7 +270,7 @@ const PaymentHandler = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-[var(--foreground)] mb-2">
                     Amount
                   </label>
                   <Input
@@ -278,19 +280,21 @@ const PaymentHandler = () => {
                     min="1"
                     step="0.01"
                     placeholder="0.00"
-                    className="text-lg font-medium h-12"
+                    className="text-lg font-medium h-12 border-[var(--input)] text-[var(--foreground)]"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Minimum: $1.00</p>
+                  <p className="text-xs text-[var(--muted-foreground)] mt-1">
+                    Minimum: $1.00
+                  </p>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-[var(--foreground)] mb-2">
                     Currency
                   </label>
                   <Select value={currency} onValueChange={setCurrency}>
-                    <SelectTrigger className="h-12 text-lg font-medium">
+                    <SelectTrigger className="h-12 text-lg font-medium border-[var(--input)] text-[var(--foreground)]">
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-[var(--popover)] text-[var(--popover-foreground)] border-[var(--border)]">
                       {currencies.map((curr) => (
                         <SelectItem key={curr.code} value={curr.code}>
                           {curr.flag} {curr.code} - {curr.name}
@@ -303,11 +307,11 @@ const PaymentHandler = () => {
 
               {/* Transaction Summary - Simplified without fees */}
               {amount > 0 && (
-                <Card className="bg-green-50 border-green-200">
+                <Card className="bg-[var(--muted)] border-[var(--muted-secondary)]">
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg text-green-900 flex items-center gap-2">
+                    <CardTitle className="text-lg text-[var(--card-foreground)] flex items-center gap-2">
                       Deposit Summary
-                      <span className="text-sm bg-green-200 text-green-800 px-2 py-1 rounded-full">
+                      <span className="text-sm bg-[var(--muted-secondary)] text-[var(--muted-foreground)] px-2 py-1 rounded-[var(--radius-sm)]">
                         No Fees!
                       </span>
                     </CardTitle>
@@ -315,23 +319,27 @@ const PaymentHandler = () => {
                   <CardContent className="space-y-4">
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="text-green-600">Deposit Amount:</span>
-                        <span className="font-semibold text-green-900">
+                        <span className="text-[var(--muted-foreground)]">
+                          Deposit Amount:
+                        </span>
+                        <span className="font-semibold text-[var(--card-foreground)]">
                           {formatCurrency(depositDetails.amount, currency)}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-green-600">Processing Fee:</span>
-                        <span className="font-semibold text-green-900">
+                        <span className="text-[var(--muted-foreground)]">
+                          Processing Fee:
+                        </span>
+                        <span className="font-semibold text-[var(--card-foreground)]">
                           {formatCurrency(0, currency)}
                         </span>
                       </div>
-                      <div className="h-px bg-green-300"></div>
+                      <div className="h-px bg-[var(--muted-secondary)]"></div>
                       <div className="flex justify-between items-center text-lg">
-                        <span className="font-semibold text-green-900">
+                        <span className="font-semibold text-[var(--card-foreground)]">
                           You&apos;ll Receive:
                         </span>
-                        <span className="font-bold text-green-600">
+                        <span className="font-bold text-[var(--primary)]">
                           {formatCurrency(depositDetails.amount, currency)}
                         </span>
                       </div>
@@ -342,7 +350,7 @@ const PaymentHandler = () => {
 
               <Button
                 type="submit"
-                className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold text-lg"
+                className="w-full h-12 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-[var(--primary-foreground)] font-semibold text-lg"
                 disabled={isInitializing || !isValidAmount}
               >
                 {isInitializing ? (
@@ -365,46 +373,50 @@ const PaymentHandler = () => {
 
       {/* Confirmation Dialog - Updated to remove fee display */}
       <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md bg-[var(--popover)] border-[var(--border)]">
           <DialogHeader>
-            <DialogTitle className="text-xl font-bold text-gray-900">
+            <DialogTitle className="text-xl font-bold text-[var(--popover-foreground)]">
               Confirm Deposit
             </DialogTitle>
-            <DialogDescription className="text-gray-600">
+            <DialogDescription className="text-[var(--muted-foreground)]">
               Please review your deposit details before proceeding.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 my-6">
-            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+            <div className="bg-[var(--muted)] p-4 rounded-[var(--radius)] border border-[var(--muted-secondary)]">
               <div className="flex items-center gap-2 mb-3">
-                <CreditCard className="w-5 h-5 text-blue-600" />
-                <span className="font-semibold text-blue-900">
+                <CreditCard className="w-5 h-5 text-[var(--primary)]" />
+                <span className="font-semibold text-[var(--card-foreground)]">
                   Deposit Details
                 </span>
-                <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded-full ml-auto">
+                <span className="text-xs bg-[var(--muted-secondary)] text-[var(--muted-foreground)] px-2 py-1 rounded-[var(--radius-sm)] ml-auto">
                   No Fees!
                 </span>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-blue-800">Deposit Amount:</span>
-                  <span className="font-semibold text-blue-900">
+                  <span className="text-[var(--muted-foreground)]">
+                    Deposit Amount:
+                  </span>
+                  <span className="font-semibold text-[var(--card-foreground)]">
                     {formatCurrency(depositDetails.amount, currency)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-blue-800">Processing Fee:</span>
-                  <span className="font-semibold text-blue-900">
+                  <span className="text-[var(--muted-foreground)]">
+                    Processing Fee:
+                  </span>
+                  <span className="font-semibold text-[var(--card-foreground)]">
                     {formatCurrency(0, currency)}
                   </span>
                 </div>
-                <div className="h-px bg-blue-300 my-2"></div>
+                <div className="h-px bg-[var(--muted-secondary)] my-2"></div>
                 <div className="flex justify-between text-base">
-                  <span className="font-semibold text-blue-900">
+                  <span className="font-semibold text-[var(--card-foreground)]">
                     You&apos;ll Receive:
                   </span>
-                  <span className="font-bold text-blue-900">
+                  <span className="font-bold text-[var(--card-foreground)]">
                     {formatCurrency(depositDetails.amount, currency)}
                   </span>
                 </div>
@@ -416,14 +428,14 @@ const PaymentHandler = () => {
             <Button
               variant="outline"
               onClick={() => setIsConfirmOpen(false)}
-              className="flex-1"
+              className="flex-1 border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--muted)]"
             >
               Cancel
             </Button>
             <Button
               onClick={confirmDeposit}
               disabled={isInitializing}
-              className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
+              className="flex-1 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-[var(--primary-foreground)]"
             >
               {isInitializing ? (
                 <div className="flex items-center gap-2">

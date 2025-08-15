@@ -45,16 +45,18 @@ const AdminRecentTransactions: React.FC<AdminRecentTransactionsProps> = ({
     }).format(amount);
 
   return (
-    <Card className="bg-white border-gray-200 shadow-lg px-8">
+    <Card className="bg-card border-border shadow-lg px-8">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-3">
-          <FileText className="w-6 h-6 text-blue-600" />
-          <CardTitle className="text-gray-900">Recent Transactions</CardTitle>
+          <FileText className="w-6 h-6 text-primary" />
+          <CardTitle className="text-card-foreground">
+            Recent Transactions
+          </CardTitle>
         </div>
       </CardHeader>
       <CardContent className="p-0">
         {transactions.length === 0 ? (
-          <p className="text-gray-600 text-center p-6">
+          <p className="text-muted-foreground text-center p-6">
             No recent transactions.
           </p>
         ) : (
@@ -82,7 +84,7 @@ const AdminRecentTransactions: React.FC<AdminRecentTransactionsProps> = ({
                         <div className="truncate font-medium">
                           {tx.user.firstName} {tx.user.lastName}
                         </div>
-                        <div className="truncate text-sm text-gray-500">
+                        <div className="truncate text-sm text-muted-foreground">
                           {tx.user.email}
                         </div>
                       </div>
@@ -94,10 +96,10 @@ const AdminRecentTransactions: React.FC<AdminRecentTransactionsProps> = ({
                       <span
                         className={`whitespace-nowrap ${
                           tx.status === "SUCCESS"
-                            ? "text-green-600"
+                            ? "text-chart-4"
                             : tx.status === "PENDING"
-                            ? "text-yellow-600"
-                            : "text-red-600"
+                            ? "text-chart-5"
+                            : "text-destructive"
                         }`}
                       >
                         {tx.status}

@@ -1,4 +1,3 @@
-// src/components/dashboard/RecentTransactions.tsx
 "use client";
 import React from "react";
 import {
@@ -39,60 +38,99 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({
     }).format(amount);
 
   return (
-    <Card className="bg-white border-gray-200 shadow-lg">
+    <Card className="bg-card border-border shadow-lg">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-3">
-          <FileText className="w-6 h-6 text-blue-600" />
-          <CardTitle className="text-gray-900">Recent Transactions</CardTitle>
+          <FileText className="w-6 h-6 text-primary" />
+          <CardTitle className="text-card-foreground">
+            Recent Transactions
+          </CardTitle>
         </div>
       </CardHeader>
       <CardContent>
         {transactions.length === 0 ? (
-          <p className="text-gray-600 text-center">No transactions found.</p>
+          <div className="bg-muted/30 rounded-lg p-8 text-center border border-border">
+            <p className="text-muted-foreground font-medium">
+              No transactions found.
+            </p>
+          </div>
         ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Transaction ID</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Amount (grams)</TableHead>
-                <TableHead>Total Cost</TableHead>
-                <TableHead>Date</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {transactions.map((transaction) => (
-                <TableRow key={transaction.id}>
-                  <TableCell>{transaction.referenceNumber}</TableCell>
-                  <TableCell>{transaction.type}</TableCell>
-                  <TableCell>
-                    <span
-                      className={
-                        transaction.status === "SUCCESS"
-                          ? "text-green-600"
-                          : transaction.status === "PENDING"
-                          ? "text-yellow-600"
-                          : "text-red-600"
-                      }
-                    >
-                      {transaction.status}
-                    </span>
-                  </TableCell>
-                  <TableCell>{transaction.gramsPurchased.toFixed(4)}</TableCell>
-                  <TableCell>
-                    {formatCurrency(
-                      transaction.totalCost,
-                      transaction.currency
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {new Date(transaction.createdAt).toLocaleDateString()}
-                  </TableCell>
+          <div className="bg-muted/30 rounded-lg border border-border overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-secondary hover:bg-secondary/80">
+                  <TableHead className="text-secondary-foreground font-semibold">
+                    Transaction ID
+                  </TableHead>
+                  <TableHead className="text-secondary-foreground font-semibold">
+                    Type
+                  </TableHead>
+                  <TableHead className="text-secondary-foreground font-semibold">
+                    Status
+                  </TableHead>
+                  <TableHead className="text-secondary-foreground font-semibold">
+                    Amount (grams)
+                  </TableHead>
+                  <TableHead className="text-secondary-foreground font-semibold">
+                    Total Cost
+                  </TableHead>
+                  <TableHead className="text-secondary-foreground font-semibold">
+                    Date
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {transactions.map((transaction) => (
+                  <TableRow
+                    key={transaction.id}
+                    className="hover:bg-muted/50 border-border transition-colors"
+                  >
+                    <TableCell className="font-medium text-card-foreground">
+                      <span className="font-mono text-sm bg-secondary/30 px-2 py-1 rounded">
+                        {transaction.referenceNumber}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-card-foreground">
+                      {transaction.type}
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={
+                          transaction.status === "SUCCESS"
+                            ? "text-green-600 dark:text-green-400"
+                            : transaction.status === "PENDING"
+                            ? "text-primary"
+                            : "text-red-600 dark:text-red-400"
+                        }
+                      >
+                        {transaction.status}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-card-foreground">
+                      {transaction.gramsPurchased.toFixed(4)}
+                      <span className="text-muted-foreground ml-1">g</span>
+                    </TableCell>
+                    <TableCell className="text-card-foreground">
+                      {formatCurrency(
+                        transaction.totalCost,
+                        transaction.currency
+                      )}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {new Date(transaction.createdAt).toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        }
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         )}
       </CardContent>
     </Card>

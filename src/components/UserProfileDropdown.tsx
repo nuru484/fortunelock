@@ -44,8 +44,9 @@ import {
   Calendar,
   CheckCircle,
   AlertTriangle,
+  Power,
 } from "lucide-react";
-import LogoutButton from "@/components/auth/LogoutButton";
+import { logout } from "@/app/actions/logout";
 import { Badge } from "./ui/badge";
 
 const UserProfileDropdown: React.FC = () => {
@@ -53,6 +54,7 @@ const UserProfileDropdown: React.FC = () => {
   const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
   const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
+  const [loading, setLoading] = useState(false); // Add loading state
 
   // Mock user data - replace with actual user data
   const userData = {
@@ -69,6 +71,11 @@ const UserProfileDropdown: React.FC = () => {
   const userInitials = `${user.firstName?.charAt(0) || ""}${
     user.lastName?.charAt(0) || ""
   }`;
+
+  const handleLogout = async () => {
+    setLoading(true);
+    await logout();
+  };
 
   return (
     <>
@@ -139,9 +146,14 @@ const UserProfileDropdown: React.FC = () => {
             <span>Help & Support</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <div>
-            <LogoutButton />
-          </div>
+          <DropdownMenuItem
+            onClick={handleLogout}
+            disabled={loading}
+            className="cursor-pointer px-4 py-2"
+          >
+            <Power className="mr-2 h-4 w-4" />
+            <span>{loading ? "Logging out..." : "Sign Out"}</span>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 

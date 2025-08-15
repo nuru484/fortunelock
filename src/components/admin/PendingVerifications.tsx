@@ -33,18 +33,18 @@ const PendingVerifications: React.FC<PendingVerificationsProps> = ({
   verifications,
 }) => {
   return (
-    <Card className="bg-white border-gray-200 shadow-lg">
+    <Card className="bg-card border-border shadow-lg">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-3">
-          <AlertCircle className="w-6 h-6 text-yellow-600" />
-          <CardTitle className="text-gray-900">
+          <AlertCircle className="w-6 h-6 text-chart-5" />
+          <CardTitle className="text-card-foreground">
             Pending KYC Verifications
           </CardTitle>
         </div>
       </CardHeader>
       <CardContent className="p-0">
         {verifications.length === 0 ? (
-          <p className="text-gray-600 text-center p-6">
+          <p className="text-muted-foreground text-center p-6">
             No pending verifications.
           </p>
         ) : (
@@ -66,7 +66,7 @@ const PendingVerifications: React.FC<PendingVerificationsProps> = ({
                         <div className="truncate font-medium">
                           {ver.user.firstName} {ver.user.lastName}
                         </div>
-                        <div className="truncate text-sm text-gray-500">
+                        <div className="truncate text-sm text-muted-foreground">
                           {ver.user.email}
                         </div>
                       </div>

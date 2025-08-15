@@ -15,7 +15,7 @@ import TransactionsList from "../../../../components/admin/TransactionsList";
 import PaymentsList from "@/components/admin/PaymentsList";
 
 const LoadingSkeleton = () => (
-  <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+  <div className="min-h-screen bg-background">
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       {/* Header Skeleton */}
       <div className="mb-8">
@@ -24,7 +24,7 @@ const LoadingSkeleton = () => (
       </div>
 
       {/* Profile Card Skeleton */}
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-6 mb-8">
+      <div className="bg-card text-card-foreground rounded-2xl shadow-lg border border-border p-6 mb-8">
         <div className="flex items-center space-x-4">
           <Skeleton className="h-16 w-16 rounded-full" />
           <div className="space-y-2">
@@ -49,11 +49,11 @@ const LoadingSkeleton = () => (
 );
 
 const ErrorState = ({ onRetry }: { onRetry: () => void }) => (
-  <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
+  <div className="min-h-screen bg-background flex items-center justify-center">
     <div className="container mx-auto px-4 max-w-md">
-      <Alert className="border-red-200 bg-red-50 dark:bg-red-950 dark:border-red-800">
-        <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
-        <AlertDescription className="text-red-800 dark:text-red-200 ml-2">
+      <Alert className="border-destructive bg-destructive/10">
+        <AlertCircle className="h-5 w-5 text-destructive" />
+        <AlertDescription className="text-destructive ml-2">
           <div className="space-y-3">
             <p className="font-semibold">Unable to load user details</p>
             <p className="text-sm opacity-90">
@@ -64,7 +64,7 @@ const ErrorState = ({ onRetry }: { onRetry: () => void }) => (
               <Button
                 onClick={onRetry}
                 size="sm"
-                className="bg-red-600 hover:bg-red-700 text-white"
+                className="bg-destructive hover:bg-destructive/90 text-primary-foreground"
               >
                 Try Again
               </Button>
@@ -72,7 +72,7 @@ const ErrorState = ({ onRetry }: { onRetry: () => void }) => (
                 variant="outline"
                 size="sm"
                 onClick={() => window.history.back()}
-                className="border-red-300 text-red-700 hover:bg-red-50 dark:border-red-700 dark:text-red-300 dark:hover:bg-red-950"
+                className="border-destructive text-destructive hover:bg-destructive/10"
               >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Go Back
@@ -102,7 +102,7 @@ const UserDetailsPage = () => {
   const userData = data.data;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Main Content */}
         <main className="space-y-8">

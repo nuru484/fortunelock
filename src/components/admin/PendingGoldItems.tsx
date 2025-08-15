@@ -32,18 +32,20 @@ interface PendingGoldItemsProps {
 
 const PendingGoldItems: React.FC<PendingGoldItemsProps> = ({ items }) => {
   return (
-    <Card className="bg-white border-gray-200 shadow-lg">
+    <Card className="bg-card border-border shadow-lg">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-3">
-          <Package className="w-6 h-6 text-amber-600" />
-          <CardTitle className="text-gray-900">
+          <Package className="w-6 h-6 text-accent" />
+          <CardTitle className="text-card-foreground">
             Pending Physical Deposits
           </CardTitle>
         </div>
       </CardHeader>
       <CardContent className="p-0">
         {items.length === 0 ? (
-          <p className="text-gray-600 text-center p-6">No pending deposits.</p>
+          <p className="text-muted-foreground text-center p-6">
+            No pending deposits.
+          </p>
         ) : (
           <div className="overflow-x-auto">
             <Table>
@@ -64,7 +66,7 @@ const PendingGoldItems: React.FC<PendingGoldItemsProps> = ({ items }) => {
                         <div className="truncate font-medium">
                           {item.user.firstName} {item.user.lastName}
                         </div>
-                        <div className="truncate text-sm text-gray-500">
+                        <div className="truncate text-sm text-muted-foreground">
                           {item.user.email}
                         </div>
                       </div>

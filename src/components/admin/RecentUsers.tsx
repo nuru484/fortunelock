@@ -1,4 +1,3 @@
-// src/components/admin/RecentUsers.tsx
 "use client";
 import React from "react";
 import {
@@ -27,16 +26,18 @@ interface RecentUsersProps {
 
 const RecentUsers: React.FC<RecentUsersProps> = ({ users }) => {
   return (
-    <Card className="bg-white border-gray-200 shadow-lg px-8">
+    <Card className="bg-card border border-muted shadow-lg px-8">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-3">
-          <UserPlus className="w-6 h-6 text-blue-600" />
-          <CardTitle className="text-gray-900">Recent Signups</CardTitle>
+          <UserPlus className="w-6 h-6 text-primary" />
+          <CardTitle className="text-foreground">Recent Signups</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="p-0">
         {users.length === 0 ? (
-          <p className="text-gray-600 text-center p-6">No recent signups.</p>
+          <p className="text-muted-foreground text-center p-6">
+            No recent signups.
+          </p>
         ) : (
           <div className="overflow-x-auto">
             <Table>

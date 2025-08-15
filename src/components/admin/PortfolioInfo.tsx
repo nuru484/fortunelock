@@ -23,15 +23,15 @@ export interface PortfolioInfoProps {
 const PortfolioInfo = ({ portfolio }: PortfolioInfoProps) => {
   if (!portfolio) {
     return (
-      <div className="bg-gradient-to-br from-emerald-50 to-teal-100 border border-emerald-200 shadow-lg rounded-xl">
+      <div className="bg-card border-border shadow-lg rounded-lg">
         <div className="p-12 text-center">
-          <div className="w-16 h-16 bg-emerald-200 rounded-full mx-auto mb-4 flex items-center justify-center">
-            <PieChart className="w-8 h-8 text-emerald-600" />
+          <div className="w-16 h-16 bg-muted/50 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <PieChart className="w-8 h-8 text-primary" />
           </div>
-          <div className="text-emerald-600 text-lg font-medium mb-2">
+          <div className="text-card-foreground text-lg font-medium mb-2">
             No portfolio data available
           </div>
-          <div className="text-emerald-700 text-sm">
+          <div className="text-muted-foreground text-sm">
             Your portfolio summary will appear here once data is loaded
           </div>
         </div>
@@ -73,24 +73,26 @@ const PortfolioInfo = ({ portfolio }: PortfolioInfoProps) => {
   const isPositiveReturn = portfolio.unrealizedGain >= 0;
 
   return (
-    <div className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-xl overflow-hidden">
+    <div className="bg-card border-border shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-gray-100 px-6 py-6">
+      <div className="bg-secondary border-b border-border px-6 py-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-2 h-8 bg-gradient-to-b from-emerald-500 to-teal-600 rounded-full"></div>
+            <div className="w-2 h-8 bg-primary rounded-full"></div>
             <div>
-              <h2 className="text-2xl font-bold text-gray-800">
+              <h2 className="text-2xl font-bold text-card-foreground">
                 Portfolio Overview
               </h2>
-              <p className="text-sm text-gray-600 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Gold Investment Summary
               </p>
             </div>
           </div>
           <div className="text-right">
-            <div className="text-sm text-gray-500 mb-1">Portfolio ID</div>
-            <div className="font-mono text-lg font-semibold text-gray-800">
+            <div className="text-sm text-muted-foreground mb-1">
+              Portfolio ID
+            </div>
+            <div className="font-mono text-lg font-semibold text-card-foreground">
               #{portfolio.id}
             </div>
           </div>
@@ -101,16 +103,16 @@ const PortfolioInfo = ({ portfolio }: PortfolioInfoProps) => {
       <div className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
           {/* Total Weight */}
-          <div className="bg-gradient-to-br from-amber-50 to-yellow-50 p-4 rounded-lg border border-amber-100 hover:shadow-md transition-shadow">
+          <div className="bg-muted/50 p-4 rounded-lg border border-border hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-                <Scale className="w-5 h-5 text-amber-600" />
+              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                <Scale className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
-                <div className="text-sm text-amber-600 font-medium">
+                <div className="text-sm text-card-foreground font-medium">
                   Total Weight
                 </div>
-                <div className="text-2xl font-bold text-amber-800">
+                <div className="text-2xl font-bold text-card-foreground">
                   {formatWeight(portfolio.totalGrams)}
                 </div>
               </div>
@@ -118,16 +120,16 @@ const PortfolioInfo = ({ portfolio }: PortfolioInfoProps) => {
           </div>
 
           {/* Total Invested */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-100 hover:shadow-md transition-shadow">
+          <div className="bg-muted/50 p-4 rounded-lg border border-border hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                <DollarSign className="w-5 h-5 text-blue-600" />
+              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                <DollarSign className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
-                <div className="text-sm text-blue-600 font-medium">
+                <div className="text-sm text-card-foreground font-medium">
                   Total Invested
                 </div>
-                <div className="text-2xl font-bold text-blue-800">
+                <div className="text-2xl font-bold text-card-foreground">
                   {formatCurrency(portfolio.totalInvested)}
                 </div>
               </div>
@@ -135,16 +137,16 @@ const PortfolioInfo = ({ portfolio }: PortfolioInfoProps) => {
           </div>
 
           {/* Current Value */}
-          <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-4 rounded-lg border border-emerald-100 hover:shadow-md transition-shadow">
+          <div className="bg-muted/50 p-4 rounded-lg border border-border hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
-                <Calculator className="w-5 h-5 text-emerald-600" />
+              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                <Calculator className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
-                <div className="text-sm text-emerald-600 font-medium">
+                <div className="text-sm text-card-foreground font-medium">
                   Current Value
                 </div>
-                <div className="text-2xl font-bold text-emerald-800">
+                <div className="text-2xl font-bold text-card-foreground">
                   {formatCurrency(portfolio.currentValue)}
                 </div>
               </div>
@@ -152,36 +154,30 @@ const PortfolioInfo = ({ portfolio }: PortfolioInfoProps) => {
           </div>
 
           {/* Unrealized Gain/Loss */}
-          <div
-            className={`bg-gradient-to-br p-4 rounded-lg border hover:shadow-md transition-shadow ${
-              isPositiveReturn
-                ? "from-green-50 to-emerald-50 border-green-100"
-                : "from-red-50 to-rose-50 border-red-100"
-            }`}
-          >
+          <div className="bg-muted/50 p-4 rounded-lg border border-border hover:shadow-md transition-shadow">
             <div className="flex items-center gap-3 mb-2">
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                  isPositiveReturn ? "bg-green-100" : "bg-red-100"
-                }`}
-              >
+              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                 {isPositiveReturn ? (
-                  <TrendingUp className="w-5 h-5 text-green-600" />
+                  <TrendingUp className="w-5 h-5 text-primary-foreground" />
                 ) : (
-                  <TrendingDown className="w-5 h-5 text-red-600" />
+                  <TrendingDown className="w-5 h-5 text-primary-foreground" />
                 )}
               </div>
               <div>
                 <div
                   className={`text-sm font-medium ${
-                    isPositiveReturn ? "text-green-600" : "text-red-600"
+                    isPositiveReturn
+                      ? "text-green-600 dark:text-green-400"
+                      : "text-red-600 dark:text-red-400"
                   }`}
                 >
                   {isPositiveReturn ? "Unrealized Gain" : "Unrealized Loss"}
                 </div>
                 <div
                   className={`text-2xl font-bold ${
-                    isPositiveReturn ? "text-green-800" : "text-red-800"
+                    isPositiveReturn
+                      ? "text-green-600 dark:text-green-400"
+                      : "text-red-600 dark:text-red-400"
                   }`}
                 >
                   {formatCurrency(Math.abs(portfolio.unrealizedGain))}
@@ -192,19 +188,23 @@ const PortfolioInfo = ({ portfolio }: PortfolioInfoProps) => {
         </div>
 
         {/* Performance Summary */}
-        <div className="bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-            <div className="w-1 h-5 bg-gray-500 rounded-full"></div>
+        <div className="bg-muted/50 rounded-lg p-6 border border-border">
+          <h3 className="text-lg font-semibold text-card-foreground mb-4 flex items-center gap-2">
+            <div className="w-1 h-5 bg-primary rounded-full"></div>
             Performance Summary
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Return Percentage */}
             <div className="text-center">
-              <div className="text-sm text-gray-500 mb-1">Total Return</div>
+              <div className="text-sm text-muted-foreground mb-1">
+                Total Return
+              </div>
               <div
                 className={`text-3xl font-bold ${
-                  isPositiveReturn ? "text-green-600" : "text-red-600"
+                  isPositiveReturn
+                    ? "text-green-600 dark:text-green-400"
+                    : "text-red-600 dark:text-red-400"
                 }`}
               >
                 {isPositiveReturn ? "+" : ""}
@@ -214,8 +214,10 @@ const PortfolioInfo = ({ portfolio }: PortfolioInfoProps) => {
 
             {/* Average Cost per Gram */}
             <div className="text-center">
-              <div className="text-sm text-gray-500 mb-1">Avg Cost/Gram</div>
-              <div className="text-2xl font-semibold text-gray-800">
+              <div className="text-sm text-muted-foreground mb-1">
+                Avg Cost/Gram
+              </div>
+              <div className="text-2xl font-semibold text-card-foreground">
                 {portfolio.totalGrams > 0
                   ? formatCurrency(
                       portfolio.totalInvested / portfolio.totalGrams
@@ -226,10 +228,10 @@ const PortfolioInfo = ({ portfolio }: PortfolioInfoProps) => {
 
             {/* Current Value per Gram */}
             <div className="text-center">
-              <div className="text-sm text-gray-500 mb-1">
+              <div className="text-sm text-muted-foreground mb-1">
                 Current Value/Gram
               </div>
-              <div className="text-2xl font-semibold text-gray-800">
+              <div className="text-2xl font-semibold text-card-foreground">
                 {portfolio.totalGrams > 0
                   ? formatCurrency(
                       portfolio.currentValue / portfolio.totalGrams
@@ -242,8 +244,8 @@ const PortfolioInfo = ({ portfolio }: PortfolioInfoProps) => {
       </div>
 
       {/* Footer */}
-      <div className="bg-gray-50 px-6 py-4 border-t border-gray-100">
-        <div className="flex items-center justify-between text-sm text-gray-600">
+      <div className="bg-secondary px-6 py-4 border-t border-border">
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4" />
             <span>
@@ -252,10 +254,10 @@ const PortfolioInfo = ({ portfolio }: PortfolioInfoProps) => {
           </div>
           <div className="flex items-center gap-4">
             <span className="inline-flex items-center gap-1">
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-primary rounded-full"></div>
               Live pricing
             </span>
-            <span className="text-gray-400">•</span>
+            <span className="text-muted-foreground">•</span>
             <span>Auto-updated daily</span>
           </div>
         </div>

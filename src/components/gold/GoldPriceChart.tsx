@@ -21,12 +21,12 @@ import {
   Clock,
   Weight,
   DollarSign,
+  AlertCircle,
 } from "lucide-react";
 
 const GoldPriceDisplay = () => {
   const [currency, setCurrency] = useState<string>("USD");
   const { data, isLoading, error, refetch } = useGetGoldPricesQuery(currency);
-
   const [updateGoldPrices, { isLoading: isUpdating }] =
     useUpdateGoldPricesMutation();
 
@@ -54,9 +54,9 @@ const GoldPriceDisplay = () => {
 
   if (isLoading) {
     return (
-      <Card className="w-full max-w-6xl mx-auto shadow-lg">
+      <Card className="w-full max-w-6xl mx-auto shadow-lg bg-card border-border">
         <CardContent className="p-8">
-          <div className="flex items-center justify-center text-gray-500">
+          <div className="flex items-center justify-center text-muted-foreground">
             <RefreshCw className="w-6 h-6 animate-spin mr-2" />
             Loading gold prices...
           </div>
@@ -65,27 +65,36 @@ const GoldPriceDisplay = () => {
     );
   }
 
-  // Fixed condition - check for the actual data structure
   if (error || !data?.price) {
     return (
-      <Card className="w-full max-w-6xl mx-auto shadow-lg">
+      <Card className="w-full max-w-6xl mx-auto shadow-lg bg-card border-border">
         <CardContent className="p-8">
-          <div className="text-center text-red-500">
-            Error loading gold price data. Please try again.
+          <div className="flex flex-col items-center gap-4">
+            <div className="p-3 bg-destructive/10 rounded-full">
+              <AlertCircle className="w-6 h-6 text-destructive" />
+            </div>
+            <div className="text-center">
+              <p className="font-medium text-foreground mb-1">
+                Error loading gold price data
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Please check your connection and try again
+              </p>
+            </div>
+            <Button
+              onClick={handleUpdate}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              variant="default"
+            >
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Retry
+            </Button>
           </div>
-          <Button
-            onClick={handleUpdate}
-            className="mt-4 mx-auto block"
-            variant="outline"
-          >
-            Retry
-          </Button>
         </CardContent>
       </Card>
     );
   }
 
-  // Use the actual data structure from your backend
   const goldData = {
     price: data.price.pricePerGram,
     change: data.price.priceChange || 0,
@@ -122,17 +131,17 @@ const GoldPriceDisplay = () => {
   return (
     <div className="w-full max-w-6xl mx-auto space-y-6">
       {/* Header Card */}
-      <Card className="shadow-lg">
+      <Card className="shadow-lg bg-gradient-to-r from-card to-muted/20 border-border">
         <CardHeader className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 pb-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-yellow-100 rounded-lg">
-              <DollarSign className="w-6 h-6 text-yellow-600" />
+            <div className="p-3 bg-primary/10 rounded-lg ring-2 ring-primary/20">
+              <DollarSign className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <CardTitle className="text-2xl font-bold">
+              <CardTitle className="text-2xl font-bold text-foreground">
                 Live Gold Prices
               </CardTitle>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 Real-time precious metal pricing
               </p>
             </div>
@@ -142,10 +151,10 @@ const GoldPriceDisplay = () => {
               value={currency}
               onValueChange={(value: string) => setCurrency(value)}
             >
-              <SelectTrigger className="w-[140px]">
+              <SelectTrigger className="w-[140px] bg-background border-border focus:ring-primary focus:border-primary">
                 <SelectValue placeholder="Currency" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-card border-border">
                 {["USD", "EUR", "GBP", "KWD"].map((curr) => (
                   <SelectItem key={curr} value={curr}>
                     {curr}
@@ -157,7 +166,7 @@ const GoldPriceDisplay = () => {
               onClick={handleUpdate}
               variant="outline"
               disabled={isUpdating}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 border-border hover:bg-muted hover:border-muted-foreground transition-colors"
             >
               <RefreshCw
                 className={`w-4 h-4 ${isUpdating ? "animate-spin" : ""}`}
@@ -169,50 +178,54 @@ const GoldPriceDisplay = () => {
       </Card>
 
       {/* Main Price Card */}
-      <Card className="shadow-lg">
+      <Card className="shadow-lg bg-card border-border">
         <CardContent className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             {/* Current Price */}
-            <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-xl border border-yellow-200">
+            <div className="bg-gradient-to-br from-primary/5 to-primary/10 p-6 rounded-lg border border-primary/20">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-yellow-800">
+                <p className="text-sm font-medium text-foreground">
                   Current Price
                 </p>
-                <Weight className="w-4 h-4 text-yellow-600" />
+                <div className="p-1 bg-primary/20 rounded">
+                  <Weight className="w-4 h-4 text-primary" />
+                </div>
               </div>
-              <p className="text-2xl font-bold text-yellow-900">
+              <p className="text-2xl font-bold text-foreground">
                 {formatPrice(goldData.price, data.currency)}
               </p>
-              <p className="text-xs text-yellow-700">
+              <p className="text-xs text-muted-foreground">
                 per {data.price.weightName?.toLowerCase() || "gram"}
               </p>
             </div>
 
             {/* 24h Change */}
             <div
-              className={`p-6 rounded-xl border ${
+              className={`p-6 rounded-lg border ${
                 isPositiveChange
-                  ? "bg-gradient-to-br from-green-50 to-green-100 border-green-200"
-                  : "bg-gradient-to-br from-red-50 to-red-100 border-red-200"
+                  ? "bg-gradient-to-br from-accent/5 to-accent/10 border-accent/20"
+                  : "bg-gradient-to-br from-destructive/5 to-destructive/10 border-destructive/20"
               }`}
             >
               <div className="flex items-center justify-between mb-2">
-                <p
-                  className={`text-sm font-medium ${
-                    isPositiveChange ? "text-green-800" : "text-red-800"
-                  }`}
-                >
+                <p className="text-sm font-medium text-foreground">
                   24h Change
                 </p>
-                {isPositiveChange ? (
-                  <TrendingUp className="w-4 h-4 text-green-600" />
-                ) : (
-                  <TrendingDown className="w-4 h-4 text-red-600" />
-                )}
+                <div
+                  className={`p-1 rounded ${
+                    isPositiveChange ? "bg-accent/20" : "bg-destructive/20"
+                  }`}
+                >
+                  {isPositiveChange ? (
+                    <TrendingUp className="w-4 h-4 text-accent" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4 text-destructive" />
+                  )}
+                </div>
               </div>
               <p
                 className={`text-2xl font-bold ${
-                  isPositiveChange ? "text-green-900" : "text-red-900"
+                  isPositiveChange ? "text-accent" : "text-destructive"
                 }`}
               >
                 {isPositiveChange ? "+" : ""}
@@ -220,7 +233,7 @@ const GoldPriceDisplay = () => {
               </p>
               <p
                 className={`text-xs ${
-                  isPositiveChange ? "text-green-700" : "text-red-700"
+                  isPositiveChange ? "text-accent/70" : "text-destructive/70"
                 }`}
               >
                 {isPositiveChange ? "+" : ""}
@@ -229,36 +242,42 @@ const GoldPriceDisplay = () => {
             </div>
 
             {/* Bid/Ask Spread */}
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
+            <div className="bg-gradient-to-br from-secondary/5 to-secondary/10 p-6 rounded-lg border border-secondary/20">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-blue-800">Bid/Ask</p>
-                <Badge variant="secondary" className="text-xs">
+                <p className="text-sm font-medium text-foreground">Bid/Ask</p>
+                <Badge
+                  variant="secondary"
+                  className="text-xs bg-secondary/20 text-secondary border-secondary/30"
+                >
                   Spread
                 </Badge>
               </div>
               <div className="space-y-1">
-                <p className="text-lg font-bold text-blue-900">
+                <p className="text-lg font-bold text-foreground">
                   {formatPrice(goldData.bid, data.currency)}
                 </p>
-                <p className="text-sm text-blue-700">
+                <p className="text-sm text-muted-foreground">
                   Ask: {formatPrice(goldData.ask, data.currency)}
                 </p>
               </div>
             </div>
 
             {/* High/Low */}
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200">
+            <div className="bg-gradient-to-br from-muted/30 to-muted/50 p-6 rounded-lg border border-border">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-purple-800">24h Range</p>
-                <Badge variant="outline" className="text-xs">
+                <p className="text-sm font-medium text-foreground">24h Range</p>
+                <Badge
+                  variant="outline"
+                  className="text-xs bg-background/50 border-border"
+                >
                   H/L
                 </Badge>
               </div>
               <div className="space-y-1">
-                <p className="text-lg font-bold text-purple-900">
+                <p className="text-lg font-bold text-foreground">
                   {formatPrice(goldData.high, data.currency)}
                 </p>
-                <p className="text-sm text-purple-700">
+                <p className="text-sm text-muted-foreground">
                   Low: {formatPrice(goldData.low, data.currency)}
                 </p>
               </div>
@@ -267,24 +286,28 @@ const GoldPriceDisplay = () => {
 
           {/* Market Info */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-sm text-gray-600">Previous Close</p>
-              <p className="text-lg font-semibold text-gray-800">
+            <div className="bg-background/50 p-4 rounded-lg border border-border">
+              <p className="text-sm text-muted-foreground mb-1">
+                Previous Close
+              </p>
+              <p className="text-lg font-semibold text-foreground">
                 {formatPrice(goldData.prev, data.currency)}
               </p>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-sm text-gray-600">Opening Price</p>
-              <p className="text-lg font-semibold text-gray-800">
+            <div className="bg-background/50 p-4 rounded-lg border border-border">
+              <p className="text-sm text-muted-foreground mb-1">
+                Opening Price
+              </p>
+              <p className="text-lg font-semibold text-foreground">
                 {formatPrice(goldData.open, data.currency)}
               </p>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <div className="flex items-center gap-2 mb-1">
-                <Clock className="w-4 h-4 text-gray-500" />
-                <p className="text-sm text-gray-600">Last Updated</p>
+            <div className="bg-background/50 p-4 rounded-lg border border-border">
+              <div className="flex items-center gap-2 mb-2">
+                <Clock className="w-4 h-4 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">Last Updated</p>
               </div>
-              <p className="text-sm font-semibold text-gray-800">
+              <p className="text-sm font-semibold text-foreground">
                 {formatTimestamp(data.lastUpdated)}
               </p>
             </div>
@@ -293,39 +316,57 @@ const GoldPriceDisplay = () => {
       </Card>
 
       {/* Gold Purity Prices */}
-      <Card className="shadow-lg">
+      <Card className="shadow-lg bg-card border-border">
         <CardHeader>
-          <CardTitle className="text-xl font-bold flex items-center gap-2">
-            <Weight className="w-5 h-5 text-yellow-600" />
-            Gold Prices by Purity
-          </CardTitle>
-          <p className="text-sm text-gray-600">
-            Prices per {data.price.weightName?.toLowerCase() || "gram"} for
-            different karat ratings
-          </p>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Weight className="w-5 h-5 text-primary" />
+            </div>
+            <div>
+              <CardTitle className="text-xl font-bold text-foreground">
+                Gold Prices by Purity
+              </CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Prices per {data.price.weightName?.toLowerCase() || "gram"} for
+                different karat ratings
+              </p>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {goldPurities.map((item) => (
+            {goldPurities.map((item, index) => (
               <div
                 key={item.karat}
-                className="bg-gradient-to-br from-amber-50 to-yellow-50 p-4 rounded-lg border border-amber-200 hover:shadow-md transition-shadow"
+                className={`p-4 rounded-lg border hover:shadow-md transition-all duration-200 ${
+                  index === 0
+                    ? "bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20"
+                    : "bg-gradient-to-br from-background to-muted/20 border-border hover:border-primary/20"
+                }`}
               >
-                <div className="flex justify-between items-start mb-2">
+                <div className="flex justify-between items-start mb-3">
                   <Badge
-                    variant="outline"
-                    className="text-amber-700 border-amber-300"
+                    variant={index === 0 ? "default" : "outline"}
+                    className={
+                      index === 0
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "border-border hover:border-primary/30 transition-colors"
+                    }
                   >
                     {item.karat.toUpperCase()}
                   </Badge>
-                  <span className="text-xs text-amber-600 font-medium">
+                  <span className="text-xs text-muted-foreground font-medium bg-background/50 px-2 py-1 rounded">
                     {item.purity}
                   </span>
                 </div>
-                <p className="text-lg font-bold text-amber-900">
+                <p
+                  className={`text-lg font-bold mb-1 ${
+                    index === 0 ? "text-primary" : "text-foreground"
+                  }`}
+                >
                   {formatPrice(item.price, data.currency)}
                 </p>
-                <p className="text-xs text-amber-700">per gram</p>
+                <p className="text-xs text-muted-foreground">per gram</p>
               </div>
             ))}
           </div>
@@ -333,22 +374,35 @@ const GoldPriceDisplay = () => {
       </Card>
 
       {/* Market Data Footer */}
-      <Card className="shadow-lg">
+      <Card className="shadow-lg bg-gradient-to-r from-muted/20 to-background border-border">
         <CardContent className="p-4">
-          <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-gray-600 gap-2">
-            <div className="flex items-center gap-4">
-              <span>
-                Currency: <strong>{data.currency}</strong>
-              </span>
-              <span>
-                Source: <strong>{data.price.source}</strong>
-              </span>
-              <span>
-                Unit: <strong>{data.price.weightName}</strong>
-              </span>
+          <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground gap-2">
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div className="flex items-center gap-1">
+                <span>Currency:</span>
+                <Badge
+                  variant="outline"
+                  className="text-xs bg-primary/5 text-primary border-primary/20"
+                >
+                  {data.currency}
+                </Badge>
+              </div>
+              <div className="flex items-center gap-1">
+                <span>Source:</span>
+                <span className="font-medium text-foreground">
+                  {data.price.source}
+                </span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span>Unit:</span>
+                <span className="font-medium text-foreground">
+                  {data.price.weightName}
+                </span>
+              </div>
             </div>
-            <div className="text-xs">
-              Data refreshed: {formatTimestamp(data.lastUpdated)}
+            <div className="text-xs flex items-center gap-1">
+              <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+              <span>Updated: {formatTimestamp(data.lastUpdated)}</span>
             </div>
           </div>
         </CardContent>

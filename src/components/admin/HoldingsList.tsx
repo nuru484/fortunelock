@@ -21,12 +21,12 @@ export interface HoldingsListProps {
 const HoldingsList = ({ holdings }: HoldingsListProps) => {
   if (!holdings || holdings.length === 0) {
     return (
-      <Card className="bg-gradient-to-br from-slate-50 to-gray-100 border border-gray-200 shadow-lg">
+      <Card className="bg-gradient-to-br from-muted to-muted-secondary border border-border shadow-lg">
         <CardContent className="p-12 text-center">
-          <div className="text-gray-400 text-lg font-medium">
+          <div className="text-muted-foreground text-lg font-medium">
             No holdings data available
           </div>
-          <div className="text-gray-500 text-sm mt-2">
+          <div className="text-muted-foreground text-sm mt-2">
             Holdings will appear here once transactions are processed
           </div>
         </CardContent>
@@ -53,12 +53,12 @@ const HoldingsList = ({ holdings }: HoldingsListProps) => {
   };
 
   return (
-    <Card className="bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-shadow duration-300">
-      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
-        <CardTitle className="text-2xl font-bold text-gray-800 flex items-center gap-3">
-          <div className="w-2 h-8 bg-gradient-to-b from-blue-500 to-indigo-600 rounded-full"></div>
+    <Card className="bg-card border border-border shadow-lg hover:shadow-xl transition-shadow duration-300">
+      <CardHeader className="bg-gradient-to-r from-muted to-muted-secondary border-b border-border">
+        <CardTitle className="text-2xl font-bold text-card-foreground flex items-center gap-3">
+          <div className="w-2 h-8 bg-gradient-to-b from-primary to-primary-foreground rounded-full"></div>
           Online Holdings
-          <span className="ml-auto text-sm font-medium text-gray-600 bg-white px-3 py-1 rounded-full border">
+          <span className="ml-auto text-sm font-medium text-muted-foreground bg-card px-3 py-1 rounded-full border">
             {holdings.length} {holdings.length === 1 ? "record" : "records"}
           </span>
         </CardTitle>
@@ -67,17 +67,17 @@ const HoldingsList = ({ holdings }: HoldingsListProps) => {
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="bg-gray-50 hover:bg-gray-50">
-                <TableHead className="font-semibold text-gray-700 py-4 px-6 text-left">
+              <TableRow className="bg-muted hover:bg-muted">
+                <TableHead className="font-semibold text-muted-foreground py-4 px-6 text-left">
                   ID
                 </TableHead>
-                <TableHead className="font-semibold text-gray-700 py-4 px-6 text-right">
+                <TableHead className="font-semibold text-muted-foreground py-4 px-6 text-right">
                   Amount
                 </TableHead>
-                <TableHead className="font-semibold text-gray-700 py-4 px-6 text-center">
+                <TableHead className="font-semibold text-muted-foreground py-4 px-6 text-center">
                   Transaction ID
                 </TableHead>
-                <TableHead className="font-semibold text-gray-700 py-4 px-6 text-left">
+                <TableHead className="font-semibold text-muted-foreground py-4 px-6 text-left">
                   Created At
                 </TableHead>
               </TableRow>
@@ -87,14 +87,14 @@ const HoldingsList = ({ holdings }: HoldingsListProps) => {
                 <TableRow
                   key={holding.id}
                   className={`
-                    border-b border-gray-100 hover:bg-blue-50 transition-colors duration-200
-                    ${index % 2 === 0 ? "bg-white" : "bg-gray-50/50"}
+                    border-b border-border hover:bg-muted transition-colors duration-200
+                    ${index % 2 === 0 ? "bg-card" : "bg-muted/50"}
                   `}
                 >
                   <TableCell className="py-4 px-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span className="font-mono text-sm font-medium text-gray-800">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="font-mono text-sm font-medium text-card-foreground">
                         #{holding.id}
                       </span>
                     </div>
@@ -102,23 +102,25 @@ const HoldingsList = ({ holdings }: HoldingsListProps) => {
                   <TableCell className="py-4 px-6 text-right">
                     <span
                       className={`font-semibold text-lg ${
-                        holding.amount >= 0 ? "text-green-600" : "text-red-600"
+                        holding.amount >= 0
+                          ? "text-chart-4"
+                          : "text-destructive"
                       }`}
                     >
                       {formatCurrency(holding.amount)}
                     </span>
                   </TableCell>
                   <TableCell className="py-4 px-6 text-center">
-                    <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-mono">
+                    <span className="bg-muted text-muted-foreground px-3 py-1 rounded-full text-sm font-mono">
                       {holding.transactionId}
                     </span>
                   </TableCell>
                   <TableCell className="py-4 px-6">
                     <div className="flex flex-col">
-                      <span className="text-gray-800 font-medium text-sm">
+                      <span className="text-card-foreground font-medium text-sm">
                         {formatDate(holding.createdAt)}
                       </span>
-                      <span className="text-gray-500 text-xs mt-1">
+                      <span className="text-muted-foreground text-xs mt-1">
                         {new Date(holding.createdAt).toLocaleTimeString(
                           "en-US",
                           {
@@ -133,11 +135,11 @@ const HoldingsList = ({ holdings }: HoldingsListProps) => {
             </TableBody>
           </Table>
         </div>
-        <div className="bg-gray-50 px-6 py-4 border-t border-gray-100">
-          <div className="flex justify-between items-center text-sm text-gray-600">
+        <div className="bg-muted px-6 py-4 border-t border-border">
+          <div className="flex justify-between items-center text-sm text-muted-foreground">
             <span>
               Total Holdings:{" "}
-              <span className="font-semibold text-gray-800">
+              <span className="font-semibold text-card-foreground">
                 {formatCurrency(
                   holdings.reduce((sum, holding) => sum + holding.amount, 0)
                 )}

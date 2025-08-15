@@ -1,4 +1,3 @@
-// src/components/admin/PhysicalGoldDepositForm.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import {
@@ -320,32 +319,32 @@ const PhysicalGoldDepositForm: React.FC = () => {
     <>
       <div className="space-y-8">
         {/* Current Gold Price Card */}
-        <Card className="bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-200">
+        <Card className="bg-card border-border shadow-lg">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Coins className="w-6 h-6 text-amber-600" />
+                <Coins className="w-6 h-6 text-primary" />
                 <div>
-                  <CardTitle className="text-amber-900">
+                  <CardTitle className="text-card-foreground">
                     Current Market Price
                   </CardTitle>
-                  <CardDescription className="text-amber-700">
+                  <CardDescription className="text-muted-foreground">
                     Real-time gold pricing reference
                   </CardDescription>
                 </div>
               </div>
               {priceLoading && (
-                <Loader2 className="w-5 h-5 animate-spin text-amber-600" />
+                <Loader2 className="w-5 h-5 animate-spin text-primary" />
               )}
             </div>
           </CardHeader>
           <CardContent>
             {priceError || !goldPriceData?.price ? (
-              <div className="text-center text-red-500 text-sm">
+              <div className="text-center text-red-600 dark:text-red-400 text-sm">
                 Unable to fetch current gold price
               </div>
             ) : (
-              <div className="text-2xl font-bold text-amber-900">
+              <div className="text-2xl font-bold text-card-foreground">
                 {formatCurrency(currentGoldPrice, currency)}{" "}
                 <span className="text-base font-normal">per gram</span>
               </div>
@@ -354,15 +353,15 @@ const PhysicalGoldDepositForm: React.FC = () => {
         </Card>
 
         {/* Main Form */}
-        <Card className="bg-white border-gray-200 shadow-lg">
+        <Card className="bg-card border-border shadow-lg">
           <CardHeader>
             <div className="flex items-center gap-3">
-              <Package className="w-6 h-6 text-blue-600" />
+              <Package className="w-6 h-6 text-primary" />
               <div>
-                <CardTitle className="text-gray-900">
+                <CardTitle className="text-card-foreground">
                   Physical Gold Deposit
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-muted-foreground">
                   Record physical gold deposits for users
                 </CardDescription>
               </div>
@@ -371,26 +370,28 @@ const PhysicalGoldDepositForm: React.FC = () => {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* User Selection */}
-              <Card className="bg-gray-50 border-gray-200">
+              <Card className="bg-muted/50 border-border">
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-2">
-                    <User className="w-5 h-5 text-blue-600" />
-                    <CardTitle className="text-lg">Select User</CardTitle>
+                    <User className="w-5 h-5 text-primary" />
+                    <CardTitle className="text-lg text-card-foreground">
+                      Select User
+                    </CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <Label className="text-sm font-semibold text-gray-700">
+                    <Label className="text-sm font-semibold text-muted-foreground">
                       Search User
                     </Label>
                     <div className="relative mt-2">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         type="text"
                         placeholder="Search by name or email..."
                         value={userSearchTerm}
                         onChange={(e) => setUserSearchTerm(e.target.value)}
-                        className="pl-10"
+                        className="pl-10 bg-muted/30 border-border focus:ring-ring"
                       />
                     </div>
                   </div>
@@ -399,8 +400,8 @@ const PhysicalGoldDepositForm: React.FC = () => {
                     <div className="space-y-2 max-h-60 overflow-y-auto">
                       {usersLoading ? (
                         <div className="flex items-center justify-center py-4">
-                          <Loader2 className="w-5 h-5 animate-spin text-blue-600" />
-                          <span className="ml-2 text-sm text-gray-600">
+                          <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                          <span className="ml-2 text-sm text-muted-foreground">
                             Searching users...
                           </span>
                         </div>
@@ -416,27 +417,27 @@ const PhysicalGoldDepositForm: React.FC = () => {
                             }}
                             className={`p-3 rounded-lg border cursor-pointer transition-all ${
                               selectedUserId === user.id
-                                ? "border-blue-500 bg-blue-50"
-                                : "border-gray-200 hover:border-blue-300 hover:bg-gray-50"
+                                ? "border-primary bg-muted/70"
+                                : "border-border hover:border-primary hover:bg-muted/50"
                             }`}
                           >
                             <div className="flex items-center justify-between">
                               <div>
-                                <p className="font-medium text-gray-900">
+                                <p className="font-medium text-card-foreground">
                                   {user.firstName} {user.lastName}
                                 </p>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-muted-foreground">
                                   {user.email}
                                 </p>
                               </div>
                               {selectedUserId === user.id && (
-                                <CheckCircle className="w-5 h-5 text-blue-600" />
+                                <CheckCircle className="w-5 h-5 text-primary" />
                               )}
                             </div>
                           </div>
                         ))
                       ) : (
-                        <p className="text-center text-gray-500 py-4">
+                        <p className="text-center text-muted-foreground py-4">
                           No users found
                         </p>
                       )}
@@ -444,29 +445,31 @@ const PhysicalGoldDepositForm: React.FC = () => {
                   )}
 
                   {selectedUser && (
-                    <Card className="bg-blue-50 border-blue-200">
+                    <Card className="bg-secondary border-border">
                       <CardContent className="pt-6">
                         <div className="space-y-3">
                           <div>
-                            <p className="font-semibold text-blue-900">
+                            <p className="font-semibold text-secondary-foreground">
                               Selected User
                             </p>
-                            <p className="text-blue-800">
+                            <p className="text-secondary-foreground">
                               {selectedUser.firstName} {selectedUser.lastName}
                             </p>
-                            <p className="text-sm text-blue-600">
+                            <p className="text-sm text-muted-foreground">
                               {selectedUser.email}
                             </p>
                           </div>
                           {selectedUser.portfolio && (
-                            <div className="pt-2 border-t border-blue-200">
-                              <p className="text-sm font-medium text-blue-900 mb-2">
+                            <div className="pt-2 border-t border-border">
+                              <p className="text-sm font-medium text-secondary-foreground mb-2">
                                 Current Portfolio
                               </p>
                               <div className="grid grid-cols-3 gap-4 text-sm">
                                 <div>
-                                  <p className="text-blue-600">Total Gold</p>
-                                  <p className="font-semibold text-blue-900">
+                                  <p className="text-muted-foreground">
+                                    Total Gold
+                                  </p>
+                                  <p className="font-semibold text-secondary-foreground">
                                     {selectedUser.portfolio.totalGrams.toFixed(
                                       4
                                     )}{" "}
@@ -474,8 +477,10 @@ const PhysicalGoldDepositForm: React.FC = () => {
                                   </p>
                                 </div>
                                 <div>
-                                  <p className="text-blue-600">Invested</p>
-                                  <p className="font-semibold text-blue-900">
+                                  <p className="text-muted-foreground">
+                                    Invested
+                                  </p>
+                                  <p className="font-semibold text-secondary-foreground">
                                     {formatCurrency(
                                       selectedUser.portfolio.totalInvested,
                                       currency
@@ -483,8 +488,10 @@ const PhysicalGoldDepositForm: React.FC = () => {
                                   </p>
                                 </div>
                                 <div>
-                                  <p className="text-blue-600">Current Value</p>
-                                  <p className="font-semibold text-blue-900">
+                                  <p className="text-muted-foreground">
+                                    Current Value
+                                  </p>
+                                  <p className="font-semibold text-secondary-foreground">
                                     {formatCurrency(
                                       selectedUser.portfolio.currentValue,
                                       currency
@@ -502,17 +509,19 @@ const PhysicalGoldDepositForm: React.FC = () => {
               </Card>
 
               {/* Gold Item Details */}
-              <Card className="bg-gray-50 border-gray-200">
+              <Card className="bg-muted/50 border-border">
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-2">
-                    <Package className="w-5 h-5 text-amber-600" />
-                    <CardTitle className="text-lg">Gold Item Details</CardTitle>
+                    <Package className="w-5 h-5 text-primary" />
+                    <CardTitle className="text-lg text-card-foreground">
+                      Gold Item Details
+                    </CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <Label className="text-sm font-semibold text-gray-700">
+                      <Label className="text-sm font-semibold text-muted-foreground">
                         Item Type *
                       </Label>
                       <Select
@@ -521,10 +530,10 @@ const PhysicalGoldDepositForm: React.FC = () => {
                           handleGoldItemChange("type", value)
                         }
                       >
-                        <SelectTrigger className="mt-2">
+                        <SelectTrigger className="mt-2 bg-muted/30 border-border focus:ring-ring">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-card border-border">
                           <SelectItem value="BAR">🔸 Gold Bar</SelectItem>
                           <SelectItem value="COIN">🪙 Gold Coin</SelectItem>
                           <SelectItem value="JEWELRY">💍 Jewelry</SelectItem>
@@ -534,7 +543,7 @@ const PhysicalGoldDepositForm: React.FC = () => {
                     </div>
 
                     <div>
-                      <Label className="text-sm font-semibold text-gray-700">
+                      <Label className="text-sm font-semibold text-muted-foreground">
                         Weight (grams) *
                       </Label>
                       <Input
@@ -549,12 +558,12 @@ const PhysicalGoldDepositForm: React.FC = () => {
                           )
                         }
                         placeholder="0.0000"
-                        className="mt-2"
+                        className="mt-2 bg-muted/30 border-border focus:ring-ring"
                       />
                     </div>
 
                     <div>
-                      <Label className="text-sm font-semibold text-gray-700">
+                      <Label className="text-sm font-semibold text-muted-foreground">
                         Karat
                       </Label>
                       <Input
@@ -569,12 +578,12 @@ const PhysicalGoldDepositForm: React.FC = () => {
                           )
                         }
                         placeholder="24"
-                        className="mt-2"
+                        className="mt-2 bg-muted/30 border-border focus:ring-ring"
                       />
                     </div>
 
                     <div>
-                      <Label className="text-sm font-semibold text-gray-700">
+                      <Label className="text-sm font-semibold text-muted-foreground">
                         Purity (0-1)
                       </Label>
                       <Input
@@ -590,12 +599,12 @@ const PhysicalGoldDepositForm: React.FC = () => {
                           )
                         }
                         placeholder="0.999"
-                        className="mt-2"
+                        className="mt-2 bg-muted/30 border-border focus:ring-ring"
                       />
                     </div>
 
                     <div>
-                      <Label className="text-sm font-semibold text-gray-700">
+                      <Label className="text-sm font-semibold text-muted-foreground">
                         Serial Number
                       </Label>
                       <Input
@@ -605,12 +614,12 @@ const PhysicalGoldDepositForm: React.FC = () => {
                           handleGoldItemChange("serialNumber", e.target.value)
                         }
                         placeholder="Optional"
-                        className="mt-2"
+                        className="mt-2 bg-muted/30 border-border focus:ring-ring"
                       />
                     </div>
 
                     <div>
-                      <Label className="text-sm font-semibold text-gray-700">
+                      <Label className="text-sm font-semibold text-muted-foreground">
                         Origin
                       </Label>
                       <Input
@@ -620,13 +629,13 @@ const PhysicalGoldDepositForm: React.FC = () => {
                           handleGoldItemChange("origin", e.target.value)
                         }
                         placeholder="Optional"
-                        className="mt-2"
+                        className="mt-2 bg-muted/30 border-border focus:ring-ring"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <Label className="text-sm font-semibold text-gray-700">
+                    <Label className="text-sm font-semibold text-muted-foreground">
                       Description
                     </Label>
                     <Textarea
@@ -635,13 +644,13 @@ const PhysicalGoldDepositForm: React.FC = () => {
                         handleGoldItemChange("description", e.target.value)
                       }
                       placeholder="Optional description of the gold item..."
-                      className="mt-2"
+                      className="mt-2 bg-muted/30 border-border focus:ring-ring"
                       rows={3}
                     />
                   </div>
 
                   <div>
-                    <Label className="text-sm font-semibold text-gray-700">
+                    <Label className="text-sm font-semibold text-muted-foreground">
                       Storage Location
                     </Label>
                     <Input
@@ -651,18 +660,18 @@ const PhysicalGoldDepositForm: React.FC = () => {
                         handleGoldItemChange("storageLocation", e.target.value)
                       }
                       placeholder="Vault location or identifier"
-                      className="mt-2"
+                      className="mt-2 bg-muted/30 border-border focus:ring-ring"
                     />
                   </div>
                 </CardContent>
               </Card>
 
               {/* Pricing */}
-              <Card className="bg-gray-50 border-gray-200">
+              <Card className="bg-muted/50 border-border">
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-2">
-                    <Calculator className="w-5 h-5 text-green-600" />
-                    <CardTitle className="text-lg">
+                    <Calculator className="w-5 h-5 text-primary" />
+                    <CardTitle className="text-lg text-card-foreground">
                       Pricing & Valuation
                     </CardTitle>
                   </div>
@@ -670,17 +679,17 @@ const PhysicalGoldDepositForm: React.FC = () => {
                 <CardContent className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <Label className="text-sm font-semibold text-gray-700">
+                      <Label className="text-sm font-semibold text-muted-foreground">
                         Currency *
                       </Label>
                       <Select
                         value={currency}
                         onValueChange={(value: Currency) => setCurrency(value)}
                       >
-                        <SelectTrigger className="mt-2">
+                        <SelectTrigger className="mt-2 bg-muted/30 border-border focus:ring-ring">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-card border-border">
                           <SelectItem value="USD">
                             🇺🇸 USD - US Dollar
                           </SelectItem>
@@ -697,7 +706,7 @@ const PhysicalGoldDepositForm: React.FC = () => {
 
                     <div>
                       <div className="flex items-center gap-2 mb-2">
-                        <Label className="text-sm font-semibold text-gray-700">
+                        <Label className="text-sm font-semibold text-muted-foreground">
                           Price per Gram *
                         </Label>
                         <Button
@@ -709,7 +718,7 @@ const PhysicalGoldDepositForm: React.FC = () => {
                             setPricePerGram(currentGoldPrice);
                           }}
                           disabled={!currentGoldPrice || priceLoading}
-                          className="text-xs"
+                          className="text-xs bg-muted/50 border-border hover:bg-muted/80 hover:text-card-foreground"
                         >
                           Use Current Price
                         </Button>
@@ -724,38 +733,40 @@ const PhysicalGoldDepositForm: React.FC = () => {
                           setPricePerGram(parseFloat(e.target.value) || 0);
                         }}
                         placeholder="0.00"
-                        className="mt-2"
+                        className="mt-2 bg-muted/30 border-border focus:ring-ring"
                       />
                     </div>
                   </div>
 
                   {goldItem.weightGrams > 0 && pricePerGram > 0 && (
-                    <Card className="bg-white border-green-200">
+                    <Card className="bg-secondary border-border">
                       <CardContent className="pt-6">
                         <div className="space-y-3">
-                          <h4 className="font-semibold text-green-900">
+                          <h4 className="font-semibold text-secondary-foreground">
                             Transaction Summary
                           </h4>
                           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
-                              <p className="text-sm text-green-600">Weight</p>
-                              <p className="font-semibold text-green-900">
+                              <p className="text-sm text-muted-foreground">
+                                Weight
+                              </p>
+                              <p className="font-semibold text-secondary-foreground">
                                 {goldItem.weightGrams.toFixed(4)} grams
                               </p>
                             </div>
                             <div>
-                              <p className="text-sm text-green-600">
+                              <p className="text-sm text-muted-foreground">
                                 Price/gram
                               </p>
-                              <p className="font-semibold text-green-900">
+                              <p className="font-semibold text-secondary-foreground">
                                 {formatCurrency(pricePerGram, currency)}
                               </p>
                             </div>
                             <div>
-                              <p className="text-sm text-green-600">
+                              <p className="text-sm text-muted-foreground">
                                 Total Value
                               </p>
-                              <p className="font-bold text-green-900 text-lg">
+                              <p className="font-bold text-secondary-foreground text-lg">
                                 {formatCurrency(
                                   transactionSummary.totalValue,
                                   currency
@@ -771,15 +782,18 @@ const PhysicalGoldDepositForm: React.FC = () => {
               </Card>
 
               {/* Admin Notes */}
-              <Card className="bg-gray-50 border-gray-200">
+              <Card className="bg-muted/50 border-border">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-lg">Admin Notes</CardTitle>
+                  <CardTitle className="text-lg text-card-foreground">
+                    Admin Notes
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Textarea
                     value={adminNotes}
                     onChange={(e) => setAdminNotes(e.target.value)}
                     placeholder="Optional internal notes about this deposit..."
+                    className="bg-muted/30 border-border focus:ring-ring"
                     rows={4}
                   />
                 </CardContent>
@@ -788,7 +802,7 @@ const PhysicalGoldDepositForm: React.FC = () => {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold text-lg"
+                className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-lg transition-colors"
                 disabled={!isFormValid || isDepositing}
               >
                 {isDepositing ? (
@@ -807,13 +821,13 @@ const PhysicalGoldDepositForm: React.FC = () => {
 
       {/* Confirmation Dialog - Now Scrollable */}
       <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
+        <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col bg-card border-border">
           <DialogHeader className="flex-shrink-0">
-            <DialogTitle className="text-xl font-bold text-gray-900 flex items-center gap-2">
-              <Shield className="w-6 h-6 text-blue-600" />
+            <DialogTitle className="text-xl font-bold text-card-foreground flex items-center gap-2">
+              <Shield className="w-6 h-6 text-primary" />
               Confirm Physical Gold Deposit
             </DialogTitle>
-            <DialogDescription className="text-gray-600">
+            <DialogDescription className="text-muted-foreground">
               Please review the deposit details before confirming this
               transaction.
             </DialogDescription>
@@ -823,24 +837,24 @@ const PhysicalGoldDepositForm: React.FC = () => {
           <div className="flex-1 overflow-y-auto space-y-6 my-6 pr-2">
             {/* User Information */}
             {selectedUser && (
-              <Card className="bg-blue-50 border-blue-200">
+              <Card className="bg-secondary border-border">
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <User className="w-5 h-5 text-blue-600" />
-                    <h4 className="font-semibold text-blue-900">
+                    <User className="w-5 h-5 text-secondary-foreground" />
+                    <h4 className="font-semibold text-secondary-foreground">
                       User Details
                     </h4>
                   </div>
                   <div className="space-y-2">
-                    <p className="text-blue-900">
+                    <p className="text-secondary-foreground">
                       <span className="font-medium">Name:</span>{" "}
                       {selectedUser.firstName} {selectedUser.lastName}
                     </p>
-                    <p className="text-blue-900">
+                    <p className="text-secondary-foreground">
                       <span className="font-medium">Email:</span>{" "}
                       {selectedUser.email}
                     </p>
-                    <p className="text-blue-900">
+                    <p className="text-secondary-foreground">
                       <span className="font-medium">User ID:</span>{" "}
                       {selectedUser.id}
                     </p>
@@ -850,31 +864,31 @@ const PhysicalGoldDepositForm: React.FC = () => {
             )}
 
             {/* Gold Item Details */}
-            <Card className="bg-amber-50 border-amber-200">
+            <Card className="bg-muted/50 border-border">
               <CardContent className="pt-6">
                 <div className="flex items-center gap-3 mb-4">
-                  <Package className="w-5 h-5 text-amber-600" />
-                  <h4 className="font-semibold text-amber-900">
+                  <Package className="w-5 h-5 text-primary" />
+                  <h4 className="font-semibold text-card-foreground">
                     Gold Item Details
                   </h4>
                 </div>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-amber-700">
+                    <p className="text-card-foreground">
                       <span className="font-medium">Type:</span> {goldItem.type}
                     </p>
-                    <p className="text-amber-700">
+                    <p className="text-card-foreground">
                       <span className="font-medium">Weight:</span>{" "}
                       {goldItem.weightGrams} grams
                     </p>
                     {goldItem.karat && (
-                      <p className="text-amber-700">
+                      <p className="text-card-foreground">
                         <span className="font-medium">Karat:</span>{" "}
                         {goldItem.karat}
                       </p>
                     )}
                     {goldItem.purity && (
-                      <p className="text-amber-700">
+                      <p className="text-card-foreground">
                         <span className="font-medium">Purity:</span>{" "}
                         {goldItem.purity}
                       </p>
@@ -882,19 +896,19 @@ const PhysicalGoldDepositForm: React.FC = () => {
                   </div>
                   <div>
                     {goldItem.serialNumber && (
-                      <p className="text-amber-700">
+                      <p className="text-card-foreground">
                         <span className="font-medium">Serial:</span>{" "}
                         {goldItem.serialNumber}
                       </p>
                     )}
                     {goldItem.origin && (
-                      <p className="text-amber-700">
+                      <p className="text-card-foreground">
                         <span className="font-medium">Origin:</span>{" "}
                         {goldItem.origin}
                       </p>
                     )}
                     {goldItem.storageLocation && (
-                      <p className="text-amber-700">
+                      <p className="text-card-foreground">
                         <span className="font-medium">Storage:</span>{" "}
                         {goldItem.storageLocation}
                       </p>
@@ -902,8 +916,8 @@ const PhysicalGoldDepositForm: React.FC = () => {
                   </div>
                 </div>
                 {goldItem.description && (
-                  <div className="mt-4 pt-4 border-t border-amber-200">
-                    <p className="text-amber-700">
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <p className="text-card-foreground">
                       <span className="font-medium">Description:</span>{" "}
                       {goldItem.description}
                     </p>
@@ -913,40 +927,42 @@ const PhysicalGoldDepositForm: React.FC = () => {
             </Card>
 
             {/* Transaction Summary */}
-            <Card className="bg-green-50 border-green-200">
+            <Card className="bg-primary/10 border-primary/20">
               <CardContent className="pt-6">
                 <div className="flex items-center gap-3 mb-4">
-                  <Calculator className="w-5 h-5 text-green-600" />
-                  <h4 className="font-semibold text-green-900">
+                  <Calculator className="w-5 h-5 text-primary" />
+                  <h4 className="font-semibold text-primary">
                     Transaction Summary
                   </h4>
                 </div>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-green-700">Weight:</span>
-                    <span className="font-semibold text-green-900">
+                    <span className="text-card-foreground">Weight:</span>
+                    <span className="font-semibold text-card-foreground">
                       {transactionSummary.weightGrams.toFixed(4)} grams
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-green-700">Price per gram:</span>
-                    <span className="font-semibold text-green-900">
+                    <span className="text-card-foreground">
+                      Price per gram:
+                    </span>
+                    <span className="font-semibold text-card-foreground">
                       {formatCurrency(
                         transactionSummary.pricePerGram,
                         currency
                       )}
                     </span>
                   </div>
-                  <div className="h-px bg-green-300"></div>
+                  <div className="h-px bg-border"></div>
                   <div className="flex justify-between items-center text-lg">
-                    <span className="font-semibold text-green-900">
+                    <span className="font-semibold text-primary">
                       Total Value:
                     </span>
-                    <span className="font-bold text-green-900">
+                    <span className="font-bold text-primary">
                       {formatCurrency(transactionSummary.totalValue, currency)}
                     </span>
                   </div>
-                  <div className="text-xs text-green-600 mt-2">
+                  <div className="text-xs text-muted-foreground mt-2">
                     * No fees applied to physical deposits
                   </div>
                 </div>
@@ -955,12 +971,12 @@ const PhysicalGoldDepositForm: React.FC = () => {
 
             {/* Admin Notes */}
             {adminNotes && (
-              <Card className="bg-gray-50 border-gray-200">
+              <Card className="bg-muted/50 border-border">
                 <CardContent className="pt-6">
-                  <h4 className="font-semibold text-gray-900 mb-2">
+                  <h4 className="font-semibold text-card-foreground mb-2">
                     Admin Notes
                   </h4>
-                  <p className="text-gray-700 text-sm bg-white p-3 rounded border">
+                  <p className="text-muted-foreground text-sm bg-card p-3 rounded border border-border">
                     {adminNotes}
                   </p>
                 </CardContent>
@@ -968,14 +984,14 @@ const PhysicalGoldDepositForm: React.FC = () => {
             )}
 
             {/* Warning */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
               <div className="flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
+                <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" />
                 <div className="text-sm">
-                  <p className="font-medium text-yellow-900 mb-1">
+                  <p className="font-medium text-red-600 dark:text-red-400 mb-1">
                     Important Notice
                   </p>
-                  <p className="text-yellow-800">
+                  <p className="text-red-600 dark:text-red-400">
                     This action will permanently record a physical gold deposit
                     for the selected user. The transaction cannot be easily
                     reversed. Please ensure all details are accurate before
@@ -990,7 +1006,7 @@ const PhysicalGoldDepositForm: React.FC = () => {
             <Button
               variant="outline"
               onClick={() => setIsConfirmOpen(false)}
-              className="flex-1"
+              className="flex-1 bg-muted/50 border-border hover:bg-muted/80 hover:text-card-foreground"
               disabled={isDepositing}
             >
               Cancel
@@ -998,7 +1014,7 @@ const PhysicalGoldDepositForm: React.FC = () => {
             <Button
               onClick={confirmDeposit}
               disabled={isDepositing}
-              className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
+              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground transition-colors"
             >
               {isDepositing ? (
                 <div className="flex items-center gap-2">

@@ -24,25 +24,24 @@ const GoldPricesOverview: React.FC<GoldPricesOverviewProps> = ({ prices }) => {
     }).format(amount);
 
   return (
-    <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200">
+    <Card className="bg-gradient-to-r from-secondary to-secondary border-secondary">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-3">
-          <TrendingUp className="w-6 h-6 text-green-600" />
-          <CardTitle className="text-green-900">Current Gold Prices</CardTitle>
+          <TrendingUp className="w-6 h-6 text-secondary-foreground" />
+          <CardTitle className="text-secondary-foreground">
+            Current Gold Prices
+          </CardTitle>
         </div>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {prices.map((price) => (
-            <div
-              key={price.currency}
-              className="p-4 bg-white rounded-lg shadow"
-            >
+            <div key={price.currency} className="p-4 bg-card rounded-lg shadow">
               <p className="text-lg font-semibold">{price.currency}</p>
-              <p className="text-2xl font-bold text-green-900">
+              <p className="text-2xl font-bold text-secondary-foreground">
                 {formatCurrency(price.pricePerGram, price.currency)}
               </p>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 Updated: {new Date(price.recordedAt).toLocaleString()}
               </p>
             </div>

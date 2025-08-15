@@ -27,60 +27,85 @@ const AdminSummary: React.FC<AdminSummaryProps> = ({ stats }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
-      <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+      {/* Users Card */}
+      <Card className="bg-gradient-to-r from-card to-muted border-border hover:shadow-lg transition-shadow">
         <CardHeader className="pb-3">
           <div className="flex items-center gap-3">
-            <Users className="w-6 h-6 text-blue-600 flex-shrink-0" />
-            <CardTitle className="text-blue-900 text-sm lg:text-base">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Users className="w-5 h-5 text-primary flex-shrink-0" />
+            </div>
+            <CardTitle className="text-foreground text-sm lg:text-base font-semibold">
               Users
             </CardTitle>
           </div>
         </CardHeader>
         <CardContent>
-          <p className="text-xl lg:text-2xl font-bold text-blue-900">
+          <p className="text-2xl lg:text-3xl font-bold text-foreground mb-2">
             {stats.totalUsers}
           </p>
-          <p className="text-xs lg:text-sm text-blue-700">
-            Verified: {stats.totalVerifiedUsers}
-          </p>
-          <p className="text-xs lg:text-sm text-blue-700">
-            Admins: {stats.totalAdmins}
-          </p>
+          <div className="space-y-1">
+            <p className="text-xs lg:text-sm text-muted-foreground">
+              Verified:{" "}
+              <span className="text-foreground font-medium">
+                {stats.totalVerifiedUsers}
+              </span>
+            </p>
+            <p className="text-xs lg:text-sm text-muted-foreground">
+              Admins:{" "}
+              <span className="text-foreground font-medium">
+                {stats.totalAdmins}
+              </span>
+            </p>
+          </div>
         </CardContent>
       </Card>
-      <Card className="bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-200">
+
+      {/* Gold Holdings Card */}
+      <Card className="bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20 hover:shadow-lg transition-shadow">
         <CardHeader className="pb-3">
           <div className="flex items-center gap-3">
-            <Scale className="w-6 h-6 text-amber-600 flex-shrink-0" />
-            <CardTitle className="text-amber-900 text-sm lg:text-base">
+            <div className="p-2 bg-primary/20 rounded-lg">
+              <Scale className="w-5 h-5 text-primary flex-shrink-0" />
+            </div>
+            <CardTitle className="text-foreground text-sm lg:text-base font-semibold">
               Gold Holdings
             </CardTitle>
           </div>
         </CardHeader>
         <CardContent>
-          <p className="text-xl lg:text-2xl font-bold text-amber-900">
+          <p className="text-2xl lg:text-3xl font-bold text-primary mb-2">
             {stats.totalGoldGrams.toFixed(2)} g
           </p>
-          <p className="text-xs lg:text-sm text-amber-700">
-            TVL: {formatCurrency(stats.totalValueLocked)}
+          <p className="text-xs lg:text-sm text-muted-foreground">
+            TVL:{" "}
+            <span className="text-foreground font-medium">
+              {formatCurrency(stats.totalValueLocked)}
+            </span>
           </p>
         </CardContent>
       </Card>
-      <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200">
+
+      {/* Transactions Card */}
+      <Card className="bg-gradient-to-r from-accent/5 to-accent/10 border-accent/20 hover:shadow-lg transition-shadow">
         <CardHeader className="pb-3">
           <div className="flex items-center gap-3">
-            <Activity className="w-6 h-6 text-green-600 flex-shrink-0" />
-            <CardTitle className="text-green-900 text-sm lg:text-base">
+            <div className="p-2 bg-accent/20 rounded-lg">
+              <Activity className="w-5 h-5 text-accent flex-shrink-0" />
+            </div>
+            <CardTitle className="text-foreground text-sm lg:text-base font-semibold">
               Transactions
             </CardTitle>
           </div>
         </CardHeader>
         <CardContent>
-          <p className="text-xl lg:text-2xl font-bold text-green-900">
+          <p className="text-2xl lg:text-3xl font-bold text-accent mb-2">
             {stats.totalTransactions}
           </p>
-          <p className="text-xs lg:text-sm text-green-700">
-            Revenue: {formatCurrency(stats.totalRevenue)}
+          <p className="text-xs lg:text-sm text-muted-foreground">
+            Revenue:{" "}
+            <span className="text-foreground font-medium">
+              {formatCurrency(stats.totalRevenue)}
+            </span>
           </p>
         </CardContent>
       </Card>
