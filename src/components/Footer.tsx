@@ -13,6 +13,8 @@ import {
   Award,
 } from "lucide-react";
 import { Button } from "@/components/ui/enhanced-button";
+import { ContactCard } from "@/components/ContactCard";
+import { useState } from "react";
 
 const footerLinks = {
   Services: [
@@ -57,6 +59,12 @@ const socialLinks = [
 ];
 
 export const Footer = () => {
+  const [isContactCardOpen, setIsContactCardOpen] = useState(false);
+
+  const handleScheduleVaultVisit = () => {
+    setIsContactCardOpen(true);
+  };
+
   return (
     <footer className="bg-gradient-hero border-t border-border/50 relative overflow-hidden">
       {/* Subtle background pattern */}
@@ -155,7 +163,8 @@ export const Footer = () => {
               <Button
                 variant="hero-outline"
                 size="sm"
-                className="shadow-lg hover:shadow-gold/25"
+                className="shadow-lg hover:shadow-gold/25 hover:cursor-pointer"
+                onClick={handleScheduleVaultVisit}
               >
                 Book Vault Visit
               </Button>
@@ -191,7 +200,7 @@ export const Footer = () => {
                       >
                         <a
                           href="#"
-                          className="text-sm text-muted-foreground hover:text-gold transition-colors duration-200 flex items-center group"
+                          className="text-sm text-muted-foreground hover:text-gold transition-colors duration-200 flex items-center group hover:cursor-pointer"
                         >
                           <span className="w-0 group-hover:w-2 h-px bg-gold transition-all duration-200 mr-0 group-hover:mr-2"></span>
                           {category === "Services" ||
@@ -246,7 +255,7 @@ export const Footer = () => {
                     backgroundColor: "hsl(var(--gold) / 0.2)",
                   }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-12 h-12 bg-muted/10 border border-border/30 rounded-xl flex items-center justify-center hover:border-gold/50 transition-all duration-200 backdrop-blur-sm"
+                  className="w-12 h-12 bg-muted/10 border border-border/30 rounded-xl flex items-center justify-center hover:border-gold/50 transition-all duration-200 backdrop-blur-sm hover:cursor-pointer"
                   aria-label={social.label}
                 >
                   <social.icon className="h-5 w-5 text-muted-foreground hover:text-gold transition-colors duration-200" />
@@ -287,6 +296,12 @@ export const Footer = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Contact Card Modal */}
+      <ContactCard
+        isOpen={isContactCardOpen}
+        onClose={() => setIsContactCardOpen(false)}
+      />
     </footer>
   );
 };

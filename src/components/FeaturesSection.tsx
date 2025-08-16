@@ -9,6 +9,7 @@ import {
   UserCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/enhanced-button";
+import Link from "next/link";
 
 const features = [
   {
@@ -183,13 +184,15 @@ export const FeaturesSection = () => {
             Ready to secure your wealth with industry-leading protection and
             premium features?
           </p>
-          <Button
-            variant="hero"
-            size="lg"
-            className="shadow-gold hover:shadow-gold/50"
-          >
-            Start Your Journey
-          </Button>
+          <Link href="/signup">
+            <Button
+              variant="hero"
+              size="lg"
+              className="shadow-gold hover:shadow-gold/50 hover:cursor-pointer"
+            >
+              Start Your Journey
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>

@@ -5,7 +5,7 @@ import { HowItWorksSection } from "@/components/HowItWorksSection";
 import { SecuritySection } from "@/components/SecuritySection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { PricingSection } from "@/components/PricingSection";
-import { Footer } from "@/components/Footer1";
+import { Footer } from "@/components/Footer";
 
 const Home = () => {
   return (
