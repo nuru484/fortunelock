@@ -43,6 +43,7 @@ import {
   Coins,
   Shield,
   X,
+  Calendar,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -60,7 +61,6 @@ interface GoldItem {
   storageLocation?: string;
 }
 
-// Fixed interfaces to match your API responses
 interface ApiUser {
   id: number;
   firstName: string;
@@ -100,6 +100,7 @@ interface DepositPayload {
   pricePerGram: number;
   currency: Currency;
   adminNotes?: string;
+  depositDate?: string;
 }
 
 const PhysicalGoldDepositForm: React.FC = () => {
@@ -109,7 +110,7 @@ const PhysicalGoldDepositForm: React.FC = () => {
   const [currency, setCurrency] = useState<Currency>("USD");
   const [pricePerGram, setPricePerGram] = useState<number>(0);
   const [useCurrentPrice, setUseCurrentPrice] = useState<boolean>(true);
-  const [adminNotes, setAdminNotes] = useState<string>("");
+  const [depositDate, setDepositDate] = useState<string>("");
   const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false);
   const [transactionSummary, setTransactionSummary] =
     useState<TransactionSummary>({
@@ -133,14 +134,12 @@ const PhysicalGoldDepositForm: React.FC = () => {
   const [depositPhysicalGold, { isLoading: isDepositing }] =
     useDepositPhysicalGoldMutation();
 
-  // Fixed query hooks to match your actual API endpoints
   const { data: usersData, isLoading: usersLoading } = useGetAllUsersQuery({
     page: 1,
     limit: 100,
     search: userSearchTerm,
   });
 
-  // Use getUserDetails instead of getUserById to match your API
   const { data: userDetailsData } = useGetUserDetailsQuery(selectedUserId, {
     skip: !selectedUserId,
   });
@@ -153,14 +152,12 @@ const PhysicalGoldDepositForm: React.FC = () => {
 
   const currentGoldPrice = goldPriceData?.price?.pricePerGram || 0;
 
-  // Update price per gram when currency changes or current price is selected
   useEffect(() => {
     if (useCurrentPrice && currentGoldPrice > 0) {
       setPricePerGram(currentGoldPrice);
     }
   }, [useCurrentPrice, currentGoldPrice]);
 
-  // Calculate transaction summary
   useEffect(() => {
     const totalValue = goldItem.weightGrams * pricePerGram;
     setTransactionSummary({
@@ -171,7 +168,6 @@ const PhysicalGoldDepositForm: React.FC = () => {
     });
   }, [goldItem.weightGrams, pricePerGram, currency]);
 
-  // Extract selected user data from the correct API response
   const selectedUser = userDetailsData?.success ? userDetailsData.data : null;
   const selectedUserPortfolio = userDetailsData?.success
     ? userDetailsData.data.portfolio
@@ -254,12 +250,11 @@ const PhysicalGoldDepositForm: React.FC = () => {
         },
         pricePerGram,
         currency,
-        ...(adminNotes && { adminNotes }),
+        ...(depositDate && { depositDate }),
       };
 
       await depositPhysicalGold(payload).unwrap();
 
-      // Reset form
       setSelectedUserId(null);
       setUserSearchTerm("");
       setShowUserSearch(true);
@@ -274,7 +269,7 @@ const PhysicalGoldDepositForm: React.FC = () => {
         storageLocation: "",
       });
       setPricePerGram(useCurrentPrice ? currentGoldPrice : 0);
-      setAdminNotes("");
+      setDepositDate("");
       setIsConfirmOpen(false);
 
       toast.success(
@@ -827,20 +822,22 @@ const PhysicalGoldDepositForm: React.FC = () => {
                 </CardContent>
               </Card>
 
-              {/* Admin Notes */}
+              {/* Deposit Date */}
               <Card className="bg-muted/50 border-border">
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-lg text-card-foreground">
-                    Admin Notes
-                  </CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-5 h-5 text-primary" />
+                    <CardTitle className="text-lg text-card-foreground">
+                      Deposit Date
+                    </CardTitle>
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <Textarea
-                    value={adminNotes}
-                    onChange={(e) => setAdminNotes(e.target.value)}
-                    placeholder="Optional internal notes about this deposit..."
+                  <Input
+                    type="date"
+                    value={depositDate}
+                    onChange={(e) => setDepositDate(e.target.value)}
                     className="bg-muted/30 border-border focus:ring-ring"
-                    rows={4}
                   />
                 </CardContent>
               </Card>
@@ -1021,6 +1018,12 @@ const PhysicalGoldDepositForm: React.FC = () => {
                       )}
                     </span>
                   </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-card-foreground">Deposit Date:</span>
+                    <span className="font-semibold text-card-foreground">
+                      {depositDate || "Current Date"}
+                    </span>
+                  </div>
                   <div className="h-px bg-border"></div>
                   <div className="flex justify-between items-center text-lg">
                     <span className="font-semibold text-primary">
@@ -1036,20 +1039,6 @@ const PhysicalGoldDepositForm: React.FC = () => {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Admin Notes */}
-            {adminNotes && (
-              <Card className="bg-muted/50 border-border">
-                <CardContent className="pt-6">
-                  <h4 className="font-semibold text-card-foreground mb-2">
-                    Admin Notes
-                  </h4>
-                  <p className="text-muted-foreground text-sm bg-card p-3 rounded border border-border">
-                    {adminNotes}
-                  </p>
-                </CardContent>
-              </Card>
-            )}
 
             {/* Warning */}
             <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">

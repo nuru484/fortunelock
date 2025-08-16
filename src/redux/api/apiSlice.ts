@@ -119,7 +119,7 @@ export const apiSlice = createApi({
       providesTags: ["User", "Portfolio"],
     }),
     depositPhysicalGold: builder.mutation({
-      query: ({ userId, goldItem, pricePerGram, currency, adminNotes }) => ({
+      query: ({ userId, goldItem, pricePerGram, currency, depositDate }) => ({
         url: "admin/deposit-physical-gold",
         method: "POST",
         body: {
@@ -127,7 +127,7 @@ export const apiSlice = createApi({
           goldItem,
           pricePerGram,
           currency,
-          adminNotes,
+          depositDate,
         },
       }),
       invalidatesTags: ["Portfolio", "Transaction", "GoldItem", "User"],

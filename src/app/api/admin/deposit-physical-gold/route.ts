@@ -1,4 +1,3 @@
-// src/app/api/admin/deposit-physical-gold/route.ts
 import { NextResponse } from "next/server";
 import prisma from "@/config/prismaClient";
 import { verifySessionWithUser } from "@/lib/dataAccessLayer";
@@ -32,6 +31,7 @@ interface PhysicalDepositRequest {
   pricePerGram: number;
   currency: Currency;
   adminNotes?: string;
+  depositDate?: string;
 }
 
 interface SessionUser {
@@ -161,7 +161,7 @@ export async function POST(
 
     // Parse and validate request body
     const body: PhysicalDepositRequest = await req.json();
-    const { userId, goldItem, pricePerGram, currency } = body;
+    const { userId, goldItem, pricePerGram, currency, depositDate } = body;
 
     // Validate userId
     if (!userId || typeof userId !== "number") {
@@ -241,6 +241,20 @@ export async function POST(
       return NextResponse.json(errorResponse, { status: 400 });
     }
 
+    // Validate deposit date if provided
+    let createdAtDate: Date = new Date();
+    if (depositDate) {
+      const parsedDate = new Date(depositDate);
+      if (isNaN(parsedDate.getTime())) {
+        const errorResponse: ErrorResponse = {
+          error: "Invalid deposit date provided.",
+          success: false,
+        };
+        return NextResponse.json(errorResponse, { status: 400 });
+      }
+      createdAtDate = parsedDate;
+    }
+
     // Check if user exists
     const targetUser = (await prisma.user.findUnique({
       where: { id: userId },
@@ -289,6 +303,7 @@ export async function POST(
           totalCost,
           fee: null, // No fee for physical deposits
           currency,
+          createdAt: createdAtDate,
         },
       });
 
@@ -308,6 +323,7 @@ export async function POST(
           depositMethod: DepositMethod.PHYSICAL,
           verified: true, // Admin deposits are automatically verified
           verifiedBy: adminId,
+          createdAt: createdAtDate,
         },
       });
 
@@ -347,7 +363,7 @@ export async function POST(
             unrealizedGain: parseFloat(
               (newCurrentValue - newTotalInvested).toFixed(4)
             ),
-            lastCalculatedAt: new Date(),
+            lastCalculatedAt: createdAtDate,
           },
         });
       } else {
@@ -370,7 +386,8 @@ export async function POST(
             totalInvested: totalCost,
             currentValue,
             unrealizedGain: parseFloat((currentValue - totalCost).toFixed(4)),
-            lastCalculatedAt: new Date(),
+            lastCalculatedAt: createdAtDate,
+            createdAt: createdAtDate,
           },
         });
       }
