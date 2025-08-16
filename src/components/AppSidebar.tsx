@@ -36,11 +36,6 @@ const adminNavigationItems = [
     icon: User,
   },
   {
-    name: "Transactions",
-    path: "/dashboard/transactions",
-    icon: CreditCard,
-  },
-  {
     name: "Gold Prices",
     path: "/dashboard/gold-prices",
     icon: BarChart3,
