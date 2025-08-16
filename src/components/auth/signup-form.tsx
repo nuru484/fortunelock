@@ -22,15 +22,34 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { User, Mail, Lock, Globe, Calendar, Users, Phone } from "lucide-react";
+import {
+  User,
+  Mail,
+  Lock,
+  Globe,
+  Calendar,
+  Users,
+  Phone,
+  ArrowRight,
+  Eye,
+  EyeOff,
+  CheckCircle,
+} from "lucide-react";
 import { SerializedError } from "@reduxjs/toolkit";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(4, "Password must be at least 4 characters"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      "Password must contain uppercase, lowercase, and number"
+    ),
   firstName: z.string().min(1, "First name is required"),
   middleName: z.string().optional(),
   lastName: z.string().min(1, "Last name is required"),
@@ -41,17 +60,15 @@ const formSchema = z.object({
   phoneNumber: z.string().min(1, "Phone number is required"),
 });
 
-// Define the form data type
 type FormData = z.infer<typeof formSchema>;
 
-// Country data interface
 interface Country {
   name: {
     common: string;
     official: string;
   };
-  cca2: string; // 2-letter country code
-  cca3: string; // 3-letter country code
+  cca2: string;
+  cca3: string;
   idd: {
     root?: string;
     suffixes?: string[];
@@ -65,7 +82,6 @@ interface Country {
   };
 }
 
-// Define the API error response type
 interface ApiErrorResponse {
   success: false;
   errors: {
@@ -83,28 +99,24 @@ interface ApiErrorResponse {
   };
 }
 
-// Helper function to check if error is FetchBaseQueryError
 function isFetchBaseQueryError(
   error: FetchBaseQueryError | SerializedError
 ): error is FetchBaseQueryError {
   return "status" in error;
 }
 
-// Helper function to check if error is SerializedError
 function isSerializedError(
   error: FetchBaseQueryError | SerializedError
 ): error is SerializedError {
   return "message" in error;
 }
 
-// Helper function to extract error messages from RTK Query error
 function getErrorMessages(
   error: FetchBaseQueryError | SerializedError | undefined
 ): ApiErrorResponse["errors"] | null {
   if (!error) return null;
 
   if (isFetchBaseQueryError(error)) {
-    // Handle FetchBaseQueryError
     if (error.data && typeof error.data === "object") {
       const apiError = error.data as ApiErrorResponse;
       return apiError.errors;
@@ -113,11 +125,9 @@ function getErrorMessages(
   }
 
   if (isSerializedError(error)) {
-    // Handle SerializedError
     return { general: [error.message || "An unexpected error occurred"] };
   }
 
-  // Fallback
   return { general: ["An unexpected error occurred"] };
 }
 
@@ -129,6 +139,8 @@ export default function SignupForm() {
   const [countries, setCountries] = useState<Country[]>([]);
   const [loadingCountries, setLoadingCountries] = useState(true);
   const [selectedCountryCode, setSelectedCountryCode] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -146,6 +158,21 @@ export default function SignupForm() {
     },
   });
 
+  // Password strength indicator
+  const password = form.watch("password");
+  const getPasswordStrength = (password: string) => {
+    if (!password) return 0;
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/[a-z]/.test(password)) strength++;
+    if (/\d/.test(password)) strength++;
+    if (/[^A-Za-z0-9]/.test(password)) strength++;
+    return strength;
+  };
+
+  const passwordStrength = getPasswordStrength(password);
+
   // Fetch countries from REST Countries API
   useEffect(() => {
     const fetchCountries = async () => {
@@ -155,7 +182,6 @@ export default function SignupForm() {
         );
         const data: Country[] = await response.json();
 
-        // Sort countries by common name
         const sortedCountries = data.sort((a, b) =>
           a.name.common.localeCompare(b.name.common)
         );
@@ -163,62 +189,31 @@ export default function SignupForm() {
         setCountries(sortedCountries);
       } catch (error) {
         console.error("Failed to fetch countries:", error);
-        // Fallback to basic countries list if API fails
+        // Fallback countries list
         const fallbackCountries = [
-          "Afghanistan",
-          "Albania",
-          "Algeria",
-          "Argentina",
-          "Australia",
-          "Austria",
-          "Bangladesh",
-          "Belgium",
-          "Brazil",
-          "Canada",
-          "China",
-          "Denmark",
-          "Egypt",
-          "Finland",
-          "France",
-          "Germany",
-          "Ghana",
-          "Greece",
-          "India",
-          "Indonesia",
-          "Iran",
-          "Iraq",
-          "Ireland",
-          "Israel",
-          "Italy",
-          "Japan",
-          "Jordan",
-          "Kenya",
-          "Kuwait",
-          "Malaysia",
-          "Mexico",
-          "Netherlands",
-          "Nigeria",
-          "Norway",
-          "Pakistan",
-          "Philippines",
-          "Poland",
-          "Portugal",
-          "Qatar",
-          "Russia",
-          "Saudi Arabia",
-          "Singapore",
-          "South Africa",
-          "South Korea",
-          "Spain",
-          "Sweden",
-          "Switzerland",
-          "Thailand",
-          "Turkey",
-          "UAE",
-          "Ukraine",
-          "United Kingdom",
           "United States",
-          "Vietnam",
+          "United Kingdom",
+          "Canada",
+          "Australia",
+          "Germany",
+          "France",
+          "Italy",
+          "Spain",
+          "Japan",
+          "South Korea",
+          "Singapore",
+          "Ghana",
+          "Nigeria",
+          "South Africa",
+          "Kenya",
+          "Egypt",
+          "Morocco",
+          "Brazil",
+          "Mexico",
+          "Argentina",
+          "India",
+          "China",
+          "Thailand",
         ].map((name) => ({
           name: { common: name, official: name },
           cca2: "",
@@ -235,7 +230,6 @@ export default function SignupForm() {
     fetchCountries();
   }, []);
 
-  // Get country calling code
   const getCountryCallingCode = useCallback(
     (countryName: string): string => {
       const country = countries.find((c) => c.name.common === countryName);
@@ -247,12 +241,10 @@ export default function SignupForm() {
     [countries]
   );
 
-  // Get nationality options (demonyms)
   const getNationalityOptions = (): string[] => {
     const nationalities = new Set<string>();
 
     countries.forEach((country) => {
-      // Add demonyms if available
       if (country.demonyms?.eng?.m) {
         nationalities.add(country.demonyms.eng.m);
       }
@@ -260,7 +252,6 @@ export default function SignupForm() {
         nationalities.add(country.demonyms.eng.f);
       }
 
-      // Fallback: create nationality from country name
       const countryName = country.name.common;
       if (countryName.endsWith("s")) {
         nationalities.add(countryName);
@@ -272,7 +263,6 @@ export default function SignupForm() {
     return Array.from(nationalities).sort();
   };
 
-  // Watch country field to update phone number prefix
   const watchedCountry = form.watch("country");
 
   useEffect(() => {
@@ -282,154 +272,82 @@ export default function SignupForm() {
     }
   }, [watchedCountry, countries, getCountryCallingCode]);
 
-  // Extract errors from RTK Query error
   const apiErrors = getErrorMessages(error);
 
   const handleSubmit = async (data: FormData) => {
+    if (!termsAccepted) {
+      toast.error("Please accept the terms and conditions");
+      return;
+    }
+
     try {
-      // Convert dateOfBirth string to Date object for API
       const formattedData = {
         ...data,
         dateOfBirth: new Date(data.dateOfBirth).toISOString(),
-        middleName: data.middleName || undefined, // Convert empty string to undefined
+        middleName: data.middleName || undefined,
       };
 
       const response = await signupUser(formattedData).unwrap();
       if (response.success) {
-        toast.success(`Signup Successfull, redirecting to dashboard...`);
-
+        toast.success(
+          "Account created successfully! Redirecting to dashboard..."
+        );
         router.push("/dashboard");
       }
     } catch (error) {
-      // Error is automatically handled by RTK Query and available in the `error` state
       console.log("Signup failed:", error);
     }
   };
 
   return (
-    <div className="flex min-h-screen flex-col justify-center px-4 sm:px-6 lg:px-8 bg-background">
-      <div className="sm:mx-auto sm:w-full sm:max-w-2xl">
-        <div className="bg-card p-6 sm:p-8 rounded-2xl shadow-lg border border-border">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-foreground">Sign Up</h1>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Create an account to get started
-            </p>
-          </div>
+    <div>
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold text-foreground mb-2">
+          Create Your Account
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Start your journey with secure precious metals investment
+        </p>
+      </div>
 
-          {apiErrors?.general && (
-            <div className="p-4 bg-destructive/10 rounded-lg border border-destructive/20 mb-6">
-              <p className="text-sm text-destructive">{apiErrors.general[0]}</p>
-            </div>
-          )}
+      {apiErrors?.general && (
+        <div className="p-4 bg-destructive/10 rounded-lg border border-destructive/20 mb-6">
+          <p className="text-sm text-destructive">{apiErrors.general[0]}</p>
+        </div>
+      )}
 
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-6"
-            >
-              {/* Name Fields */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="firstName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>First Name *</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Input
-                            placeholder="John"
-                            className="pl-10 bg-input border-input focus:ring-2 focus:ring-ring"
-                            {...field}
-                          />
-                          <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                      {apiErrors?.firstName && (
-                        <p className="text-sm text-destructive">
-                          {apiErrors.firstName[0]}
-                        </p>
-                      )}
-                    </FormItem>
-                  )}
-                />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+          {/* Personal Information Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-foreground border-b border-border/30 pb-2">
+              Personal Information
+            </h3>
 
-                <FormField
-                  control={form.control}
-                  name="lastName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Last Name *</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Input
-                            placeholder="Doe"
-                            className="pl-10 bg-input border-input focus:ring-2 focus:ring-ring"
-                            {...field}
-                          />
-                          <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                      {apiErrors?.lastName && (
-                        <p className="text-sm text-destructive">
-                          {apiErrors.lastName[0]}
-                        </p>
-                      )}
-                    </FormItem>
-                  )}
-                />
-              </div>
-
+            {/* Name Fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="middleName"
+                name="firstName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Middle Name (Optional)</FormLabel>
+                    <FormLabel className="text-foreground font-medium">
+                      First Name *
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
-                          placeholder="Michael"
-                          className="pl-10 bg-input border-input focus:ring-2 focus:ring-ring"
+                          placeholder="John"
+                          className="pl-10 h-12 bg-background/50 border-border/60 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-200"
                           {...field}
                         />
                         <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                       </div>
                     </FormControl>
                     <FormMessage />
-                    {apiErrors?.middleName && (
+                    {apiErrors?.firstName && (
                       <p className="text-sm text-destructive">
-                        {apiErrors.middleName[0]}
-                      </p>
-                    )}
-                  </FormItem>
-                )}
-              />
-
-              {/* Email and Password */}
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email Address *</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Input
-                          placeholder="you@example.com"
-                          className="pl-10 bg-input border-input focus:ring-2 focus:ring-ring"
-                          {...field}
-                        />
-                        <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                    {apiErrors?.email && (
-                      <p className="text-sm text-destructive">
-                        {apiErrors.email[0]}
+                        {apiErrors.firstName[0]}
                       </p>
                     )}
                   </FormItem>
@@ -438,249 +356,442 @@ export default function SignupForm() {
 
               <FormField
                 control={form.control}
-                name="password"
+                name="lastName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password *</FormLabel>
+                    <FormLabel className="text-foreground font-medium">
+                      Last Name *
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
-                          type="password"
-                          placeholder="••••••••"
-                          className="pl-10 bg-input border-input focus:ring-2 focus:ring-ring"
+                          placeholder="Doe"
+                          className="pl-10 h-12 bg-background/50 border-border/60 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-200"
                           {...field}
                         />
-                        <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                       </div>
                     </FormControl>
                     <FormMessage />
-                    {apiErrors?.password && (
+                    {apiErrors?.lastName && (
                       <p className="text-sm text-destructive">
-                        {apiErrors.password[0]}
+                        {apiErrors.lastName[0]}
+                      </p>
+                    )}
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="middleName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-foreground font-medium">
+                    Middle Name (Optional)
+                  </FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        placeholder="Michael"
+                        className="pl-10 h-12 bg-background/50 border-border/60 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-200"
+                        {...field}
+                      />
+                      <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Date of Birth and Gender */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="dateOfBirth"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-foreground font-medium">
+                      Date of Birth *
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          type="date"
+                          className="pl-10 h-12 bg-background/50 border-border/60 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-200"
+                          max={
+                            new Date(
+                              Date.now() - 18 * 365.25 * 24 * 60 * 60 * 1000
+                            )
+                              .toISOString()
+                              .split("T")[0]
+                          }
+                          {...field}
+                        />
+                        <Calendar className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                    {apiErrors?.dateOfBirth && (
+                      <p className="text-sm text-destructive">
+                        {apiErrors.dateOfBirth[0]}
                       </p>
                     )}
                   </FormItem>
                 )}
               />
 
-              {/* Date of Birth and Gender */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="dateOfBirth"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Date of Birth *</FormLabel>
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-foreground font-medium">
+                      Gender *
+                    </FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <div className="relative">
-                          <Input
-                            type="date"
-                            className="pl-10 bg-input border-input focus:ring-2 focus:ring-ring"
-                            {...field}
-                          />
-                          <Calendar className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                        </div>
+                        <SelectTrigger className="h-12 bg-background/50 border-border/60 focus:border-gold focus:ring-2 focus:ring-gold/20">
+                          <div className="flex items-center gap-2">
+                            <Users className="h-4 w-4 text-muted-foreground" />
+                            <SelectValue placeholder="Select gender" />
+                          </div>
+                        </SelectTrigger>
                       </FormControl>
-                      <FormMessage />
-                      {apiErrors?.dateOfBirth && (
-                        <p className="text-sm text-destructive">
-                          {apiErrors.dateOfBirth[0]}
-                        </p>
-                      )}
-                    </FormItem>
-                  )}
-                />
+                      <SelectContent>
+                        {genderOptions.map((gender) => (
+                          <SelectItem key={gender} value={gender}>
+                            {gender}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                    {apiErrors?.gender && (
+                      <p className="text-sm text-destructive">
+                        {apiErrors.gender[0]}
+                      </p>
+                    )}
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
 
-                <FormField
-                  control={form.control}
-                  name="gender"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Gender *</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
+          {/* Contact Information Section */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-foreground border-b border-border/30 pb-2">
+              Contact Information
+            </h3>
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-foreground font-medium">
+                    Email Address *
+                  </FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        placeholder="your.email@example.com"
+                        className="pl-10 h-12 bg-background/50 border-border/60 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-200"
+                        {...field}
+                      />
+                      <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                  {apiErrors?.email && (
+                    <p className="text-sm text-destructive">
+                      {apiErrors.email[0]}
+                    </p>
+                  )}
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-foreground font-medium">
+                    Password *
+                  </FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Create a strong password"
+                        className="pl-10 pr-10 h-12 bg-background/50 border-border/60 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-200"
+                        {...field}
+                      />
+                      <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                       >
-                        <FormControl>
-                          <SelectTrigger className="bg-input border-input focus:ring-2 focus:ring-ring">
-                            <div className="flex items-center gap-2">
-                              <Users className="h-4 w-4 text-muted-foreground" />
-                              <SelectValue placeholder="Select gender" />
-                            </div>
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {genderOptions.map((gender) => (
-                            <SelectItem key={gender} value={gender}>
-                              {gender}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                      {apiErrors?.gender && (
-                        <p className="text-sm text-destructive">
-                          {apiErrors.gender[0]}
-                        </p>
-                      )}
-                    </FormItem>
+                        {showPassword ? <EyeOff /> : <Eye />}
+                      </button>
+                    </div>
+                  </FormControl>
+                  {/* Password strength indicator */}
+                  {password && (
+                    <div className="mt-2">
+                      <div className="flex space-x-1">
+                        {[1, 2, 3, 4, 5].map((level) => (
+                          <div
+                            key={level}
+                            className={`h-1 flex-1 rounded ${
+                              passwordStrength >= level
+                                ? passwordStrength <= 2
+                                  ? "bg-red-500"
+                                  : passwordStrength <= 3
+                                  ? "bg-yellow-500"
+                                  : "bg-green-500"
+                                : "bg-border"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Password strength:{" "}
+                        {passwordStrength <= 2
+                          ? "Weak"
+                          : passwordStrength <= 3
+                          ? "Medium"
+                          : "Strong"}
+                      </p>
+                    </div>
                   )}
-                />
-              </div>
-
-              {/* Country and Nationality */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="country"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Country of Residence *</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        disabled={loadingCountries}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="bg-input border-input focus:ring-2 focus:ring-ring">
-                            <div className="flex items-center gap-2">
-                              <Globe className="h-4 w-4 text-muted-foreground" />
-                              <SelectValue
-                                placeholder={
-                                  loadingCountries
-                                    ? "Loading countries..."
-                                    : "Select country"
-                                }
-                              />
-                            </div>
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {countries.map((country) => (
-                            <SelectItem
-                              key={country.name.common}
-                              value={country.name.common}
-                            >
-                              <div className="flex items-center gap-2">
-                                <span>{country.flag}</span>
-                                <span>{country.name.common}</span>
-                              </div>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                      {apiErrors?.country && (
-                        <p className="text-sm text-destructive">
-                          {apiErrors.country[0]}
-                        </p>
-                      )}
-                    </FormItem>
+                  <FormMessage />
+                  {apiErrors?.password && (
+                    <p className="text-sm text-destructive">
+                      {apiErrors.password[0]}
+                    </p>
                   )}
-                />
+                </FormItem>
+              )}
+            />
 
-                <FormField
-                  control={form.control}
-                  name="nationality"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nationality *</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        disabled={loadingCountries}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="bg-input border-input focus:ring-2 focus:ring-ring">
-                            <div className="flex items-center gap-2">
-                              <Globe className="h-4 w-4 text-muted-foreground" />
-                              <SelectValue
-                                placeholder={
-                                  loadingCountries
-                                    ? "Loading nationalities..."
-                                    : "Select nationality"
-                                }
-                              />
-                            </div>
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {getNationalityOptions().map((nationality) => (
-                            <SelectItem key={nationality} value={nationality}>
-                              {nationality}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                      {apiErrors?.nationality && (
-                        <p className="text-sm text-destructive">
-                          {apiErrors.nationality[0]}
-                        </p>
-                      )}
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              {/* Phone Number */}
+            {/* Country and Nationality */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
-                name="phoneNumber"
+                name="country"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone Number *</FormLabel>
-                    <FormControl>
-                      <div className="flex gap-2">
-                        <div className="flex items-center px-3 bg-muted rounded-md border border-input">
-                          <Phone className="h-4 w-4 text-muted-foreground mr-2" />
-                          <span className="text-sm font-medium min-w-[3rem]">
-                            {selectedCountryCode || "+1"}
-                          </span>
-                        </div>
-                        <div className="relative flex-1">
-                          <Input
-                            placeholder="1234567890"
-                            className="bg-input border-input focus:ring-2 focus:ring-ring"
-                            {...field}
-                          />
-                        </div>
-                      </div>
-                    </FormControl>
+                    <FormLabel className="text-foreground font-medium">
+                      Country of Residence *
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={loadingCountries}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-12 bg-background/50 border-border/60 focus:border-gold focus:ring-2 focus:ring-gold/20">
+                          <div className="flex items-center gap-2">
+                            <Globe className="h-4 w-4 text-muted-foreground" />
+                            <SelectValue
+                              placeholder={
+                                loadingCountries
+                                  ? "Loading countries..."
+                                  : "Select country"
+                              }
+                            />
+                          </div>
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {countries.map((country) => (
+                          <SelectItem
+                            key={country.name.common}
+                            value={country.name.common}
+                          >
+                            <div className="flex items-center gap-2">
+                              <span>{country.flag}</span>
+                              <span>{country.name.common}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
-                    {apiErrors?.phoneNumber && (
+                    {apiErrors?.country && (
                       <p className="text-sm text-destructive">
-                        {apiErrors.phoneNumber[0]}
+                        {apiErrors.country[0]}
                       </p>
                     )}
                   </FormItem>
                 )}
               />
 
-              <Button
-                type="submit"
-                className="w-full flex items-center justify-center gap-2 rounded-lg shadow-md hover:shadow-lg transition-shadow"
-                disabled={isLoading}
-              >
-                {isLoading ? "Creating Account..." : "Create Account"}
-                <User className="h-4 w-4" />
-              </Button>
+              <FormField
+                control={form.control}
+                name="nationality"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-foreground font-medium">
+                      Nationality *
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      disabled={loadingCountries}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-12 bg-background/50 border-border/60 focus:border-gold focus:ring-2 focus:ring-gold/20">
+                          <div className="flex items-center gap-2">
+                            <Globe className="h-4 w-4 text-muted-foreground" />
+                            <SelectValue
+                              placeholder={
+                                loadingCountries
+                                  ? "Loading nationalities..."
+                                  : "Select nationality"
+                              }
+                            />
+                          </div>
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {getNationalityOptions().map((nationality) => (
+                          <SelectItem key={nationality} value={nationality}>
+                            {nationality}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                    {apiErrors?.nationality && (
+                      <p className="text-sm text-destructive">
+                        {apiErrors.nationality[0]}
+                      </p>
+                    )}
+                  </FormItem>
+                )}
+              />
+            </div>
 
-              <div className="mt-6 text-center">
-                <p className="text-sm text-muted-foreground">
-                  Already have an account?{" "}
-                  <a
-                    href="/login"
-                    className="font-medium text-primary hover:text-primary/80 transition-colors"
+            {/* Phone Number */}
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-foreground font-medium">
+                    Phone Number *
+                  </FormLabel>
+                  <FormControl>
+                    <div className="flex gap-2">
+                      <div className="flex items-center px-3 bg-muted/50 rounded-md border border-border/60 min-w-[100px]">
+                        <Phone className="h-4 w-4 text-muted-foreground mr-2" />
+                        <span className="text-sm font-medium">
+                          {selectedCountryCode || "+1"}
+                        </span>
+                      </div>
+                      <div className="relative flex-1">
+                        <Input
+                          placeholder="1234567890"
+                          className="h-12 bg-background/50 border-border/60 focus:border-gold focus:ring-2 focus:ring-gold/20 transition-all duration-200"
+                          {...field}
+                        />
+                      </div>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                  {apiErrors?.phoneNumber && (
+                    <p className="text-sm text-destructive">
+                      {apiErrors.phoneNumber[0]}
+                    </p>
+                  )}
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {/* Terms and Conditions */}
+          <div className="space-y-4">
+            <div className="flex items-start space-x-3 p-4 bg-muted/20 rounded-lg border border-border/30">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  id="terms"
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                  className="sr-only"
+                />
+                <label
+                  htmlFor="terms"
+                  className={`flex items-center justify-center w-5 h-5 rounded border-2 cursor-pointer transition-colors ${
+                    termsAccepted
+                      ? "bg-gold border-gold text-background"
+                      : "border-border/60 hover:border-gold/50"
+                  }`}
+                >
+                  {termsAccepted && <CheckCircle className="w-3 h-3" />}
+                </label>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                <p>
+                  I agree to the{" "}
+                  <Link
+                    href="/terms"
+                    className="text-gold hover:text-gold/80 transition-colors"
                   >
-                    Sign in
-                  </a>
+                    Terms of Service
+                  </Link>{" "}
+                  and{" "}
+                  <Link
+                    href="/privacy"
+                    className="text-gold hover:text-gold/80 transition-colors"
+                  >
+                    Privacy Policy
+                  </Link>
+                  . I understand that Fortune Lock Depository will securely
+                  store my personal information and use it for account
+                  management and regulatory compliance.
                 </p>
               </div>
-            </form>
-          </Form>
-        </div>
-      </div>
+            </div>
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full h-12 bg-gradient-to-r from-gold to-gold/80 hover:from-gold/90 hover:to-gold/70 text-background font-semibold rounded-lg shadow-lg hover:shadow-xl transition-allduration-200 flex items-center justify-center gap-2"
+            disabled={isLoading || !termsAccepted}
+          >
+            {isLoading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                Creating Account...
+              </>
+            ) : (
+              <>
+                Create Secure Account
+                <ArrowRight className="h-4 w-4" />
+              </>
+            )}
+          </Button>
+
+          <div className="text-center pt-6 border-t border-border/30">
+            <p className="text-sm text-muted-foreground">
+              Already have a Fortune Lock account?{" "}
+              <Link
+                href="/login"
+                className="font-medium text-gold hover:text-gold/80 transition-colors"
+              >
+                Sign In
+              </Link>
+            </p>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 }

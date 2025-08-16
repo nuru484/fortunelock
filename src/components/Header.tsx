@@ -16,17 +16,19 @@ export const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
-            className="flex items-center space-x-3"
-          >
-            <Shield className="h-7 w-7 text-primary" />
-            <span className="text-xl font-semibold text-foreground">
-              FortuneLock
-            </span>
-          </motion.div>
+          <Link href="/">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+              className="flex items-center space-x-3"
+            >
+              <Shield className="h-7 w-7 text-primary" />
+              <span className="text-xl font-semibold text-foreground">
+                FortuneLock
+              </span>
+            </motion.div>
+          </Link>
 
           {/* Contact Info - Desktop Only */}
           <motion.div

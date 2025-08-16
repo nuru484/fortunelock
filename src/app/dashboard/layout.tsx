@@ -3,7 +3,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import DashboardSidebar from "@/components/AppSidebar";
 import DashboardHeader from "@/components/DashboardHeader";
 import { UserProvider } from "@/components/providers/UserProvider";
-import Footer from "@/components/Footer";
+import { DashboardFooter } from "@/components/DashboardFooter";
 
 export default async function Layout({
   children,
@@ -17,7 +17,7 @@ export default async function Layout({
         <SidebarInset>
           <DashboardHeader />
           <main className="flex flex-1 flex-col p-4">{children}</main>
-          <Footer />
+          <DashboardFooter />
         </SidebarInset>
       </SidebarProvider>
     </UserProvider>
