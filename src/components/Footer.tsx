@@ -17,8 +17,9 @@ const Footer = () => {
                 </span>
               </div>
               <p className="text-muted-foreground text-sm mb-4">
-                Your trusted partner for secure precious metals storage,
-                trading, and investment solutions.
+                <span> Established since 1983.</span> <br /> Your trusted
+                partner for secure precious metals storage, trading, and
+                investment solutions.
               </p>
               <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-muted-foreground">
                 <span>Licensed Precious Metals Dealer</span>
