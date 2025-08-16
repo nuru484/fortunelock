@@ -25,6 +25,7 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -38,6 +39,12 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --color-muted-secondary: var(--muted-secondary);
+  --color-gold: var(--gold);
+  --color-gold-dark: var(--gold-dark);
+  --color-gold-light: var(--gold-light);
+  --color-navy: var(--navy);
+  --color-navy-light: var(--navy-light);
+  --color-navy-lighter: var(--navy-lighter);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -62,9 +69,10 @@
   --accent: oklch(0.67 0.15 70);
   --accent-foreground: oklch(0.95 0.005 285);
   --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.95 0.005 285);
   --border: oklch(0.88 0.004 286.32);
   --input: oklch(0.88 0.004 286.32);
-  --ring: oklch(0.705 0.015 286.067);
+  --ring: oklch(70.566% 0.01449 285.949);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -78,6 +86,24 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.88 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
+
+  /* Custom FortuneLock Variables - Light Mode */
+  --gold: 45 86% 58%;
+  --gold-dark: 42 78% 45%;
+  --gold-light: 48 90% 75%;
+  --navy: 222 22% 8%;
+  --navy-light: 222 22% 12%;
+  --navy-lighter: 222 22% 15%;
+  
+  /* Gradients - Light Mode */
+  --gradient-gold: linear-gradient(135deg, hsl(45 86% 58%), hsl(42 78% 45%));
+  --gradient-hero: linear-gradient(135deg, oklch(0.97 0.003 285) 0%, oklch(0.94 0.004 285) 100%);
+  --gradient-card: linear-gradient(145deg, oklch(0.98 0.002 285) 0%, oklch(0.96 0.003 285) 100%);
+  
+  /* Shadows - Light Mode */
+  --shadow-gold: 0 10px 30px -10px hsl(45 86% 58% / 0.2);
+  --shadow-card: 0 8px 32px hsl(222 22% 8% / 0.15);
+  --shadow-elegant: 0 20px 40px -15px hsl(222 22% 8% / 0.25);
 }
 
 .dark {
@@ -97,6 +123,7 @@
   --accent: oklch(0.67 0.15 70);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.30 0.005 286);
   --input: oklch(0.30 0.005 286 / 15%);
   --ring: oklch(0.552 0.016 285.938);
@@ -113,6 +140,24 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.30 0.005 286);
   --sidebar-ring: oklch(0.552 0.016 285.938);
+
+  /* Custom FortuneLock Variables - Dark Mode */
+  --gold: 45 86% 68%; /* Slightly brighter for dark mode */
+  --gold-dark: 42 78% 55%; /* Brighter than light mode */
+  --gold-light: 48 90% 85%; /* Much brighter for dark mode */
+  --navy: 222 22% 95%; /* Inverted for text on dark */
+  --navy-light: 222 22% 88%; /* Lighter for dark mode */
+  --navy-lighter: 222 22% 85%; /* Even lighter */
+  
+  /* Dark Mode Gradients */
+  --gradient-gold: linear-gradient(135deg, hsl(45 86% 68%), hsl(42 78% 55%));
+  --gradient-hero: linear-gradient(135deg, hsl(222 22% 8%) 0%, hsl(222 22% 12%) 100%);
+  --gradient-card: linear-gradient(145deg, hsl(222 22% 12%) 0%, hsl(222 22% 18%) 100%);
+  
+  /* Dark Mode Shadows */
+  --shadow-gold: 0 10px 30px -10px hsl(45 86% 68% / 0.4);
+  --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.6);
+  --shadow-elegant: 0 20px 40px -15px hsl(0 0% 0% / 0.8);
 }
 
 @layer base {
@@ -121,5 +166,59 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+  
+  .bg-gradient-card {
+    background: var(--gradient-card);
+  }
+  
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+
+  /* Additional utility classes for better visibility */
+  .text-gold {
+    color: hsl(var(--gold));
+  }
+  
+  .text-gold-dark {
+    color: hsl(var(--gold-dark));
+  }
+  
+  .text-gold-light {
+    color: hsl(var(--gold-light));
+  }
+  
+  .bg-navy {
+    background-color: hsl(var(--navy));
+  }
+  
+  .bg-navy-light {
+    background-color: hsl(var(--navy-light));
+  }
+  
+  .bg-navy-lighter {
+    background-color: hsl(var(--navy-lighter));
   }
 }
