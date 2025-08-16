@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import {
-  ArrowUpRight,
-  ArrowDownLeft,
   Clock,
   CheckCircle,
   XCircle,
@@ -9,6 +7,8 @@ import {
   Filter,
   Calendar,
   Scale,
+  TrendingUp,
+  TrendingDown,
 } from "lucide-react";
 
 export interface TransactionsListProps {
@@ -31,17 +31,18 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
 
   if (!transactions || transactions.length === 0) {
     return (
-      <div className="bg-background border border-muted shadow-lg rounded-lg">
-        <div className="p-12 text-center">
-          <div className="w-16 h-16 bg-muted rounded-full mx-auto mb-4 flex items-center justify-center">
-            <CreditCard className="w-8 h-8 text-muted-foreground" />
+      <div className="bg-card border border-border shadow-sm rounded-xl overflow-hidden">
+        <div className="p-16 text-center">
+          <div className="w-20 h-20 bg-muted/50 rounded-full mx-auto mb-6 flex items-center justify-center ring-1 ring-border">
+            <CreditCard className="w-10 h-10 text-muted-foreground" />
           </div>
-          <div className="text-muted-foreground text-lg font-medium mb-2">
+          <h3 className="text-xl font-semibold text-card-foreground mb-2">
             No transactions found
-          </div>
-          <div className="text-muted-foreground text-sm">
+          </h3>
+          <p className="text-muted-foreground text-base max-w-md mx-auto">
             Your transaction history will appear here once you start trading
-          </div>
+            gold
+          </p>
         </div>
       </div>
     );
@@ -51,27 +52,30 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
     switch (type) {
       case "PURCHASE":
         return {
-          icon: ArrowDownLeft,
-          color: "text-accent-foreground",
-          bgColor: "bg-accent",
+          icon: TrendingDown,
+          color: "text-destructive",
+          bgColor: "bg-destructive/10",
           label: "Purchase",
-          borderColor: "border-accent",
+          borderColor: "border-destructive/30",
+          ringColor: "ring-destructive/20",
         };
       case "SALE":
         return {
-          icon: ArrowUpRight,
-          color: "text-destructive-foreground",
-          bgColor: "bg-destructive",
+          icon: TrendingUp,
+          color: "text-primary",
+          bgColor: "bg-primary/10",
           label: "Sale",
-          borderColor: "border-destructive",
+          borderColor: "border-primary/30",
+          ringColor: "ring-primary/20",
         };
       default:
         return {
           icon: CreditCard,
           color: "text-muted-foreground",
-          bgColor: "bg-muted",
+          bgColor: "bg-muted/30",
           label: type,
           borderColor: "border-muted",
+          ringColor: "ring-muted",
         };
     }
   };
@@ -81,32 +85,32 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
       case "SUCCESS":
         return {
           icon: CheckCircle,
-          color: "text-accent-foreground",
-          bgColor: "bg-accent",
+          color: "text-primary",
+          bgColor: "bg-primary/10",
           label: "Completed",
-          borderColor: "border-accent",
+          borderColor: "border-primary/30",
         };
       case "PENDING":
         return {
           icon: Clock,
-          color: "text-primary-foreground",
-          bgColor: "bg-primary",
+          color: "text-accent-foreground",
+          bgColor: "bg-accent/20",
           label: "Pending",
-          borderColor: "border-primary",
+          borderColor: "border-accent/40",
         };
       case "FAILED":
         return {
           icon: XCircle,
-          color: "text-destructive-foreground",
-          bgColor: "bg-destructive",
+          color: "text-destructive",
+          bgColor: "bg-destructive/10",
           label: "Failed",
-          borderColor: "border-destructive",
+          borderColor: "border-destructive/30",
         };
       default:
         return {
           icon: Clock,
           color: "text-muted-foreground",
-          bgColor: "bg-muted",
+          bgColor: "bg-muted/20",
           label: status,
           borderColor: "border-muted",
         };
@@ -137,7 +141,7 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
   };
 
   const formatWeight = (grams: number) => {
-    return `${grams.toFixed(2)} g`;
+    return `${grams.toFixed(3)} g`;
   };
 
   const formatDate = (dateString: string) => {
@@ -145,8 +149,14 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
       year: "numeric",
       month: "short",
       day: "numeric",
+    });
+  };
+
+  const formatTime = (dateString: string) => {
+    return new Date(dateString).toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
+      hour12: false,
     });
   };
 
@@ -160,41 +170,49 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
   ).length;
   const totalSales = transactions.filter((tx) => tx.type === "SALE").length;
   const totalValue = transactions.reduce((sum, tx) => sum + tx.totalCost, 0);
+  const totalWeight = transactions.reduce(
+    (sum, tx) => sum + tx.gramsPurchased,
+    0
+  );
 
   return (
-    <div className="bg-card border border-muted shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg overflow-hidden">
-      {/* Header */}
-      <div className="bg-muted border-b border-muted-secondary px-6 py-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-8 bg-gradient-to-b from-primary to-accent rounded-full"></div>
+    <div className="bg-card border border-border shadow-sm rounded-xl overflow-hidden">
+      {/* Enhanced Header */}
+      <div className="bg-muted/30 border-b border-border px-8 py-8">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <div className="w-1 h-12 bg-gradient-to-b from-primary via-accent to-primary rounded-full"></div>
             <div>
-              <h2 className="text-2xl font-bold text-foreground">
+              <h2 className="text-3xl font-bold text-foreground tracking-tight">
                 Transaction History
               </h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                Complete record of your gold trades
+              <p className="text-muted-foreground text-base mt-1">
+                Complete record of your gold trading activities
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="text-sm font-medium text-muted-foreground bg-card px-3 py-1 rounded-full border border-muted">
-              {filteredTransactions.length}{" "}
-              {filteredTransactions.length === 1
-                ? "transaction"
-                : "transactions"}
-            </span>
+          <div className="flex items-center gap-3">
+            <div className="bg-popover/80 backdrop-blur-sm border border-border px-4 py-2 rounded-lg shadow-sm">
+              <span className="text-sm font-medium text-popover-foreground">
+                {filteredTransactions.length}
+              </span>
+              <span className="text-xs text-muted-foreground ml-1">
+                {filteredTransactions.length === 1
+                  ? "transaction"
+                  : "transactions"}
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Filter and Stats */}
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-muted-foreground" />
+        {/* Enhanced Filter and Stats */}
+        <div className="flex flex-wrap items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <Filter className="w-5 h-5 text-muted-foreground" />
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="bg-card border border-muted rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              className="bg-popover border border-border rounded-lg px-4 py-2.5 text-sm font-medium text-popover-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background transition-all cursor-pointer hover:bg-accent"
             >
               <option value="ALL">All Status</option>
               <option value="SUCCESS">Completed</option>
@@ -203,46 +221,52 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
             </select>
           </div>
 
-          <div className="flex gap-4 text-sm">
-            <span className="text-accent-foreground font-medium">
-              {totalPurchases} Purchases
-            </span>
-            <span className="text-destructive-foreground font-medium">
-              {totalSales} Sales
-            </span>
+          <div className="flex items-center gap-6 text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-destructive rounded-full"></div>
+              <span className="text-foreground font-medium">
+                {totalPurchases} Purchases
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-primary rounded-full"></div>
+              <span className="text-foreground font-medium">
+                {totalSales} Sales
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Table Container */}
+      {/* Enhanced Table */}
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="bg-muted hover:bg-muted border-b border-muted-secondary">
-              <th className="font-semibold text-foreground py-4 px-6 text-left">
-                Transaction
+            <tr className="bg-muted/20 border-b border-border">
+              <th className="font-semibold text-foreground py-5 px-8 text-left text-sm tracking-wide">
+                ID
               </th>
-              <th className="font-semibold text-foreground py-4 px-6 text-left">
+              <th className="font-semibold text-foreground py-5 px-6 text-left text-sm tracking-wide">
                 Type
               </th>
-              <th className="font-semibold text-foreground py-4 px-6 text-center">
+              <th className="font-semibold text-foreground py-5 px-6 text-center text-sm tracking-wide">
                 Status
               </th>
-              <th className="font-semibold text-foreground py-4 px-6 text-right">
+              <th className="font-semibold text-foreground py-5 px-6 text-right text-sm tracking-wide">
                 Weight
               </th>
-              <th className="font-semibold text-foreground py-4 px-6 text-right">
+              <th className="font-semibold text-foreground py-5 px-6 text-right text-sm tracking-wide">
                 Amount
               </th>
-              <th className="font-semibold text-foreground py-4 px-6 text-left">
-                Date
+              <th className="font-semibold text-foreground py-5 px-6 text-left text-sm tracking-wide">
+                Date & Time
               </th>
-              <th className="font-semibold text-foreground py-4 px-6 text-center">
+              <th className="font-semibold text-foreground py-5 px-6 text-center text-sm tracking-wide">
                 Payment
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-border">
             {filteredTransactions.map((tx, index) => {
               const typeConfig = getTypeConfig(tx.type);
               const statusConfig = getStatusConfig(tx.status);
@@ -252,61 +276,60 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
 
               return (
                 <tr
-                  key={tx.id}
-                  className={`
-                    border-b border-muted-secondary hover:bg-muted-secondary transition-colors duration-200
-                    ${index % 2 === 0 ? "bg-card" : "bg-muted/30"}
-                  `}
+                  key={(tx.id, index)}
+                  className="hover:bg-muted/10 transition-colors duration-200 group"
                 >
                   {/* Transaction ID */}
-                  <td className="py-4 px-6">
+                  <td className="py-5 px-8">
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span className="font-mono text-sm font-medium text-foreground">
-                        #{tx.id}
+                      <div className="w-2 h-2 bg-primary rounded-full ring-2 ring-primary/20"></div>
+                      <span className="font-mono text-sm font-medium text-foreground tracking-wider">
+                        #{tx.id.toString().padStart(4, "0")}
                       </span>
                     </div>
                   </td>
 
                   {/* Type */}
-                  <td className="py-4 px-6">
-                    <span
-                      className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${typeConfig.bgColor} ${typeConfig.color} ${typeConfig.borderColor}`}
+                  <td className="py-5 px-6">
+                    <div
+                      className={`inline-flex items-center gap-2.5 px-3.5 py-2 rounded-lg text-sm font-medium border transition-colors ${typeConfig.bgColor} ${typeConfig.color} ${typeConfig.borderColor}`}
                     >
                       <TypeIcon className="w-4 h-4" />
                       {typeConfig.label}
-                    </span>
+                    </div>
                   </td>
 
                   {/* Status */}
-                  <td className="py-4 px-6 text-center">
-                    <span
-                      className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${statusConfig.bgColor} ${statusConfig.color} ${statusConfig.borderColor}`}
+                  <td className="py-5 px-6 text-center">
+                    <div
+                      className={`inline-flex items-center gap-2.5 px-3.5 py-2 rounded-lg text-sm font-medium border transition-colors ${statusConfig.bgColor} ${statusConfig.color} ${statusConfig.borderColor}`}
                     >
                       <StatusIcon className="w-4 h-4" />
                       {statusConfig.label}
-                    </span>
+                    </div>
                   </td>
 
                   {/* Weight */}
-                  <td className="py-4 px-6 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <Scale className="w-4 h-4 text-primary" />
-                      <span className="font-semibold text-primary-foreground">
+                  <td className="py-5 px-6 text-right">
+                    <div className="flex items-center justify-end gap-2.5">
+                      <Scale className="w-4 h-4 text-accent" />
+                      <span className="font-semibold text-foreground text-base">
                         {formatWeight(tx.gramsPurchased)}
                       </span>
                     </div>
                   </td>
 
                   {/* Amount */}
-                  <td className="py-4 px-6 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <span className="text-lg">{currencyConfig.flag}</span>
+                  <td className="py-5 px-6 text-right">
+                    <div className="flex items-center justify-end gap-3">
+                      <span className="text-lg" title={currencyConfig.name}>
+                        {currencyConfig.flag}
+                      </span>
                       <span
-                        className={`font-semibold text-lg ${
+                        className={`font-bold text-lg tracking-tight ${
                           tx.type === "PURCHASE"
-                            ? "text-destructive-foreground"
-                            : "text-accent-foreground"
+                            ? "text-destructive"
+                            : "text-primary"
                         }`}
                       >
                         {tx.type === "PURCHASE" ? "-" : "+"}
@@ -315,41 +338,40 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
                     </div>
                   </td>
 
-                  {/* Date */}
-                  <td className="py-4 px-6">
-                    <div className="flex items-center gap-2">
+                  {/* Date & Time */}
+                  <td className="py-5 px-6">
+                    <div className="flex items-center gap-3">
                       <Calendar className="w-4 h-4 text-muted-foreground" />
                       <div className="flex flex-col">
                         <span className="text-foreground font-medium text-sm">
                           {formatDate(tx.createdAt)}
                         </span>
-                        <span className="text-muted-foreground text-xs">
-                          {new Date(tx.createdAt).toLocaleTimeString("en-US", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
+                        <span className="text-muted-foreground text-xs font-mono">
+                          {formatTime(tx.createdAt)}
                         </span>
                       </div>
                     </div>
                   </td>
 
                   {/* Payment Status */}
-                  <td className="py-4 px-6 text-center">
+                  <td className="py-5 px-6 text-center">
                     {tx.payment ? (
-                      <span
-                        className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border ${
+                      <div
+                        className={`inline-flex items-center gap-2.5 px-3.5 py-2 rounded-lg text-sm font-medium border transition-colors ${
                           tx.payment.status === "completed" ||
                           tx.payment.status === "SUCCESS"
-                            ? "bg-accent text-accent-foreground border-accent"
+                            ? "bg-primary/10 text-primary border-primary/30"
                             : tx.payment.status === "pending" ||
                               tx.payment.status === "PENDING"
-                            ? "bg-primary text-primary-foreground border-primary"
-                            : "bg-destructive text-destructive-foreground border-destructive"
+                            ? "bg-accent/20 text-accent-foreground border-accent/40"
+                            : "bg-destructive/10 text-destructive border-destructive/30"
                         }`}
                       >
                         <CreditCard className="w-4 h-4" />
-                        {tx.payment.status}
-                      </span>
+                        <span className="capitalize">
+                          {tx.payment.status.toLowerCase()}
+                        </span>
+                      </div>
                     ) : (
                       <span className="text-muted-foreground text-sm italic">
                         N/A
@@ -363,28 +385,59 @@ const TransactionsList = ({ transactions }: TransactionsListProps) => {
         </table>
       </div>
 
-      {/* Footer Summary */}
-      <div className="bg-muted px-6 py-4 border-t border-muted-secondary">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="text-foreground">
-            <span className="font-medium">Total Transactions:</span>
-            <span className="font-bold ml-2">{transactions.length}</span>
+      {/* Enhanced Footer Summary */}
+      <div className="bg-muted/20 px-8 py-6 border-t border-border">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="text-center md:text-left">
+            <div className="text-2xl font-bold text-foreground mb-1">
+              {transactions.length}
+            </div>
+            <div className="text-sm text-muted-foreground font-medium">
+              Total Transactions
+            </div>
           </div>
-          <div className="text-foreground">
-            <span className="font-medium">Total Volume:</span>
-            <span className="font-bold ml-2">
-              {formatWeight(
-                transactions.reduce((sum, tx) => sum + tx.gramsPurchased, 0)
-              )}
-            </span>
+          <div className="text-center md:text-left">
+            <div className="text-2xl font-bold text-accent mb-1">
+              {formatWeight(totalWeight)}
+            </div>
+            <div className="text-sm text-muted-foreground font-medium">
+              Total Volume
+            </div>
           </div>
-          <div className="text-foreground md:text-right">
-            <span className="font-medium">Total Value:</span>
-            <span className="font-bold ml-2">
+          <div className="text-center md:text-left">
+            <div className="text-2xl font-bold text-foreground mb-1">
               {transactions.length > 0
                 ? formatCurrency(totalValue, transactions[0].currency)
                 : "$0.00"}
-            </span>
+            </div>
+            <div className="text-sm text-muted-foreground font-medium">
+              Total Value
+            </div>
+          </div>
+          <div className="text-center md:text-right">
+            <div className="text-sm text-muted-foreground space-y-1">
+              <div className="flex items-center justify-center md:justify-end gap-2">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
+                <span>
+                  {transactions.filter((tx) => tx.status === "SUCCESS").length}{" "}
+                  Completed
+                </span>
+              </div>
+              <div className="flex items-center justify-center md:justify-end gap-2">
+                <div className="w-2 h-2 bg-accent rounded-full"></div>
+                <span>
+                  {transactions.filter((tx) => tx.status === "PENDING").length}{" "}
+                  Pending
+                </span>
+              </div>
+              <div className="flex items-center justify-center md:justify-end gap-2">
+                <div className="w-2 h-2 bg-destructive rounded-full"></div>
+                <span>
+                  {transactions.filter((tx) => tx.status === "FAILED").length}{" "}
+                  Failed
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

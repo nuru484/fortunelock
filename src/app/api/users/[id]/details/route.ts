@@ -25,19 +25,27 @@ export async function GET(
       );
     }
 
-    if (sessionResult.user.role !== Role.ADMIN) {
-      return NextResponse.json(
-        { error: "Access denied: Admin privileges required.", success: false },
-        { status: 403 }
-      );
-    }
-
     const { id } = await params;
     const userId = parseInt(id);
     if (isNaN(userId) || userId <= 0) {
       return NextResponse.json(
         { error: "Invalid user ID provided.", success: false },
         { status: 400 }
+      );
+    }
+
+    // Check if user is admin OR accessing their own data
+    const isAdmin = sessionResult.user.role === Role.ADMIN;
+    const isOwnUser = sessionResult.user.id === userId;
+
+    if (!isAdmin && !isOwnUser) {
+      return NextResponse.json(
+        {
+          error:
+            "Access denied: You can only view your own profile or need admin privileges.",
+          success: false,
+        },
+        { status: 403 }
       );
     }
 
@@ -51,6 +59,8 @@ export async function GET(
             transaction: true,
           },
         },
+        addresses: true,
+        identity: true,
         goldItems: true,
         transactions: {
           include: {
@@ -68,11 +78,21 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({ success: true, data: user }, { status: 200 });
+    const safeUser = {
+      ...user,
+      password: "[REDACTED]",
+    };
+
+    return NextResponse.json(
+      { success: true, data: safeUser },
+      { status: 200 }
+    );
   } catch (error: unknown) {
     console.error("Error fetching user details:", error);
+
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error occurred";
+
     return NextResponse.json(
       {
         error: `Failed to fetch user details: ${errorMessage}.`,

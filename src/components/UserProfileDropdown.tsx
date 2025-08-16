@@ -48,29 +48,81 @@ import {
 } from "lucide-react";
 import { logout } from "@/app/actions/logout";
 import { Badge } from "./ui/badge";
+import { useGetUserDetailsQuery } from "@/redux/api/apiSlice";
 
-const UserProfileDropdown: React.FC = () => {
+interface UserProfileDropdownProps {
+  userId: number;
+}
+
+const UserProfileDropdown: React.FC<UserProfileDropdownProps> = ({
+  userId,
+}) => {
   const { user } = useUser();
   const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
   const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("profile");
   const [loading, setLoading] = useState(false);
 
-  // Mock user data - replace with actual user data
-  const userData = {
-    ...user,
-    email: user?.email || "user@example.com",
-    phone: "+1 (555) 123-4567",
-    address: "123 Main St, New York, NY 10001",
-    joinDate: "January 2024",
-    lastLogin: "2 hours ago",
+  const { data: userDetailsResponse } = useGetUserDetailsQuery(userId);
+
+  // Extract user details from API response
+  const userDetails = userDetailsResponse?.data;
+
+  if (!user || !userDetails) return null;
+
+  const userInitials = `${userDetails.firstName?.charAt(0) || ""}${
+    userDetails.lastName?.charAt(0) || ""
+  }`;
+
+  // Helper function to format dates
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   };
 
-  if (!user) return null;
+  // Helper function to format currency
+  const formatCurrency = (amount: number, currency: string = "USD") => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency,
+    }).format(amount);
+  };
 
-  const userInitials = `${user.firstName?.charAt(0) || ""}${
-    user.lastName?.charAt(0) || ""
-  }`;
+  // Helper function to calculate time ago
+  const getTimeAgo = (dateString: string) => {
+    const now = new Date();
+    const date = new Date(dateString);
+    const diffInMs = now.getTime() - date.getTime();
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInHours < 1) return "Less than an hour ago";
+    if (diffInHours < 24)
+      return `${diffInHours} hour${diffInHours > 1 ? "s" : ""} ago`;
+    if (diffInDays < 7)
+      return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
+    return formatDate(dateString);
+  };
+
+  // Get primary address if available
+  const primaryAddress = userDetails.addresses?.[0];
+  const addressString = primaryAddress
+    ? `${primaryAddress.street}, ${primaryAddress.city}, ${
+        primaryAddress.state || ""
+      } ${primaryAddress.postalCode}, ${primaryAddress.country}`.replace(
+        /,\s,/g,
+        ","
+      )
+    : "No address provided";
+
+  // Get account verification status
+  const isVerified = userDetails.identity?.verified || false;
+  const verificationDate = userDetails.identity?.verifiedAt
+    ? formatDate(userDetails.identity.verifiedAt)
+    : null;
 
   const handleLogout = async () => {
     setLoading(true);
@@ -87,8 +139,8 @@ const UserProfileDropdown: React.FC = () => {
           >
             <Avatar className="h-10 w-10">
               <AvatarImage
-                src={user.profilePicture ?? undefined}
-                alt={`${user.firstName} ${user.lastName}`}
+                src={userDetails.profilePicture ?? undefined}
+                alt={`${userDetails.firstName} ${userDetails.lastName}`}
               />
               <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
                 {userInitials}
@@ -105,8 +157,8 @@ const UserProfileDropdown: React.FC = () => {
             <div className="flex items-center space-x-3">
               <Avatar className="h-12 w-12 ring-2 ring-border">
                 <AvatarImage
-                  src={user.profilePicture ?? undefined}
-                  alt={`${user.firstName} ${user.lastName}`}
+                  src={userDetails.profilePicture ?? undefined}
+                  alt={`${userDetails.firstName} ${userDetails.lastName}`}
                 />
                 <AvatarFallback className="bg-primary text-primary-foreground text-lg font-semibold">
                   {userInitials}
@@ -114,10 +166,10 @@ const UserProfileDropdown: React.FC = () => {
               </Avatar>
               <div className="space-y-1">
                 <p className="text-sm font-medium leading-none text-foreground">
-                  {user.firstName} {user.lastName}
+                  {userDetails.firstName} {userDetails.lastName}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {userData.email}
+                  {userDetails.email}
                 </p>
               </div>
             </div>
@@ -208,8 +260,8 @@ const UserProfileDropdown: React.FC = () => {
                   <div className="flex items-center space-x-4">
                     <Avatar className="h-20 w-20 ring-2 ring-primary/20">
                       <AvatarImage
-                        src={user.profilePicture ?? undefined}
-                        alt={`${user.firstName} ${user.lastName}`}
+                        src={userDetails.profilePicture ?? undefined}
+                        alt={`${userDetails.firstName} ${userDetails.lastName}`}
                       />
                       <AvatarFallback className="bg-primary text-primary-foreground text-2xl font-bold">
                         {userInitials}
@@ -217,11 +269,29 @@ const UserProfileDropdown: React.FC = () => {
                     </Avatar>
                     <div>
                       <CardTitle className="text-2xl text-card-foreground">
-                        {user.firstName} {user.lastName}
+                        {userDetails.firstName}{" "}
+                        {userDetails.middleName
+                          ? `${userDetails.middleName} `
+                          : ""}
+                        {userDetails.lastName}
                       </CardTitle>
                       <CardDescription className="text-base text-muted-foreground">
-                        {userData.email}
+                        {userDetails.email}
                       </CardDescription>
+                      <div className="flex items-center gap-2 mt-2">
+                        <Badge variant="outline" className="text-xs">
+                          {userDetails.role}
+                        </Badge>
+                        {isVerified && (
+                          <Badge
+                            variant="secondary"
+                            className="text-xs bg-green-100 text-green-700"
+                          >
+                            <CheckCircle className="w-3 h-3 mr-1" />
+                            Verified
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </CardHeader>
@@ -233,8 +303,9 @@ const UserProfileDropdown: React.FC = () => {
                       </Label>
                       <Input
                         id="firstName"
-                        defaultValue={user.firstName || ""}
+                        defaultValue={userDetails.firstName || ""}
                         className="bg-background border-input text-foreground"
+                        readOnly
                       />
                     </div>
                     <div className="space-y-2">
@@ -243,8 +314,35 @@ const UserProfileDropdown: React.FC = () => {
                       </Label>
                       <Input
                         id="lastName"
-                        defaultValue={user.lastName || ""}
+                        defaultValue={userDetails.lastName || ""}
                         className="bg-background border-input text-foreground"
+                        readOnly
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="middleName" className="text-foreground">
+                        Middle Name
+                      </Label>
+                      <Input
+                        id="middleName"
+                        defaultValue={userDetails.middleName || ""}
+                        className="bg-background border-input text-foreground"
+                        readOnly
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="dateOfBirth" className="text-foreground">
+                        Date of Birth
+                      </Label>
+                      <Input
+                        id="dateOfBirth"
+                        defaultValue={
+                          userDetails.dateOfBirth
+                            ? formatDate(userDetails.dateOfBirth)
+                            : ""
+                        }
+                        className="bg-background border-input text-foreground"
+                        readOnly
                       />
                     </div>
                     <div className="space-y-2">
@@ -258,8 +356,9 @@ const UserProfileDropdown: React.FC = () => {
                       <Input
                         id="email"
                         type="email"
-                        defaultValue={userData.email}
+                        defaultValue={userDetails.email}
                         className="bg-background border-input text-foreground"
+                        readOnly
                       />
                     </div>
                     <div className="space-y-2">
@@ -272,8 +371,44 @@ const UserProfileDropdown: React.FC = () => {
                       </Label>
                       <Input
                         id="phone"
-                        defaultValue={userData.phone}
+                        defaultValue={userDetails.phoneNumber || "Not provided"}
                         className="bg-background border-input text-foreground"
+                        readOnly
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="gender" className="text-foreground">
+                        Gender
+                      </Label>
+                      <Input
+                        id="gender"
+                        defaultValue={userDetails.gender || "Not specified"}
+                        className="bg-background border-input text-foreground"
+                        readOnly
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="nationality" className="text-foreground">
+                        Nationality
+                      </Label>
+                      <Input
+                        id="nationality"
+                        defaultValue={
+                          userDetails.nationality || "Not specified"
+                        }
+                        className="bg-background border-input text-foreground"
+                        readOnly
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="country" className="text-foreground">
+                        Country
+                      </Label>
+                      <Input
+                        id="country"
+                        defaultValue={userDetails.country}
+                        className="bg-background border-input text-foreground"
+                        readOnly
                       />
                     </div>
                   </div>
@@ -287,10 +422,55 @@ const UserProfileDropdown: React.FC = () => {
                     </Label>
                     <Textarea
                       id="address"
-                      defaultValue={userData.address}
+                      defaultValue={addressString}
                       className="bg-background border-input text-foreground"
+                      readOnly
                     />
                   </div>
+
+                  {/* Portfolio Information */}
+                  {userDetails.portfolio && (
+                    <div className="mt-6 pt-6 border-t border-border">
+                      <h3 className="text-lg font-semibold text-foreground mb-4">
+                        Portfolio Overview
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="bg-muted/30 p-3 rounded-lg">
+                          <p className="text-sm text-muted-foreground">
+                            Total Gold
+                          </p>
+                          <p className="text-lg font-semibold text-foreground">
+                            {userDetails.portfolio.totalGrams.toFixed(4)} g
+                          </p>
+                        </div>
+                        <div className="bg-muted/30 p-3 rounded-lg">
+                          <p className="text-sm text-muted-foreground">
+                            Current Value
+                          </p>
+                          <p className="text-lg font-semibold text-foreground">
+                            {formatCurrency(userDetails.portfolio.currentValue)}
+                          </p>
+                        </div>
+                        <div className="bg-muted/30 p-3 rounded-lg">
+                          <p className="text-sm text-muted-foreground">
+                            Unrealized Gain
+                          </p>
+                          <p
+                            className={`text-lg font-semibold ${
+                              userDetails.portfolio.unrealizedGain >= 0
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }`}
+                          >
+                            {formatCurrency(
+                              userDetails.portfolio.unrealizedGain
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="flex justify-end">
                     <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
                       <Edit3 className="mr-2 h-4 w-4" />
@@ -355,18 +535,33 @@ const UserProfileDropdown: React.FC = () => {
                       </h4>
                       <div className="flex justify-between items-center p-3 border border-border rounded-lg bg-muted/30">
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4 text-green-500" />
+                          {isVerified ? (
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                          ) : (
+                            <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                          )}
                           <span className="text-sm text-foreground">
-                            Account Verified
+                            {isVerified
+                              ? "Account Verified"
+                              : "Verification Pending"}
                           </span>
                         </div>
                         <Badge
                           variant="secondary"
-                          className="bg-secondary text-secondary-foreground"
+                          className={`${
+                            isVerified
+                              ? "bg-green-100 text-green-700"
+                              : "bg-yellow-100 text-yellow-700"
+                          }`}
                         >
-                          Verified
+                          {isVerified ? "Verified" : "Pending"}
                         </Badge>
                       </div>
+                      {verificationDate && (
+                        <p className="text-xs text-muted-foreground mt-2">
+                          Verified on {verificationDate}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -419,27 +614,10 @@ const UserProfileDropdown: React.FC = () => {
                     <div className="flex justify-between items-center p-3 border border-border rounded-lg bg-muted/30">
                       <div>
                         <p className="text-sm font-medium text-foreground">
-                          Last Login
+                          Account Created
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          {userData.lastLogin}
-                        </p>
-                      </div>
-                      <Badge
-                        variant="outline"
-                        className="border-primary text-primary bg-primary/10"
-                      >
-                        Current Session
-                      </Badge>
-                    </div>
-
-                    <div className="flex justify-between items-center p-3 border border-border rounded-lg bg-muted/30">
-                      <div>
-                        <p className="text-sm font-medium text-foreground">
-                          Member Since
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {userData.joinDate}
+                          {formatDate(userDetails.createdAt)}
                         </p>
                       </div>
                     </div>
@@ -447,14 +625,57 @@ const UserProfileDropdown: React.FC = () => {
                     <div className="flex justify-between items-center p-3 border border-border rounded-lg bg-muted/30">
                       <div>
                         <p className="text-sm font-medium text-foreground">
-                          Password Last Changed
+                          Profile Last Updated
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          3 months ago
+                          {getTimeAgo(userDetails.updatedAt)}
                         </p>
                       </div>
-                      <AlertTriangle className="h-4 w-4 text-yellow-500" />
                     </div>
+
+                    {userDetails.wallet && (
+                      <div className="flex justify-between items-center p-3 border border-border rounded-lg bg-muted/30">
+                        <div>
+                          <p className="text-sm font-medium text-foreground">
+                            Wallet Balance
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {formatCurrency(
+                              userDetails.wallet.balance,
+                              userDetails.wallet.currency
+                            )}
+                          </p>
+                        </div>
+                        <Badge
+                          variant="outline"
+                          className="border-primary text-primary bg-primary/10"
+                        >
+                          {userDetails.wallet.currency}
+                        </Badge>
+                      </div>
+                    )}
+
+                    {userDetails.transactions &&
+                      userDetails.transactions.length > 0 && (
+                        <div className="flex justify-between items-center p-3 border border-border rounded-lg bg-muted/30">
+                          <div>
+                            <p className="text-sm font-medium text-foreground">
+                              Last Transaction
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {getTimeAgo(
+                                userDetails.transactions[
+                                  userDetails.transactions.length - 1
+                                ].createdAt
+                              )}
+                            </p>
+                          </div>
+                          <Badge variant="outline">
+                            {userDetails.transactions.length} transaction
+                            {userDetails.transactions.length > 1 ? "s" : ""}
+                          </Badge>
+                        </div>
+                      )}
                   </div>
                 </CardContent>
               </Card>

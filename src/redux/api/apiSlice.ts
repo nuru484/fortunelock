@@ -108,7 +108,7 @@ export const apiSlice = createApi({
     // Admin endpoints
     getAllUsers: builder.query({
       query: ({ page = 1, limit = 50, search = "" }) => ({
-        url: `admin/users?page=${page}&limit=${limit}&search=${encodeURIComponent(
+        url: `users?page=${page}&limit=${limit}&search=${encodeURIComponent(
           search
         )}`,
       }),
@@ -144,7 +144,7 @@ export const apiSlice = createApi({
       ],
     }),
     getUserDetails: builder.query({
-      query: (userId) => `admin/users/${userId}/details`,
+      query: (userId) => `users/${userId}/details`,
       providesTags: [
         "User",
         "Portfolio",

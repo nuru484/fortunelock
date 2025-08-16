@@ -70,7 +70,7 @@ const Footer = () => {
                 </div>
                 <div className="flex items-center justify-center md:justify-start gap-2">
                   <Phone className="w-4 h-4" />
-                  <span>+8136163830</span>
+                  <span>+8136163830 | +44 7424 699987</span>
                 </div>
                 <div className="flex items-center justify-center md:justify-start gap-2">
                   <Mail className="w-4 h-4" />

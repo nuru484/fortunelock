@@ -180,7 +180,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
             {/* User profile dropdown */}
             <div className="relative">
               <div className="w-9 h-9 md:w-10 md:h-10 bg-primary/10 hover:bg-primary/20 transition-colors rounded-lg flex items-center justify-center border border-primary/20">
-                <UserProfileDropdown />
+                <UserProfileDropdown userId={user.id} />
               </div>
             </div>
 
