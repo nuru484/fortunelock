@@ -471,3 +471,289 @@ export async function POST(
     return NextResponse.json(errorResponse, { status: 500 });
   }
 }
+
+interface GoldItemInput {
+  type: GoldItemType;
+  description?: string;
+  serialNumber?: string;
+  karat?: number;
+  purity?: number;
+  weightGrams: number;
+  origin?: string;
+  storageLocation?: string;
+}
+
+interface PhysicalUpdateRequest {
+  id: number;
+  goldItem: GoldItemInput;
+  pricePerGram?: number;
+  currency?: Currency;
+  depositDate?: string;
+}
+
+interface SessionUser {
+  id: number;
+  role: Role;
+}
+
+interface SessionResult {
+  session: unknown;
+  user: SessionUser;
+}
+
+interface PhysicalUpdateResponse {
+  message: string;
+  success: boolean;
+  transaction: {
+    id: number;
+    referenceNumber: string;
+    type: TransactionType;
+    source: TransactionSource;
+    status: string;
+    gramsPurchased: number;
+    pricePerGram: number;
+    totalCost: number;
+    currency: Currency;
+  };
+  goldItem: {
+    id: number;
+    type: GoldItemType;
+    description: string | null;
+    serialNumber: string | null;
+    karat: number | null;
+    purity: number | null;
+    weightGrams: number;
+    origin: string | null;
+    storageLocation: string | null;
+    verified: boolean;
+    depositMethod: DepositMethod;
+  };
+  portfolio: {
+    totalGrams: number;
+    totalInvested: number;
+    currentValue: number;
+  };
+}
+
+interface ErrorResponse {
+  error: string;
+  success: false;
+}
+
+export async function PUT(
+  req: Request
+): Promise<NextResponse<PhysicalUpdateResponse | ErrorResponse>> {
+  try {
+    const sessionResult =
+      (await verifySessionWithUser()) as SessionResult | null;
+
+    if (!sessionResult?.session)
+      return NextResponse.json(
+        { error: "Unauthenticated: Please log in.", success: false },
+        { status: 401 }
+      );
+
+    if (!sessionResult.user)
+      return NextResponse.json(
+        { error: "Authenticated user not found", success: false },
+        { status: 404 }
+      );
+
+    if (sessionResult.user.role !== Role.ADMIN)
+      return NextResponse.json(
+        { error: "Access denied: Admin privileges required.", success: false },
+        { status: 403 }
+      );
+
+    const adminId = sessionResult.user.id;
+    const body: PhysicalUpdateRequest = await req.json();
+    const { id, goldItem, pricePerGram, currency, depositDate } = body;
+
+    if (!id)
+      return NextResponse.json(
+        { error: "Invalid ID provided.", success: false },
+        { status: 400 }
+      );
+
+    const result = await prisma.$transaction(async (tx) => {
+      const existingGoldItem = await tx.goldItem.findUnique({
+        where: { id },
+        include: { transaction: true, user: { include: { portfolio: true } } },
+      });
+
+      if (!existingGoldItem) throw new Error("Gold item not found");
+
+      if (existingGoldItem.depositMethod !== DepositMethod.PHYSICAL)
+        throw new Error("Not a physical deposit");
+
+      const existingTransaction = existingGoldItem.transaction;
+      const portfolio = existingGoldItem.user.portfolio;
+
+      if (!portfolio) throw new Error("Portfolio not found");
+
+      if (currency && currency !== existingTransaction.currency)
+        throw new Error("Currency cannot be changed");
+
+      const finalCurrency: Currency = currency || existingTransaction.currency;
+
+      const newType = goldItem.type || existingGoldItem.type;
+      const validTypes: GoldItemType[] = ["BAR", "COIN", "JEWELRY", "OTHER"];
+      if (!validTypes.includes(newType)) throw new Error("Invalid type");
+
+      const newWeight = goldItem.weightGrams ?? existingGoldItem.weightGrams;
+      if (newWeight <= 0) throw new Error("Invalid weight");
+
+      const newKarat = goldItem.karat ?? existingGoldItem.karat;
+      if (newKarat && (newKarat < 1 || newKarat > 24))
+        throw new Error("Invalid karat");
+
+      const newPurity = goldItem.purity ?? existingGoldItem.purity;
+      if (newPurity && (newPurity < 0 || newPurity > 1))
+        throw new Error("Invalid purity");
+
+      const newPrice = pricePerGram ?? existingTransaction.pricePerGram;
+      if (newPrice <= 0) throw new Error("Invalid price per gram");
+
+      let newDate = existingGoldItem.createdAt;
+      if (depositDate) {
+        newDate = new Date(depositDate);
+        if (isNaN(newDate.getTime())) throw new Error("Invalid deposit date");
+      }
+
+      const newSerial = goldItem.serialNumber ?? existingGoldItem.serialNumber;
+      if (newSerial !== existingGoldItem.serialNumber && newSerial) {
+        const duplicate = await tx.goldItem.findUnique({
+          where: { serialNumber: newSerial },
+        });
+        if (duplicate) throw new Error("Duplicate serial number");
+      }
+
+      const newTotalCost = parseFloat((newWeight * newPrice).toFixed(4));
+
+      const updatedGoldItem = await tx.goldItem.update({
+        where: { id },
+        data: {
+          type: newType,
+          description: goldItem.description ?? existingGoldItem.description,
+          serialNumber: newSerial,
+          karat: newKarat,
+          purity: newPurity,
+          weightGrams: newWeight,
+          origin: goldItem.origin ?? existingGoldItem.origin,
+          storageLocation:
+            goldItem.storageLocation ?? existingGoldItem.storageLocation,
+          createdAt: newDate,
+          verifiedBy: adminId,
+        },
+      });
+
+      const updatedTransaction = await tx.transaction.update({
+        where: { id: existingTransaction.id },
+        data: {
+          gramsPurchased: newWeight,
+          pricePerGram: newPrice,
+          totalCost: newTotalCost,
+          currency: finalCurrency,
+          createdAt: newDate,
+        },
+      });
+
+      const deltaGrams = newWeight - existingGoldItem.weightGrams;
+      const deltaInvested = newTotalCost - existingTransaction.totalCost;
+
+      const newTotalGrams = parseFloat(
+        (portfolio.totalGrams + deltaGrams).toFixed(6)
+      );
+      const newTotalInvested = parseFloat(
+        (portfolio.totalInvested + deltaInvested).toFixed(4)
+      );
+
+      const currentPriceRecord = await tx.goldPrice.findFirst({
+        where: { currency: finalCurrency, isActive: true },
+        orderBy: { recordedAt: "desc" },
+      });
+
+      const currentPrice = currentPriceRecord?.pricePerGram || newPrice;
+      const newCurrentValue = parseFloat(
+        (newTotalGrams * currentPrice).toFixed(4)
+      );
+
+      const updatedPortfolio = await tx.portfolio.update({
+        where: { id: portfolio.id },
+        data: {
+          totalGrams: newTotalGrams,
+          totalInvested: newTotalInvested,
+          currentValue: newCurrentValue,
+          unrealizedGain: parseFloat(
+            (newCurrentValue - newTotalInvested).toFixed(4)
+          ),
+          lastCalculatedAt: new Date(),
+        },
+      });
+
+      return {
+        transaction: updatedTransaction,
+        goldItem: updatedGoldItem,
+        portfolio: updatedPortfolio,
+      };
+    });
+
+    const targetUser = await prisma.user.findUnique({
+      where: { id: result.goldItem.userId },
+      select: { firstName: true, lastName: true },
+    });
+
+    return NextResponse.json(
+      {
+        message: `Updated ${result.goldItem.weightGrams}g deposit for ${targetUser?.firstName} ${targetUser?.lastName}.`,
+        success: true,
+        transaction: {
+          id: result.transaction.id,
+          referenceNumber: result.transaction.referenceNumber,
+          type: result.transaction.type,
+          source: result.transaction.source,
+          status: result.transaction.status,
+          gramsPurchased: result.transaction.gramsPurchased,
+          pricePerGram: result.transaction.pricePerGram,
+          totalCost: result.transaction.totalCost,
+          currency: result.transaction.currency,
+        },
+        goldItem: {
+          id: result.goldItem.id,
+          type: result.goldItem.type,
+          description: result.goldItem.description,
+          serialNumber: result.goldItem.serialNumber,
+          karat: result.goldItem.karat,
+          purity: result.goldItem.purity,
+          weightGrams: result.goldItem.weightGrams,
+          origin: result.goldItem.origin,
+          storageLocation: result.goldItem.storageLocation,
+          verified: result.goldItem.verified,
+          depositMethod: result.goldItem.depositMethod,
+        },
+        portfolio: {
+          totalGrams: result.portfolio.totalGrams,
+          totalInvested: result.portfolio.totalInvested,
+          currentValue: result.portfolio.currentValue,
+        },
+      },
+      { status: 200 }
+    );
+  } catch (error: unknown) {
+    console.error("Update error:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    let status = 500;
+    if (errorMessage.includes("not found")) status = 404;
+    else if (errorMessage.includes("Duplicate")) status = 409;
+    else if (
+      errorMessage.includes("Invalid") ||
+      errorMessage.includes("cannot be changed")
+    )
+      status = 400;
+    return NextResponse.json(
+      { error: errorMessage, success: false },
+      { status }
+    );
+  }
+}

@@ -144,7 +144,7 @@ export const apiSlice = createApi({
       ],
     }),
     getUserDetails: builder.query({
-      query: (userId) => `users/${userId}/details`,
+      query: (userId) => `users/${userId}`,
       providesTags: [
         "User",
         "Portfolio",
